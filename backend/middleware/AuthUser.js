@@ -26,24 +26,24 @@ export const adminOnly = async (req, res, next) =>{
     next();
 };
 
-export const userBev = async (req, res, next) => {
+export const staffBev = async (req, res, next) => {
     const user = await User.findOne({
       where: {
         uuid: req.session.userId
       }
     });
     if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-    if (user.role !== "admin" && user.role !== "userbev" && user.role !== "user") return res.status(403).json({ msg: "Akses terlarang" });
+    if (user.role !== "admin" && user.role !== "staffbev" && user.role !== "staff") return res.status(403).json({ msg: "Akses terlarang" });
     next();
 };
 
-export const userFood = async (req, res, next) => {
+export const staffFood = async (req, res, next) => {
     const user = await User.findOne({
       where: {
         uuid: req.session.userId
       }
     });
     if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-    if (user.role !== "admin" && user.role !== "userfood" && user.role !== "user") return res.status(403).json({ msg: "Akses terlarang" });
+    if (user.role !== "admin" && user.role !== "stafffood" && user.role !== "staff") return res.status(403).json({ msg: "Akses terlarang" });
     next();
 };

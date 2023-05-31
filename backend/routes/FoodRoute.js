@@ -6,14 +6,14 @@ import {
   updateFood,
   deleteFood
 } from "../controllers/Foods.js";
-import { verifyUser, userFood } from "../middleware/AuthUser.js";
+import { verifyUser, staffFood } from "../middleware/AuthUser.js";
 
 const router = express.Router();
 
-router.get('/foods',verifyUser, userFood, getFoods);
-router.get('/foods/:id',verifyUser, userFood, getFoodById);
-router.post('/foods',verifyUser, userFood, createFood);
-router.patch('/foods/:id',verifyUser, userFood, updateFood);
-router.delete('/foods/:id',verifyUser, userFood, deleteFood);
+router.get('/foods',verifyUser, staffFood, getFoods);
+router.get('/foods/:id',verifyUser, staffFood, getFoodById);
+router.post('/foods',verifyUser, staffFood, createFood);
+router.patch('/foods/:id',verifyUser, staffFood, updateFood);
+router.delete('/foods/:id',verifyUser, staffFood, deleteFood);
 
 export default router;
