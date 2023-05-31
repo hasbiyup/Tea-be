@@ -88,8 +88,40 @@ Content-Type: application/json
 
 ###
 // Delete Data Bev
-DELETE  http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
+DELETE  http://localhost:5000/bevs
 
 ###
 // Get All Food
 GET http://localhost:5000/foods
+
+###
+// Get Single Food
+GET http://localhost:5000/foods
+
+###
+// Post Data Bev
+POST   http://localhost:5000/foods
+Content-Type: application/json
+
+{
+  "name": "Makanan 3",
+  "price": 3000,
+  "ings": "teh manis",
+  "img": "gambar teh"
+}
+
+###
+// Update Data Bev
+PATCH   http://localhost:5000/foods
+Content-Type: application/json
+
+{
+  "name": "Mkakan 2 update",
+  "price": 322222,
+  "ings": "teh manis",
+  "img": "gambar teh"
+}
+
+###
+// Delete Data Bev
+DELETE  http://localhost:5000/foods
