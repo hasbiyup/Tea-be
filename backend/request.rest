@@ -89,3 +89,7 @@ Content-Type: application/json
 ###
 // Delete Data Bev
 DELETE  http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
+
+###
+// Get All Food
+GET http://localhost:5000/foods
