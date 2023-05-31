@@ -1,0 +1,91 @@
+// Create user
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "name": "hisyam",
+  "email": "hisyam@gmail.com",
+  "password": "123456",
+  "confPassword": "123456",
+  "role": "userfood"
+}
+
+###
+// Get ALL Users
+GET http://localhost:5000/users
+
+###
+// Get Single Users
+GET http://localhost:5000/users/e9e5bcb2-073e-4092-8b1c-88d4edb2077f
+
+###
+// Update user
+PATCH  http://localhost:5000/users/e9e5bcb2-073e-4092-8b1c-88d4edb2077f
+Content-Type: application/json
+
+{
+  "name": "hasbibev",
+  "email": "hasbibev@gmail.com",
+  "password": "123456",
+  "confPassword": "123456",
+  "role": "userbev"
+}
+
+###
+// Delete user
+DELETE http://localhost:5000/users/e9e5bcb2-073e-4092-8b1c-88d4edb2077f
+
+
+###
+// Login user
+POST   http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "email": "deri@gmail.com",
+  "password": "123456"
+}
+
+###
+// Me
+GET  http://localhost:5000/me
+
+###
+// Logout
+DELETE http://localhost:5000/logout
+
+###
+// Get All Bevs
+GET http://localhost:5000/bevs
+
+###
+// Get Single Bevs
+GET http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
+
+###
+// Post Data Bev
+POST   http://localhost:5000/bevs
+Content-Type: application/json
+
+{
+  "name": "Minuman 3",
+  "price": 3000,
+  "ings": "teh manis",
+  "img": "gambar teh"
+}
+
+###
+// Update Data Bev
+PATCH   http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
+Content-Type: application/json
+
+{
+  "name": "Minuman 2 update",
+  "price": 322222,
+  "ings": "teh manis",
+  "img": "gambar teh"
+}
+
+###
+// Delete Data Bev
+DELETE  http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
