@@ -46,4 +46,15 @@ const Users = db.define('user', {
     freezeTableName: true
 });
 
+// db.sync()
+//   .then(async () => {
+//     await Users.bulkCreate([
+//       { name: "Hasbi" , email: "hasbi@gmail.com", password: "123456", role: "admin"}
+//     ]);
+//     console.log("Database synced and Moods data added");
+//   })
+//   .catch((error) => {
+//     console.error("Error syncing database:", error);
+//   });
+
 export default Users;

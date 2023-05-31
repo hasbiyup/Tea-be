@@ -42,6 +42,27 @@ const Bevs = db.define('bev',{
             notEmpty: true
         }
     },
+    highlight:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    brew:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    desc:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -58,5 +79,22 @@ Bevs.belongsTo(Users, {foreignKey: 'userId'});
 
 Moods.belongsToMany(Bevs, { through: 'MoodBev'});
 Bevs.belongsToMany(Moods, { through: 'MoodBev'});
+
+// db.sync()
+//   .then(async () => {
+//     await Moods.bulkCreate([
+//       { type: "Angry" },
+//       { type: "Disgust" },
+//       { type: "Fear" },
+//       { type: "Happy" },
+//       { type: "Neutral" },
+//       { type: "Sad" },
+//       { type: "Surprise" }
+//     ]);
+//     console.log("Database synced and Moods data added");
+//   })
+//   .catch((error) => {
+//     console.error("Error syncing database:", error);
+//   });
 
 export default Bevs;

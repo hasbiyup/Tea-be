@@ -5,7 +5,7 @@ export const getBevs = async (req, res) => {
     try {
         let response;
             response = await Bev.findAll({
-                attributes: ['uuid', 'name', 'price', 'ings', 'img'],
+                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc'],
                 include: [{
                     model: User,
                     attributes: ['name', 'email']
@@ -27,7 +27,7 @@ export const getBevById = async (req, res) => {
         if (!bev) return res.status(404).json({ msg: "Data tidak ditemukan" })
         let response;
             response = await Bev.findOne({
-                attributes: ['uuid', 'name', 'price', 'ings', 'img'],
+                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc'],
                 where: {
                     id: bev.id
                 },
@@ -43,13 +43,16 @@ export const getBevById = async (req, res) => {
 }
 
 export const createBev = async (req, res) => {
-    const { name, price, ings, img} = req.body;
+    const { name, price, ings, img, highlight, brew, desc } = req.body;
     try {
         await Bev.create({
             name: name,
             price: price,
             ings: ings,
             img: img,
+            highlight: highlight,
+            brew: brew,
+            desc: desc,
             userId: req.userId
         });
         res.status(201).json({ msg: "Bev Created Successfuly" });
@@ -67,8 +70,8 @@ export const updateBev = async (req, res) => {
             }
         });
         if (!bev) return res.status(404).json({ msg: "Data tidak ditemukan" })
-        const { name, price, ings, img} = req.body;
-            await Bev.update({ name, price, ings, img},{
+        const {  name, price, ings, img, highlight, brew, desc } = req.body;
+            await Bev.update({ name, price, ings, img, highlight, brew, desc },{
                 where: {
                     id: bev.id
                 }

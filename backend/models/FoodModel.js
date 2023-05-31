@@ -41,6 +41,13 @@ const Foods = db.define('food',{
             notEmpty: true
         }
     },
+    desc:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,

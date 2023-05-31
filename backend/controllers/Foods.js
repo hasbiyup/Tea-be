@@ -5,7 +5,7 @@ export const getFoods = async (req, res) => {
     try {
         let response;
             response = await Food.findAll({
-                attributes: ['uuid', 'name', 'price', 'ings', 'img'],
+                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'desc'],
                 include: [{
                     model: User,
                     attributes: ['name', 'email']
@@ -27,7 +27,7 @@ export const getFoodById = async (req, res) => {
         if (!food) return res.status(404).json({ msg: "Data tidak ditemukan" })
         let response;
             response = await Food.findOne({
-                attributes: ['uuid', 'name', 'price', 'ings', 'img'],
+                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'desc'],
                 where: {
                     id: food.id
                 },
@@ -43,13 +43,14 @@ export const getFoodById = async (req, res) => {
 }
 
 export const createFood = async (req, res) => {
-    const { name, price, ings, img} = req.body;
+    const { name, price, ings, img, desc} = req.body;
     try {
         await Food.create({
             name: name,
             price: price,
             ings: ings,
             img: img,
+            desc: desc,
             userId: req.userId
         });
         res.status(201).json({ msg: "Food Created Successfuly" });
@@ -68,7 +69,7 @@ export const updateFood = async (req, res) => {
         });
         if (!food) return res.status(404).json({ msg: "Data tidak ditemukan" })
         const { name, price, ings, img} = req.body;
-            await Food.update({ name, price, ings, img},{
+            await Food.update({ name, price, ings, img, desc},{
                 where: {
                     id: food.id
                 }
