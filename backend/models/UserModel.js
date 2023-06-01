@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import argon2 from 'argon2';
 
 const { DataTypes } = Sequelize;
 
@@ -46,15 +47,17 @@ const Users = db.define('user', {
     freezeTableName: true
 });
 
-// db.sync()
-//   .then(async () => {
-//     await Users.bulkCreate([
-//       { name: "Hasbi" , email: "hasbi@gmail.com", password: "123456", role: "admin"}
-//     ]);
-//     console.log("Database synced and Moods data added");
-//   })
-//   .catch((error) => {
-//     console.error("Error syncing database:", error);
-//   });
+db.sync()
+  .then(async () => {
+    const password = "123456";
+    const hashedPassword = await argon2.hash(password); // Menghash password menggunakan argon2
+    await Users.bulkCreate([
+      { name: "Hasbi" , email: "hasbi@gmail.com", password: hashedPassword, role: "admin"}
+    ]);
+    console.log("Database synced and Moods data added");
+  })
+  .catch((error) => {
+    console.error("Error syncing database:", error);
+  });
 
 export default Users;
