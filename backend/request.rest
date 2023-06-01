@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 // Delete user
-DELETE http://localhost:5000/users/5f44a53c-6524-4901-9d2a-1e741d4939ab
+DELETE http://localhost:5000/users/e9e5bcb2-073e-4092-8b1c-88d4edb2077f
 
 ###
 // Login user
@@ -59,7 +59,7 @@ GET http://localhost:5000/bevs
 
 ###
 // Get Single Bevs
-GET http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
+GET http://localhost:5000/bevs/35dcbc7d-82bb-4b62-bb0f-d9ca34b45cb4
 
 ###
 // Post Data Bev
@@ -67,27 +67,35 @@ POST   http://localhost:5000/bevs
 Content-Type: application/json
 
 {
-  "name": "Minuman 3",
+  "name": "Minuman 1",
   "price": 3000,
   "ings": "teh manis",
-  "img": "gambar teh"
+  "img": "gambar teh",
+  "highlight": "Green tea",
+  "brew": "1liter garam",
+  "desc": "manis banget",
+  "moods": ["Disgust", "Angry"]
 }
 
 ###
 // Update Data Bev
-PATCH   http://localhost:5000/bevs/80d04145-7d5f-4677-b5da-25cd44fff94d
+PATCH   http://localhost:5000/bevs/51f89aaf-5e9c-4e81-8bef-fe2d90cf18d7
 Content-Type: application/json
 
 {
-  "name": "Minuman 2 update",
-  "price": 322222,
-  "ings": "teh manis",
-  "img": "gambar teh"
+  "name": "Minuman 3 up",
+  "price": 333333333,
+  "ings": "teh manis up",
+  "img": "gambar teh up",
+  "highlight": "Green tea up",
+  "brew": "1liter garam up",
+  "desc": "manis banget up",
+  "moods": ["Disgust", "Surprise"]
 }
 
 ###
 // Delete Data Bev
-DELETE  http://localhost:5000/bevs
+DELETE  http://localhost:5000/bevs/51f89aaf-5e9c-4e81-8bef-fe2d90cf18d7
 
 ###
 // Get All Food
@@ -98,7 +106,7 @@ GET http://localhost:5000/foods
 GET http://localhost:5000/foods
 
 ###
-// Post Data Bev
+// Post Data Food
 POST   http://localhost:5000/foods
 Content-Type: application/json
 
@@ -110,7 +118,7 @@ Content-Type: application/json
 }
 
 ###
-// Update Data Bev
+// Update Data Food
 PATCH   http://localhost:5000/foods
 Content-Type: application/json
 
@@ -122,5 +130,5 @@ Content-Type: application/json
 }
 
 ###
-// Delete Data Bev
+// Delete Data Food
 DELETE  http://localhost:5000/foods
