@@ -13,7 +13,7 @@ export const getFoods = async (req, res) => {
             });
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ msg: error.massage });
+        res.status(500).json({ msg: error.message });
     }
 }
 
@@ -38,7 +38,7 @@ export const getFoodById = async (req, res) => {
             });
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ msg: error.massage });
+        res.status(500).json({ msg: error.message });
     }
 }
 
@@ -55,7 +55,7 @@ export const createFood = async (req, res) => {
         });
         res.status(201).json({ msg: "Food Created Successfuly" });
     } catch (error) {
-        res.status(500).json({ msg: error.massage });
+        res.status(500).json({ msg: error.message });
     }
 
 }
@@ -76,7 +76,7 @@ export const updateFood = async (req, res) => {
             });
         res.status(200).json({msg: "Food updated succesfully"});
     } catch (error) {
-        res.status(500).json({ msg: error.massage });
+        res.status(500).json({ msg: error.message });
     }
 }
 
@@ -95,6 +95,6 @@ export const deleteFood = async(req, res) => {
             });
         res.status(200).json({msg: "Food deleted succesfully"});
     } catch (error) {
-        res.status(500).json({ msg: error.massage });
+        res.status(500).json({ msg: error.message });
     }
 }
