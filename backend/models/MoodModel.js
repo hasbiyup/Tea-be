@@ -23,4 +23,21 @@ const Moods = db.define('mood',{
     freezeTableName: true
 });
 
+// db.sync()
+//   .then(async () => {
+//     await Moods.bulkCreate([
+//       { type: "Angry" },
+//       { type: "Disgust" },
+//       { type: "Fear" },
+//       { type: "Happy" },
+//       { type: "Neutral" },
+//       { type: "Sad" },
+//       { type: "Surprise" }
+//     ]);
+//     console.log("Database synced and Moods data added");
+//   })
+//   .catch((error) => {
+//     console.error("Error syncing database:", error);
+//   });
+
 export default Moods;

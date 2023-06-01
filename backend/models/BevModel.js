@@ -80,21 +80,4 @@ Bevs.belongsTo(Users, {foreignKey: 'userId'});
 Moods.belongsToMany(Bevs, { through: 'MoodBev'});
 Bevs.belongsToMany(Moods, { through: 'MoodBev'});
 
-// db.sync()
-//   .then(async () => {
-//     await Moods.bulkCreate([
-//       { type: "Angry" },
-//       { type: "Disgust" },
-//       { type: "Fear" },
-//       { type: "Happy" },
-//       { type: "Neutral" },
-//       { type: "Sad" },
-//       { type: "Surprise" }
-//     ]);
-//     console.log("Database synced and Moods data added");
-//   })
-//   .catch((error) => {
-//     console.error("Error syncing database:", error);
-//   });
-
 export default Bevs;
