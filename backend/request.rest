@@ -113,13 +113,49 @@ Content-Type: application/json
 {
   "name": "Makanan 3",
   "price": 3000,
-  "ings": "teh manis",
-  "img": "gambar teh"
+  "ings": "makanan manis",
+  "img": "gambar makanan",
+  "desc": "enak bet"
 }
 
 ###
 // Update Data Food
 PATCH   http://localhost:5000/foods
+Content-Type: application/json
+
+{
+  "name": "Makanan 3",
+  "price": 3000,
+  "ings": "makanan manis",
+  "img": "gambar makanan",
+  "desc": "enak bet"
+}
+
+###
+// Delete Data Food
+DELETE  http://localhost:5000/foods
+
+###
+// Get All Fp
+GET http://localhost:5000/foodPairings
+
+###
+// Get Single Fp
+GET http://localhost:5000/foodPairings
+
+###
+// Post Data Fp
+POST   http://localhost:5000/foodPairings
+Content-Type: application/json
+
+{
+  "bevId": "6",
+  "foodId": "1"
+}
+
+###
+// Update Data Fp
+PATCH   http://localhost:5000/foodPairings
 Content-Type: application/json
 
 {
@@ -130,5 +166,5 @@ Content-Type: application/json
 }
 
 ###
-// Delete Data Food
-DELETE  http://localhost:5000/foods
+// Delete Data Fp
+DELETE  http://localhost:5000/foodPairings
