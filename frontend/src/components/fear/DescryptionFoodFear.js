@@ -1,0 +1,37 @@
+import Card from "react-bootstrap/Card";
+import Badge from "react-bootstrap/Badge";
+import "./Fear.css";
+
+import { useParams } from "react-router-dom";
+import { getProducts } from "./dataFear";
+
+const DescryptionFoodFear = () => {
+  let params = useParams();
+  let products = getProducts(parseInt(params.fearId, 10));
+  return (
+    <div className="desc-box">
+      <Card className="shadow-none desc-body">
+        <Card.Body>
+          <div className="mx-1">
+            <Badge className="badge-custom-fear fw-normal ms-2">{products.type}</Badge>
+            <Badge className="badge-custom-fear fw-normal ms-2">{products.ings[0]}</Badge>
+            <Badge className="badge-custom-fear fw-normal ms-2">Fear</Badge>
+          </div>
+
+          <h2 className="ms-2 mt-2 fw-bold">{products.name}</h2>
+
+          <div className="ms-2">
+            <span className="type">{products.highlight}</span>
+          </div>
+
+          <hr></hr>
+          <p className="ms-2">{products.highlight}</p>
+          <p className="ms-2">{products.desc}</p><br></br><br></br>
+        </Card.Body>
+      </Card>
+      <div className="half-circle"></div>
+    </div>
+  );
+}
+
+export default DescryptionFoodFear;
