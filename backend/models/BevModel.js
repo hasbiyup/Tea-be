@@ -63,6 +63,13 @@ const Bevs = db.define('bev',{
             notEmpty: true
         }
     },
+    type:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,

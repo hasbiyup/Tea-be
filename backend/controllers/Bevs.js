@@ -6,7 +6,7 @@ export const getBevs = async (req, res) => {
     try {
         let response;
             response = await Bev.findAll({
-                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc'],
+                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
                 include: [
                     {
                         model: User,
@@ -35,7 +35,7 @@ export const getBevById = async (req, res) => {
         if (!bev) return res.status(404).json({ msg: "Data tidak ditemukan" })
         let response;
             response = await Bev.findOne({
-                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc'],
+                attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
                 where: {
                     id: bev.id
                 },
@@ -58,7 +58,7 @@ export const getBevById = async (req, res) => {
 }
 
 export const createBev = async (req, res) => {
-    const { name, price, ings, img, highlight, brew, desc, moods } = req.body;
+    const { name, price, ings, img, highlight, brew, desc, type, moods } = req.body;
     try {
         const createdBev = await Bev.create({
             name: name,
@@ -68,6 +68,7 @@ export const createBev = async (req, res) => {
             highlight: highlight,
             brew: brew,
             desc: desc,
+            type: type,
             userId: req.userId
         });
         if (moods && moods.length > 0) {
@@ -96,8 +97,8 @@ export const updateBev = async (req, res) => {
             }
         });
         if (!bev) return res.status(404).json({ msg: "Data tidak ditemukan" })
-        const {  name, price, ings, img, highlight, brew, desc, moods } = req.body;
-            await Bev.update({ name, price, ings, img, highlight, brew, desc },{
+        const {  name, price, ings, img, highlight, brew, desc, type, moods } = req.body;
+            await Bev.update({ name, price, ings, img, highlight, brew, desc, type },{
                 where: {
                     id: bev.id
                 }
