@@ -130,8 +130,17 @@ app.put('/users/:id', async (req, res) => {
 
 //delete user
 app.delete('/users/:id', async (req, res) => {
-const id = req.params.id
-const sqlDelete = "Delete from user "
+  try {
+    await User.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).json({ msg: "User deleted" });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+
 });
 app.listen(5000, () => {
   console.log("running server");
