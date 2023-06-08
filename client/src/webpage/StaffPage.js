@@ -49,7 +49,7 @@ const TeaMenuAdmin = () => {
         role: role,
       });
       // alert("Berhasil Insert");
-      setStaffList([...staffList, { name: name, email: email, password: password, role: role }]);
+      location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +58,7 @@ const TeaMenuAdmin = () => {
   const handleDelete = async (id) => {
     try {
       await Axios.delete(`http://localhost:5000/users/${id}`);
-      setStaffList([...staffList, { name: name, email: email, password: password, role: role }]);
+      location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -251,7 +251,10 @@ const TeaMenuAdmin = () => {
                         <p>Are you sure, want to delete item 1?</p>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={()=> handleDelete(val.id)}  >
+                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={() => {
+                            handleDelete(val.id);
+                            handleCloseDelete();
+                          }}>
                           Delete
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
