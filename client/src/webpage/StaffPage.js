@@ -179,9 +179,6 @@ const TeaMenuAdmin = () => {
         <Table responsive>
           <thead>
             <tr>
-              <th scope="col" width="5%">
-                #
-              </th>
               <th scope="col" width="15%">
                 Name
               </th>
