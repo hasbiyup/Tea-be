@@ -49,7 +49,7 @@ const TeaMenuAdmin = () => {
         role: role,
       });
       // alert("Berhasil Insert");
-      location.reload();
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +58,7 @@ const TeaMenuAdmin = () => {
   const handleDelete = async (id) => {
     try {
       await Axios.delete(`http://localhost:5000/users/${id}`);
-      location.reload();
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
