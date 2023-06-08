@@ -11,6 +11,7 @@ import bcrypt from "bcrypt";
 const saltRounds = 10;
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(
   cors({
@@ -140,8 +141,8 @@ app.delete('/users/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
-
 });
+
 app.listen(5000, () => {
   console.log("running server");
 });

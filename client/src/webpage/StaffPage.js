@@ -34,13 +34,11 @@ const TeaMenuAdmin = () => {
   const userName = localStorage.getItem("name");
 
   useEffect(() => {
-    getUsers();
+    Axios.get("http://localhost:5000/users").then((response) => {
+      //console.log(response.data);
+      setStaffList(response.data);
+    });
   }, []);
-
-  const getUsers = async () => {
-    const response = await Axios.get("http://localhost:5000/users");
-    setStaffList(response.data);
-  }
 
   const submitStaffData = async () => {
     try {
@@ -60,8 +58,7 @@ const TeaMenuAdmin = () => {
   const handleDelete = async (id) => {
     try {
       await Axios.delete(`http://localhost:5000/users/${id}`);
-      // Perform any necessary actions after successful deletion
-      getUsers();
+      setStaffList([...staffList, { name: name, email: email, password: password, role: role }]);
     } catch (error) {
       console.error(error);
     }
@@ -198,7 +195,7 @@ const TeaMenuAdmin = () => {
           </thead>
           <tbody>
             {staffList.map((val) => {
-              return (                                   
+              return (
                 <tr key={val.id}>
                   <td>{val.name}</td>
                   <td>{val.email}</td>
@@ -254,7 +251,7 @@ const TeaMenuAdmin = () => {
                         <p>Are you sure, want to delete item 1?</p>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={()=> handleDelete(val.id)} >
+                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={()=> handleDelete(val.id)}  >
                           Delete
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
