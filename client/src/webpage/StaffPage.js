@@ -64,6 +64,22 @@ const TeaMenuAdmin = () => {
     }
   };
 
+  const handleEdit = async (id) => {
+    try {
+      await Axios.put(`http://localhost:5000/users/${id}`, {
+        name: name,
+        email: email,
+        password: password,
+        role: role,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      console.log(error.response);
+      console.log(error.message);
+    }
+  };
+
   const formatDate = (dateString) => {
     const updatedAt = new Date(dateString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -214,24 +230,52 @@ const TeaMenuAdmin = () => {
                         <Form>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control className="form-data" type="text" placeholder="Staff name" />
+                            <Form.Control
+                              className="form-data"
+                              type="text"
+                              placeholder="Staff name"
+                              onChange={(e) => {
+                                setName(e.target.value);
+                              }}
+                            />
                           </Form.Group>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control className="form-data" type="email" placeholder="example@mail.com" />
+                            <Form.Control
+                              className="form-data"
+                              type="email"
+                              placeholder="example@mail.com"
+                              onChange={(e) => {
+                                setEmail(e.target.value);
+                              }}
+                            />
                           </Form.Group>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control className="form-data" type="password" placeholder="Enter password" />
+                            <Form.Control
+                              className="form-data"
+                              type="password"
+                              placeholder="Enter password"
+                              onChange={(e) => {
+                                setPassword(e.target.value);
+                              }}
+                            />
                           </Form.Group>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
                             <Form.Label>Role</Form.Label>
-                            <Form.Control className="form-data" type="text" placeholder="Role" />
+                            <Form.Control
+                              className="form-data"
+                              type="text"
+                              placeholder="Role"
+                              onChange={(e) => {
+                                setRole(e.target.value);
+                              }}
+                            />
                           </Form.Group>
                         </Form>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}>
+                        <Button className="btn-warning text-light" style={{ borderRadius: "100px" }} onClick={() => { handleEdit(val.id); handleCloseEdit(); }}>
                           Edit
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
@@ -251,10 +295,7 @@ const TeaMenuAdmin = () => {
                         <p>Are you sure, want to delete item 1?</p>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={() => {
-                            handleDelete(val.id);
-                            handleCloseDelete();
-                          }}>
+                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={() => { handleDelete(val.id); handleCloseDelete(); }}>
                           Delete
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>

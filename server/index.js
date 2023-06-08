@@ -95,21 +95,18 @@ app.post('/users', async (req, res) => {
 
 //update user
 app.put('/users/:id', async (req, res) => {
-  const user = await User.findOne({
-    where: {
-      uuid: req.params.id
-    }
-  });
-  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-  const { name, email, password, confPassword, role } = req.body;
-  let hashPassword;
-  if (password === "" || password === null) {
-    hashPassword = user.password;
-  } else {
-    hashPassword = await bcrypt.hash(password);
-  }
-  if (password !== confPassword) return res.status(400).json({ msg: "Password tidak sesuai" });
+  const { name, email, password, role } = req.body;
   try {
+    const user = await User.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ msg: "User tidak ditemukan" });
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
     await User.update(
       {
         name: name,
@@ -119,15 +116,17 @@ app.put('/users/:id', async (req, res) => {
       },
       {
         where: {
-          id: user.id
+          id: req.params.id
         }
       }
     );
+
     res.status(200).json({ msg: "User updated" });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
 });
+
 
 //delete user
 app.delete('/users/:id', async (req, res) => {
