@@ -5,6 +5,7 @@
 /client/.pnp
 /client/.pnp.js
 /client/package-lock.jason
+/client/public/img/*
 
 /server/node_modules
 /server/.pnp
