@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import multer from "multer";
 import db from "./config/Database.js";
 import Bevs from "./models/BevModel.js";
 import Foods from "./models/FoodModel.js";
@@ -182,9 +183,25 @@ app.get('/foods/:id', async (req, res) => {
   }
 });
 
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../client/public/img/'); // Set the destination folder where uploaded files will be stored
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const fileExtension = file.originalname.split('.').pop();
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + fileExtension); // Set the file name
+  }
+});
+
+// Create the Multer upload instance
+const upload = multer({ storage: storage });
+
 // Create food
-app.post('/foods', async (req, res) => {
-  const { name, price, ings, img, desc, userId } = req.body;
+app.post('/foods', upload.single('img'), async (req, res) => {
+  const { name, price, ings, desc, userId } = req.body;
+  const img = req.file.filename; // Get the uploaded image file name
 
   try {
     await Foods.create({
@@ -199,6 +216,8 @@ app.post('/foods', async (req, res) => {
     res.status(201).json({ msg: "Food Created Successfully" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
+    console.log(error.message);
+    console.log(error.response)
   }
 });
 

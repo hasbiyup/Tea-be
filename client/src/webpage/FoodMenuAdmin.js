@@ -54,21 +54,26 @@ const TeaMenuAdmin = () => {
   }, []);
 
   const submitFoodData = async () => {
-    try {
-      const response = await Axios.post("http://localhost:5000/foods", {
-        name: name,
-        price: price,
-        ings: ings,
-        img: img,
-        desc: desc,
-        userId: userId
-      });
-      // alert("Berhasil Insert");
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('ings', ings);
+    formData.append('img', img);
+    formData.append('desc', desc);
+    formData.append('userId', userId);
+
+    const response = await Axios.post("http://localhost:5000/foods", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    window.location.reload();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   const handleEdit = async (id) => {
     try {
@@ -168,7 +173,7 @@ const TeaMenuAdmin = () => {
                     type="file"
                     placeholder="Choose Image"
                     onChange={(e) => {
-                      setImg(e.target.value);
+                      setImg(e.target.files[0]);
                     }}
                   />
                 </Form.Group>
