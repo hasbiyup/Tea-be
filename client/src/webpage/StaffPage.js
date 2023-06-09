@@ -21,14 +21,25 @@ const TeaMenuAdmin = () => {
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (id) => {
+    setEditId(id);
+    setShowEdit(true);
+  };
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = () => setShowDelete(true);
+  const handleShowDelete = (id, name) => {
+    setDeleteId(id);
+    setDeleteName(name);
+    setShowDelete(true);
+  };
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [editId, setEditId] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleteName, setDeleteName] = useState("");
+
 
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("name");
@@ -57,7 +68,7 @@ const TeaMenuAdmin = () => {
 
   const handleDelete = async (id) => {
     try {
-      await Axios.delete(`http://localhost:5000/users/${id}`);
+      await Axios.delete(`http://localhost:5000/users/${deleteId}`);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -66,7 +77,7 @@ const TeaMenuAdmin = () => {
 
   const handleEdit = async (id) => {
     try {
-      await Axios.put(`http://localhost:5000/users/${id}`, {
+      await Axios.put(`http://localhost:5000/users/${editId}`, {
         name: name,
         email: email,
         password: password,
@@ -234,7 +245,7 @@ const TeaMenuAdmin = () => {
                   <td>{formatDate(val.updatedAt)}</td>
                   <td className="d-flex justify-content-center">
                     {/* Edit data */}
-                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={handleShowEdit}>
+                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id)}>
                       <i class="bi bi-pen text-light fs-5"></i>
                     </Button>
                     <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
@@ -310,7 +321,7 @@ const TeaMenuAdmin = () => {
                       </Modal.Footer>
                     </Modal>
                     {/* Delete */}
-                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.name)}>
                       <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
@@ -319,7 +330,7 @@ const TeaMenuAdmin = () => {
                       </Modal.Header>
                       <Modal.Body>
                         <p>
-                          Are you sure, want to delete staff <span className="fw-bold">{val.name}</span>?
+                          Are you sure, want to delete staff <span className="fw-bold">{deleteName}</span>?
                         </p>
                       </Modal.Body>
                       <Modal.Footer>
