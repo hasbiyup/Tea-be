@@ -142,6 +142,121 @@ app.delete('/users/:id', async (req, res) => {
   }
 });
 
+//get all foods
+app.get('/foods', async (req, res) => {
+  try {
+    const response = await Foods.findAll({
+      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'desc'],
+      include: [{
+        model: User,
+        attributes: ['name', 'email']
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Get food by ID
+app.get('/foods/:id', async (req, res) => {
+  try {
+    const food = await Foods.findOne({
+      where: {
+        uuid: req.params.id
+      },
+      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'desc'],
+      include: [{
+        model: User,
+        attributes: ['name', 'email']
+      }]
+    });
+
+    if (!food) {
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    }
+
+    res.status(200).json(food);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Create food
+app.post('/foods', async (req, res) => {
+  const { name, price, ings, img, desc } = req.body;
+
+  try {
+    await Foods.create({
+      name: name,
+      price: price,
+      ings: ings,
+      img: img,
+      desc: desc,
+      userId: req.userId
+    });
+
+    res.status(201).json({ msg: "Food Created Successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Update food
+app.put('/foods/:id', async (req, res) => {
+  try {
+    const food = await Foods.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    });
+
+    if (!food) {
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    }
+
+    const { name, price, ings, img, desc } = req.body;
+
+    await Foods.update(
+      { name, price, ings, img, desc },
+      {
+        where: {
+          id: food.id
+        }
+      }
+    );
+
+    res.status(200).json({ msg: "Food updated successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Delete food
+app.delete('/foods/:id', async (req, res) => {
+  try {
+    const food = await Foods.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    });
+
+    if (!food) {
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    }
+
+    await Foods.destroy({
+      where: {
+        id: food.id
+      }
+    });
+
+    res.status(200).json({ msg: "Food deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
 app.listen(5000, () => {
   console.log("running server");
 });
