@@ -232,6 +232,10 @@ thead {
   border-radius: 100px;
 }
 
+.form-select{
+  border-radius: 100px;
+}
+
 .margin-table {
   margin-left: 3%;
   margin-right: 5%;

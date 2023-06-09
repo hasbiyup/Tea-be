@@ -31,31 +31,31 @@ const Sidebar = ({ children }) => {
   const toggle = () => setIsOpen(!isOpen);
 
   const menuItem = [
-    userRole === "admin" || userRole === "user" || userRole === "userbev" || userRole === "userfood" ?
+    userRole === "Admin" || userRole === "Staff" || userRole === "BevStaff" || userRole === "FoodStaff" ?
     {
       path: "/dashboard",
       name: "Dashboard",
       icon: <FaTh />,
     }: null,
-    userRole === "admin" || userRole === "user" || userRole === "userbev" ?
+    userRole === "Admin" || userRole === "Staff" || userRole === "BevStaff" ?
     {
       path: "/tea-menu-admin",
       name: "Tea Menus",
       icon: <BsCupHotFill />,
     }: null,
-    userRole === "admin" || userRole === "user" || userRole === "userfood" ?
+    userRole === "Admin" || userRole === "Staff" || userRole === "FoodStaff" ?
     {
       path: "/food-menu-admin",
       name: "Food Menus",
       icon: <GiBowlOfRice />,
     }: null,
-    userRole === "admin" || userRole === "user" || userRole === "userbev" || userRole === "userfood"?
+    userRole === "Admin" || userRole === "Staff" || userRole === "BevStaff" || userRole === "FoodStaff"?
     {
       path: "/food-pairing-admin",
       name: "Food Pairing",
       icon: <IoFastFood />,
     }: null,
-    userRole === "admin" && {
+    userRole === "Admin" && {
       path: "/staff",
       name: "Staff",
       icon: <IoMdPerson />,

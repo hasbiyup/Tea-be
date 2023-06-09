@@ -94,7 +94,8 @@ const TeaMenuAdmin = () => {
         </Col>
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
-            <i class="bi bi-person-circle me-2"></i>{userRole}{userName}
+            <i class="bi bi-person-circle me-2"></i>
+            {userRole} {userName}
           </p>
         </Col>
         <p className="text-muted teanology-menu-update">Manage your staff data on this page</p>
@@ -148,14 +149,28 @@ const TeaMenuAdmin = () => {
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                   <Form.Label>Role</Form.Label>
-                  <Form.Control
+                  <Form.Select
+                    aria-label="Default select example"
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                    }}
+                  >
+                    <option disabled selected hidden>
+                      Select Role
+                    </option>
+                    <option value="Admin">Admin</option>
+                    <option value="Staff">Staff</option>
+                    <option value="BevStaff">BevStaff</option>
+                    <option value="FoodStaff">FoodStaff</option>
+                  </Form.Select>
+                  {/* <Form.Control
                     className="form-data"
                     type="text"
                     placeholder="Role"
                     onChange={(e) => {
                       setRole(e.target.value);
                     }}
-                  />
+                  /> */}
                 </Form.Group>
               </Form>
             </Modal.Body>
@@ -263,19 +278,30 @@ const TeaMenuAdmin = () => {
                           </Form.Group>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
                             <Form.Label>Role</Form.Label>
-                            <Form.Control
-                              className="form-data"
-                              type="text"
-                              placeholder="Role"
+                            <Form.Select
+                              aria-label="Default select example"
                               onChange={(e) => {
                                 setRole(e.target.value);
                               }}
-                            />
+                            >
+                              <option disabled selected hidden>Select Role</option>
+                              <option value="Admin">Admin</option>
+                              <option value="Staff">Staff</option>
+                              <option value="BevStaff">BevStaff</option>
+                              <option value="FoodStaff">FoodStaff</option>
+                            </Form.Select>
                           </Form.Group>
                         </Form>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-warning text-light" style={{ borderRadius: "100px" }} onClick={() => { handleEdit(val.id); handleCloseEdit(); }}>
+                        <Button
+                          className="btn-warning text-light"
+                          style={{ borderRadius: "100px" }}
+                          onClick={() => {
+                            handleEdit(val.id);
+                            handleCloseEdit();
+                          }}
+                        >
                           Edit
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
@@ -292,10 +318,19 @@ const TeaMenuAdmin = () => {
                         <Modal.Title>Delete Staff</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <p>Are you sure, want to delete item 1?</p>
+                        <p>
+                          Are you sure, want to delete staff <span className="fw-bold">{val.name}</span>?
+                        </p>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }} onClick={() => { handleDelete(val.id); handleCloseDelete(); }}>
+                        <Button
+                          className="btn-danger text-light"
+                          style={{ borderRadius: "100px" }}
+                          onClick={() => {
+                            handleDelete(val.id);
+                            handleCloseDelete();
+                          }}
+                        >
                           Delete
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
