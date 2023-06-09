@@ -249,7 +249,7 @@ const TeaMenuAdmin = () => {
               <td>{val.price}</td>
               <td>{val.ings}</td>
               <td>
-                <img src={"../client/public/img/{val.img}"} alt="Food" />
+                <img src={`/img/${val.img}`} alt="Food" style={{ width: "100px" }}/>
               </td>
               <td>{val.desc}</td>
               <td className="d-flex justify-content-center">
