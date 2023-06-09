@@ -22,7 +22,9 @@ const TeaMenuAdmin = () => {
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (id) => {
+    const staff = staffList.find((val) => val.id === id);
     setEditId(id);
+    setEditData(staff);
     setShowEdit(true);
   };
   const handleCloseDelete = () => setShowDelete(false);
@@ -39,6 +41,11 @@ const TeaMenuAdmin = () => {
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
+  const [editData, setEditData] = useState({
+    name: "",
+    email: "",
+    role: ""
+  });
 
 
   const userRole = localStorage.getItem("role");
@@ -78,10 +85,10 @@ const TeaMenuAdmin = () => {
   const handleEdit = async (id) => {
     try {
       await Axios.put(`http://localhost:5000/users/${editId}`, {
-        name: name,
-        email: email,
+        name: editData.name,
+        email: editData.email,
         password: password,
-        role: role,
+        role: editData.role
       });
       window.location.reload();
     } catch (error) {
@@ -260,8 +267,9 @@ const TeaMenuAdmin = () => {
                               className="form-data"
                               type="text"
                               placeholder="Staff name"
+                              value={editData.name}
                               onChange={(e) => {
-                                setName(e.target.value);
+                                setEditData({ ...editData, name: e.target.value });
                               }}
                             />
                           </Form.Group>
@@ -271,8 +279,9 @@ const TeaMenuAdmin = () => {
                               className="form-data"
                               type="email"
                               placeholder="example@mail.com"
+                              value={editData.email}
                               onChange={(e) => {
-                                setEmail(e.target.value);
+                                setEditData({ ...editData, email: e.target.value });
                               }}
                             />
                           </Form.Group>
@@ -291,8 +300,9 @@ const TeaMenuAdmin = () => {
                             <Form.Label>Role</Form.Label>
                             <Form.Select
                               aria-label="Default select example"
+                              value={editData.role}
                               onChange={(e) => {
-                                setRole(e.target.value);
+                                setEditData({ ...editData, role: e.target.value });
                               }}
                             >
                               <option disabled selected hidden>Select Role</option>
