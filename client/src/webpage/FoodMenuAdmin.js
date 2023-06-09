@@ -248,7 +248,9 @@ const TeaMenuAdmin = () => {
               <td>{val.name}</td>
               <td>{val.price}</td>
               <td>{val.ings}</td>
-              <td>{val.img}</td>
+              <td>
+                <img src={"../client/public/img/{val.img}"} alt="Food" />
+              </td>
               <td>{val.desc}</td>
               <td className="d-flex justify-content-center">
                 {/* Edit data */}
