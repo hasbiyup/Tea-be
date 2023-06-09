@@ -184,7 +184,7 @@ app.get('/foods/:id', async (req, res) => {
 
 // Create food
 app.post('/foods', async (req, res) => {
-  const { name, price, ings, img, desc } = req.body;
+  const { name, price, ings, img, desc, userId } = req.body;
 
   try {
     await Foods.create({
@@ -193,7 +193,7 @@ app.post('/foods', async (req, res) => {
       ings: ings,
       img: img,
       desc: desc,
-      userId: req.userId
+      userId: userId,
     });
 
     res.status(201).json({ msg: "Food Created Successfully" });

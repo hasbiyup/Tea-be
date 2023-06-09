@@ -46,7 +46,6 @@ const TeaMenuAdmin = () => {
     role: ""
   });
 
-
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("name");
 
@@ -72,15 +71,6 @@ const TeaMenuAdmin = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await Axios.delete(`http://localhost:5000/users/${deleteId}`);
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleEdit = async (id) => {
     try {
       await Axios.put(`http://localhost:5000/users/${editId}`, {
@@ -94,6 +84,15 @@ const TeaMenuAdmin = () => {
       console.error(error);
       console.log(error.response);
       console.log(error.message);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await Axios.delete(`http://localhost:5000/users/${deleteId}`);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
     }
   };
 
