@@ -199,18 +199,22 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Create food
-app.post('/foods', upload.array('img', 3), async (req, res) => {
+app.post('/foods', upload.fields([
+  { name: 'img1', maxCount: 1 },
+  { name: 'img2', maxCount: 1 },
+  { name: 'img3', maxCount: 1 }
+]), async (req, res) => {
   const { name, price, ings, desc, userId } = req.body;
   const images = req.files;
 
   try {
-    if (images.length !== 3) {
+    if (!images.img1 || !images.img2 || !images.img3) {
       throw new Error('Please upload 3 images');
     }
 
-    const img1 = images[0].filename;
-    const img2 = images[1].filename;
-    const img3 = images[2].filename;
+    const img1 = images.img1[0].filename;
+    const img2 = images.img2[0].filename;
+    const img3 = images.img3[0].filename;
     await Foods.create({
       name: name,
       price: price,
@@ -226,12 +230,15 @@ app.post('/foods', upload.array('img', 3), async (req, res) => {
   } catch (error) {
     res.status(500).json({ msg: error.message });
     console.log(error.message);
-    console.log(error.response)
   }
 });
 
 // Update food
-app.put('/foods/:id', upload.array('img', 3), async (req, res) => {
+app.put('/foods/:id', upload.fields([
+  { name: 'img1', maxCount: 1 },
+  { name: 'img2', maxCount: 1 },
+  { name: 'img3', maxCount: 1 }
+]), async (req, res) => {
   try {
     const food = await Foods.findOne({
       where: {
@@ -246,16 +253,18 @@ app.put('/foods/:id', upload.array('img', 3), async (req, res) => {
     const { name, price, ings, desc, userId } = req.body;
     const images = req.files;
 
-    if (images.length !== 3) {
-      throw new Error('Please upload 3 images');
+    if (images.img1) {
+      food.img1 = images.img1[0].filename;
     }
-
-    const img1 = images[0].filename;
-    const img2 = images[1].filename;
-    const img3 = images[2].filename;
-
+    if (images.img2) {
+      food.img2 = images.img2[0].filename;
+    }
+    if (images.img3) {
+      food.img3 = images.img3[0].filename;
+    }
+    
     await Foods.update(
-      { name, price, ings, img1, img2, img3, desc, userId },
+      { name, price, ings, img1: food.img1, img2: food.img2, img3: food.img3, desc, userId },
       {
         where: {
           id: req.params.id
@@ -268,7 +277,6 @@ app.put('/foods/:id', upload.array('img', 3), async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 });
-
 // Delete food
 app.delete('/foods/:id', async (req, res) => {
   try {
@@ -293,6 +301,7 @@ app.delete('/foods/:id', async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 });
+
 
 // BEVERAGE
 //Get all beverage
