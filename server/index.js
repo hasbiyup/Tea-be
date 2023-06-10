@@ -309,9 +309,24 @@ app.delete('/foods/:id', async (req, res) => {
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
 
+    // Menghapus gambar jika ada
+    if (food.img1) {
+      const imagePath = path.join('../client/public/img/', food.img1);
+      fs.unlinkSync(imagePath);
+    }
+    if (food.img2) {
+      const imagePath = path.join('../client/public/img/', food.img2);
+      fs.unlinkSync(imagePath);
+    }
+    if (food.img3) {
+      const imagePath = path.join('../client/public/img/', food.img3);
+      fs.unlinkSync(imagePath);
+    }
+
+    // Menghapus data makanan
     await Foods.destroy({
       where: {
-        id: food.id
+        id: req.params.id
       }
     });
 
@@ -320,6 +335,7 @@ app.delete('/foods/:id', async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 });
+
 
 
 // BEVERAGE

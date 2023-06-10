@@ -27,7 +27,11 @@ const TeaMenuAdmin = () => {
     setShowEdit(true);
   };
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = () => setShowDelete(true);
+  const handleShowDelete = (id, name) => {
+    setDeleteId(id);
+    setDeleteName(name);
+    setShowDelete(true);
+  };
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -118,14 +122,14 @@ const TeaMenuAdmin = () => {
     }
   };
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await Axios.delete(`http://localhost:5000/foods/${deleteId}`);
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleDelete = async (id) => {
+    try {
+      await Axios.delete(`http://localhost:5000/foods/${deleteId}`);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Sidebar>
@@ -138,7 +142,7 @@ const TeaMenuAdmin = () => {
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
             <i class="bi bi-person-circle me-2"></i>
-            {userRole} {userName}
+            {userRole}-{userName}
           </p>
         </Col>
         <p className="text-muted teanology-menu-update">
@@ -397,7 +401,7 @@ const TeaMenuAdmin = () => {
                       </Modal.Footer>
                     </Modal>
                     {/* Delete */}
-                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm"  onClick={() => handleShowDelete(val.id, val.name)}>
                       <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
@@ -405,10 +409,19 @@ const TeaMenuAdmin = () => {
                         <Modal.Title>Delete Food menu</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <p>Are you sure, want to delete item 1?</p>
+                        <p>
+                          Are you sure, want to delete food menu <span className="fw-bold">{deleteName}</span>?
+                        </p>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }}>
+                        <Button
+                          className="btn-danger text-light"
+                          style={{ borderRadius: "100px" }}
+                          onClick={() => {
+                            handleDelete(val.id);
+                            handleCloseDelete();
+                          }}
+                        >
                           Delete
                         </Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
