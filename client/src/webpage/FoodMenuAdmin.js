@@ -78,6 +78,7 @@ const TeaMenuAdmin = () => {
       formData.append('desc', desc);
       formData.append('userId', userId);
 
+
       const response = await Axios.post("http://localhost:5000/foods", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -130,7 +131,11 @@ const TeaMenuAdmin = () => {
       console.error(error);
     }
   };
-
+  const formatDate = (dateString) => {
+    const updatedAt = new Date(dateString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return updatedAt.toLocaleDateString("id-ID", options);
+  };
   return (
     <Sidebar>
       <Row className="d-flex justify-content-between align-items-center" style={{ marginTop: "24px" }}>
@@ -288,6 +293,12 @@ const TeaMenuAdmin = () => {
               <th scope="col" width="20%">
                 Descryption
               </th>
+              <th scope="col" width="10%">
+                Created At
+              </th>
+              <th scope="col" width="10%">
+                Last Updated
+              </th>
               <th scope="col" width="10%" className="text-center">
                 Action
               </th>
@@ -301,13 +312,13 @@ const TeaMenuAdmin = () => {
                   <td>{val.price}</td>
                   <td>{val.ings}</td>
                   <td>
-                    <td>
-                      {val.img1 && <img src={`/img/${val.img1}`} alt="Food1" style={{ width: "100px" }} />}
-                      {val.img2 && <img src={`/img/${val.img2}`} alt="Food2" style={{ width: "100px" }} />}
-                      {val.img3 && <img src={`/img/${val.img3}`} alt="Food3" style={{ width: "100px" }} />}
-                    </td>
+                    {val.img1 && <img src={`/img/${val.img1}`} alt="Food1" style={{ width: "100px" }} />}
+                    {val.img2 && <img src={`/img/${val.img2}`} alt="Food2" style={{ width: "100px" }} />}
+                    {val.img3 && <img src={`/img/${val.img3}`} alt="Food3" style={{ width: "100px" }} />}
                   </td>
                   <td>{val.desc}</td>
+                  <td>{formatDate(val.updatedAt)}</td>
+                  <td>{formatDate(val.createdAt)}</td>
                   <td className="d-flex justify-content-center">
                     {/* Edit data */}
                     <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id)}>
@@ -401,7 +412,7 @@ const TeaMenuAdmin = () => {
                       </Modal.Footer>
                     </Modal>
                     {/* Delete */}
-                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm"  onClick={() => handleShowDelete(val.id, val.name)}>
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.name)}>
                       <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>

@@ -225,6 +225,9 @@ const TeaMenuAdmin = () => {
                 Role
               </th>
               <th scope="col" width="10%">
+                Created At
+              </th>
+              <th scope="col" width="10%">
                 Last Updated
               </th>
               <th scope="col" width="10%" className="text-center">
@@ -240,6 +243,7 @@ const TeaMenuAdmin = () => {
                   <td>{val.email}</td>
                   <td>{val.role}</td>
                   <td>{formatDate(val.updatedAt)}</td>
+                  <td>{formatDate(val.createdAt)}</td>
                   <td className="d-flex justify-content-center">
                     {/* Edit data */}
                     <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id)}>

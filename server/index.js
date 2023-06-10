@@ -48,7 +48,7 @@ app.post("/login", async (req, res) => {
 app.get('/users', async (req, res) => {
   try {
     const response = await User.findAll({
-      attributes: ['id', 'uuid', 'name', 'email', 'password', 'role', 'updatedAt']
+      attributes: ['id', 'uuid', 'name', 'email', 'password', 'role', 'createdAt', 'updatedAt']
     });
     res.status(200).json(response);
   } catch (error) {
@@ -149,7 +149,7 @@ app.delete('/users/:id', async (req, res) => {
 app.get('/foods', async (req, res) => {
   try {
     const response = await Foods.findAll({
-      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'desc'],
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'desc', 'createdAt', 'updatedAt'],
       include: [{
         model: User,
         attributes: ['name', 'email']
