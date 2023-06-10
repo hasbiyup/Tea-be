@@ -7,6 +7,8 @@ import Foods from "./models/FoodModel.js";
 import FoodPairings from "./models/FoodPairingModel.js";
 import Moods from "./models/MoodModel.js";
 import User from "./models/UserModel.js";
+import fs from "fs";
+import path from "path";
 
 import bcrypt from "bcrypt";
 const saltRounds = 10;
@@ -254,15 +256,31 @@ app.put('/foods/:id', upload.fields([
     const images = req.files;
 
     if (images.img1) {
+      // Menghapus gambar lama
+      if (food.img1) {
+        const oldImagePath = path.join('../client/public/img/', food.img1);
+        fs.unlinkSync(oldImagePath);
+      }
       food.img1 = images.img1[0].filename;
     }
     if (images.img2) {
+      // Menghapus gambar lama
+      if (food.img2) {
+        const oldImagePath = path.join('../client/public/img/', food.img2);
+        fs.unlinkSync(oldImagePath);
+      }
       food.img2 = images.img2[0].filename;
     }
     if (images.img3) {
+      // Menghapus gambar lama
+      if (food.img3) {
+        const oldImagePath = path.join('../client/public/img/', food.img3);
+        fs.unlinkSync(oldImagePath);
+      }
       food.img3 = images.img3[0].filename;
     }
-    
+
+    // Lakukan pembaruan data makanan
     await Foods.update(
       { name, price, ings, img1: food.img1, img2: food.img2, img3: food.img3, desc, userId },
       {
@@ -277,6 +295,7 @@ app.put('/foods/:id', upload.fields([
     res.status(500).json({ msg: error.message });
   }
 });
+
 // Delete food
 app.delete('/foods/:id', async (req, res) => {
   try {
