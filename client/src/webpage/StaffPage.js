@@ -233,7 +233,7 @@ const TeaMenuAdmin = () => {
                 Role
               </th>
               <th scope="col" width="10%">
-                Date
+                Last Updated
               </th>
               <th scope="col" width="10%" className="text-center">
                 Action

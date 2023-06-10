@@ -279,3 +279,144 @@ app.delete('/foods/:id', async (req, res) => {
 app.listen(5000, () => {
   console.log("running server");
 });
+
+// BEVERAGE
+//Get all beverage
+app.get('/bevs', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
+      include: [{
+        model: User,
+        attributes: ['name', 'email']
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Get bevs by ID
+app.get('/bevs/:id', async (req, res) => {
+  try {
+    const bev = await Bevs.findOne({
+      where: {
+        uuid: req.params.id
+      },
+      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
+      include: [{
+        model: User,
+        attributes: ['name', 'email']
+      }]
+    });
+
+    if (!bev) {
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    }
+
+    res.status(200).json(bev);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Multer storage configuration
+const bevStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../client/public/bev-img/'); // Set the destination folder where uploaded files will be stored
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const fileExtension = file.originalname.split('.').pop();
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + fileExtension); // Set the file name
+  }
+});
+
+// Create the Multer upload instance
+const uploadBev = multer({ storage: bevStorage });
+
+// Create bev
+app.post('/bevs', uploadBev.single('img'), async (req, res) => {
+  const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
+  const img = req.file.filename; // Get the uploaded image file name
+
+  try {
+    await Bevs.create({
+      name: name,
+      price: price,
+      ings: ings,
+      img: img,
+      highlight: highlight,
+      brew: brew,
+      desc: desc,
+      type: type,
+      userId: userId,
+    });
+
+    res.status(201).json({ msg: "Beverage Created Successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+    console.log(error.message);
+    console.log(error.response)
+  }
+});
+
+// Update bev
+app.put('/bevs/:id', async (req, res) => {
+  try {
+    const bev = await Bevs.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    });
+
+    if (!bev) {
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    }
+
+    const { name, price, ings, img, highlight, brew, desc, type } = req.body;
+
+    await Bevs.update(
+      { name, price, ings, img, highlight, brew, desc, type },
+      {
+        where: {
+          id: bev.id
+        }
+      }
+    );
+
+    res.status(200).json({ msg: "Beverage updated successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+// Delete bev
+app.delete('/bevs/:id', async (req, res) => {
+  try {
+    const bev = await Bevs.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    });
+
+    if (!bev) {
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    }
+
+    await Bevs.destroy({
+      where: {
+        id: bev.id
+      }
+    });
+
+    res.status(200).json({ msg: "Beverage deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.listen(5000, () => {
+  console.log("running server");
+});
