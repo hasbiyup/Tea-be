@@ -147,7 +147,7 @@ app.delete('/users/:id', async (req, res) => {
 app.get('/foods', async (req, res) => {
   try {
     const response = await Foods.findAll({
-      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'desc'],
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'desc'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -166,7 +166,7 @@ app.get('/foods/:id', async (req, res) => {
       where: {
         uuid: req.params.id
       },
-      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'desc'],
+      attributes: [,'uuid', 'name', 'price', 'ings', 'img', 'desc'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -199,16 +199,25 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Create food
-app.post('/foods', upload.single('img'), async (req, res) => {
+app.post('/foods', upload.array('img', 3), async (req, res) => {
   const { name, price, ings, desc, userId } = req.body;
-  const img = req.file.filename; // Get the uploaded image file name
+  const images = req.files;
 
   try {
+    if (images.length !== 3) {
+      throw new Error('Please upload 3 images');
+    }
+
+    const img1 = images[0].filename;
+    const img2 = images[1].filename;
+    const img3 = images[2].filename;
     await Foods.create({
       name: name,
       price: price,
       ings: ings,
-      img: img,
+      img1: img1,
+      img2: img2,
+      img3: img3,
       desc: desc,
       userId: userId,
     });
@@ -222,11 +231,11 @@ app.post('/foods', upload.single('img'), async (req, res) => {
 });
 
 // Update food
-app.put('/foods/:id', async (req, res) => {
+app.put('/foods/:id', upload.array('img', 3), async (req, res) => {
   try {
     const food = await Foods.findOne({
       where: {
-        uuid: req.params.id
+        id: req.params.id
       }
     });
 
@@ -234,13 +243,22 @@ app.put('/foods/:id', async (req, res) => {
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
 
-    const { name, price, ings, img, desc } = req.body;
+    const { name, price, ings, desc, userId } = req.body;
+    const images = req.files;
+
+    if (images.length !== 3) {
+      throw new Error('Please upload 3 images');
+    }
+
+    const img1 = images[0].filename;
+    const img2 = images[1].filename;
+    const img3 = images[2].filename;
 
     await Foods.update(
-      { name, price, ings, img, desc },
+      { name, price, ings, img1, img2, img3, desc, userId },
       {
         where: {
-          id: food.id
+          id: req.params.id
         }
       }
     );
@@ -256,7 +274,7 @@ app.delete('/foods/:id', async (req, res) => {
   try {
     const food = await Foods.findOne({
       where: {
-        uuid: req.params.id
+        id: req.params.id
       }
     });
 
@@ -276,16 +294,12 @@ app.delete('/foods/:id', async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("running server");
-});
-
 // BEVERAGE
 //Get all beverage
 app.get('/bevs', async (req, res) => {
   try {
     const response = await Bevs.findAll({
-      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
+      attributes: ['uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -304,7 +318,7 @@ app.get('/bevs/:id', async (req, res) => {
       where: {
         uuid: req.params.id
       },
-      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
+      attributes: ['uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -322,7 +336,7 @@ app.get('/bevs/:id', async (req, res) => {
 });
 
 // Multer storage configuration
-const bevStorage = multer.diskStorage({
+const BevStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, '../client/public/bev-img/'); // Set the destination folder where uploaded files will be stored
   },
@@ -334,19 +348,28 @@ const bevStorage = multer.diskStorage({
 });
 
 // Create the Multer upload instance
-const uploadBev = multer({ storage: bevStorage });
+const uploadBev = multer({ storage: BevStorage });
 
-// Create bev
-app.post('/bevs', uploadBev.single('img'), async (req, res) => {
+// Create Bev
+app.post('/bevs', uploadBev.array('img', 3), async (req, res) => {
   const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
-  const img = req.file.filename; // Get the uploaded image file name
+  const images = req.files;
 
   try {
+    if (images.length !== 3) {
+      throw new Error('Please upload 3 images');
+    }
+
+    const img1 = images[0].filename;
+    const img2 = images[1].filename;
+    const img3 = images[2].filename;
     await Bevs.create({
       name: name,
       price: price,
       ings: ings,
-      img: img,
+      img1: img1,
+      img2: img2,
+      img3: img3,
       highlight: highlight,
       brew: brew,
       desc: desc,
@@ -363,11 +386,11 @@ app.post('/bevs', uploadBev.single('img'), async (req, res) => {
 });
 
 // Update bev
-app.put('/bevs/:id', async (req, res) => {
+app.put('/bevs/:id', upload.array('img', 3), async (req, res) => {
   try {
     const bev = await Bevs.findOne({
       where: {
-        uuid: req.params.id
+        id: req.params.id
       }
     });
 
@@ -375,13 +398,22 @@ app.put('/bevs/:id', async (req, res) => {
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
 
-    const { name, price, ings, img, highlight, brew, desc, type } = req.body;
+    const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
+    const images = req.files;
+
+    if (images.length !== 3) {
+      throw new Error('Please upload 3 images');
+    }
+
+    const img1 = images[0].filename;
+    const img2 = images[1].filename;
+    const img3 = images[2].filename;
 
     await Bevs.update(
-      { name, price, ings, img, highlight, brew, desc, type },
+      { name, price, ings, img1, img2, img3, highlight, brew, desc, type, userId },
       {
         where: {
-          id: bev.id
+          id: req.params.id
         }
       }
     );
@@ -397,7 +429,7 @@ app.delete('/bevs/:id', async (req, res) => {
   try {
     const bev = await Bevs.findOne({
       where: {
-        uuid: req.params.id
+        id: req.params.id
       }
     });
 
