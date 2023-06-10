@@ -20,14 +20,31 @@ const TeaMenuAdmin = () => {
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (id) => {
+    const bev = bevList.find((val) => val.id === id);
+    setEditId(id);
+    setEditData(bev);
+    setSelectedImage1(bev.img1 ? bev.img1 : null);
+    setSelectedImage2(bev.img2 ? bev.img2 : null);
+    setSelectedImage3(bev.img3 ? bev.img3 : null);
+    setShowEdit(true);
+  };
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = () => setShowDelete(true);
+  const handleShowDelete = (id, name) => {
+    setDeleteId(id);
+    setDeleteName(name);
+    setShowDelete(true);
+  };
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [ings, setIngs] = useState("");
-  const [img, setImg] = useState("");
+  const [img1, setImg1] = useState("");
+  const [img2, setImg2] = useState("");
+  const [img3, setImg3] = useState("");
+  const [selectedImage1, setSelectedImage1] = useState(null);
+  const [selectedImage2, setSelectedImage2] = useState(null);
+  const [selectedImage3, setSelectedImage3] = useState(null);
   const [highlight, setHighlight] = useState("");
   const [brew, setBrew] = useState("");
   const [desc, setDesc] = useState("");
@@ -40,7 +57,9 @@ const TeaMenuAdmin = () => {
     name: "",
     price: 0,
     ings: "",
-    img: "",
+    img1: "",
+    img2: "",
+    img3: "",
     highlight: "",
     brew: "",
     desc: "",
@@ -65,7 +84,9 @@ const TeaMenuAdmin = () => {
       formData.append("name", name);
       formData.append("price", price);
       formData.append("ings", ings);
-      formData.append("img", img);
+      formData.append("img", img1);
+      formData.append("img", img2);
+      formData.append("img", img3);
       formData.append("highlight", highlight);
       formData.append("brew", brew);
       formData.append("desc", desc);
@@ -84,17 +105,33 @@ const TeaMenuAdmin = () => {
   };
 
   const handleEdit = async (id) => {
+    console.log("editId:", editId);
     try {
-      await Axios.put(`http://localhost:5000/bevs/${editId}`, {
-        name: editData.name,
-        price: editData.price,
-        ings: editData.ings,
-        img: editData.img,
-        img: editData.highlight,
-        img: editData.brew,
-        desc: editData.desc,
-        desc: editData.type,
+      const formData = new FormData();
+      formData.append("name", editData.name);
+      formData.append("price", editData.price);
+      formData.append("ings", editData.ings);
+      formData.append("highlight", editData.highlight);
+      formData.append("brew", editData.brew);
+      formData.append("desc", editData.desc);
+      formData.append("type", editData.type);
+
+      if (editData.img1) {
+        formData.append("img", editData.img1);
+      }
+      if (editData.img2) {
+        formData.append("img", editData.img2);
+      }
+      if (editData.img3) {
+        formData.append("img", editData.img3);
+      }
+
+      await Axios.put(`http://localhost:5000/bevs/${editId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -103,13 +140,10 @@ const TeaMenuAdmin = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await Axios.delete(`http://localhost:5000/bevs/${deleteId}`);
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
+  const formatDate = (dateString) => {
+    const updatedAt = new Date(dateString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return updatedAt.toLocaleDateString("id-ID", options);
   };
 
   return (
@@ -140,28 +174,30 @@ const TeaMenuAdmin = () => {
             </Modal.Header>
             <Modal.Body>
               <Form>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    className="form-data"
-                    type="text"
-                    placeholder="Enter name"
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Price</Form.Label>
-                  <Form.Control
-                    className="form-data"
-                    type="text"
-                    placeholder="Price"
-                    onChange={(e) => {
-                      setPrice(e.target.value);
-                    }}
-                  />
-                </Form.Group>
+                <Row>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter name"
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Price"
+                      onChange={(e) => {
+                        setPrice(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Row>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                   <Form.Label>Ingredients</Form.Label>
                   <Form.Control
@@ -174,38 +210,64 @@ const TeaMenuAdmin = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Image</Form.Label>
+                  <Form.Label>Image1</Form.Label>
                   <Form.Control
                     className="form-data"
                     type="file"
                     placeholder="Choose Image"
                     onChange={(e) => {
-                      setImg(e.target.value);
+                      setImg1(e.target.files[0]);
                     }}
                   />
                 </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Highlight</Form.Label>
-                  <Form.Control
-                    className="form-data"
-                    type="text"
-                    placeholder="Enter highlight"
-                    onChange={(e) => {
-                      setHighlight(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Brew</Form.Label>
-                  <Form.Control
-                    className="form-data"
-                    type="text"
-                    placeholder="Enter brew"
-                    onChange={(e) => {
-                      setBrew(e.target.value);
-                    }}
-                  />
-                </Form.Group>
+                <Row>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Image2</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="file"
+                      placeholder="Choose Image"
+                      onChange={(e) => {
+                        setImg2(e.target.files[0]);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Image3</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="file"
+                      placeholder="Choose Image"
+                      onChange={(e) => {
+                        setImg3(e.target.files[0]);
+                      }}
+                    />
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Highlight</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter highlight"
+                      onChange={(e) => {
+                        setHighlight(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Brew</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter brew"
+                      onChange={(e) => {
+                        setBrew(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Row>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                   <Form.Label>Descryption</Form.Label>
                   <Form.Control
@@ -263,7 +325,7 @@ const TeaMenuAdmin = () => {
         <Table responsive>
           <thead>
             <tr>
-              <th scope="col" width="15%">
+              <th scope="col" width="10%">
                 Name
               </th>
               <th scope="col" width="5%">
@@ -284,7 +346,7 @@ const TeaMenuAdmin = () => {
               <th scope="col" width="15%">
                 Descryption
               </th>
-              <th scope="col" width="5%">
+              <th scope="col" width="10%">
                 Type
               </th>
               <th scope="col" width="10%">
@@ -296,86 +358,202 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-          {bevList.map((val) => {
-            return (
-            <tr key={val.id}>
-              <td>{val.name}</td>
-              <td>{val.price}</td>
-              <td>{val.ings}</td>
-              <td>
-                <img src={`/bev-img/${val.img}`} alt="Bev" style={{ width: "100px" }}/>
-              </td>
-              <td>{val.highlight}</td>
-              <td>{val.brew}</td>
-              <td>{val.desc}</td>
-              <td>{val.type}</td>
-
-              <td className="d-flex justify-content-center">
-                {/* Edit data */}
-                <Button className="bg-warning btn-light rounded-2" size="sm" onClick={handleShowEdit}>
-                  <i class="bi bi-pen text-light fs-5"></i>
-                </Button>
-                <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Edit Tea Menu</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control className="form-data" type="text" placeholder="Enter name" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Price</Form.Label>
-                        <Form.Control className="form-data" type="text" placeholder="Price" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Ingredients</Form.Label>
-                        <Form.Control className="form-data" type="text" placeholder="Ingredients" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Image</Form.Label>
-                        <Form.Control className="form-data" type="file" placeholder="Choose Image" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Descryption</Form.Label>
-                        <Form.Control style={{ borderRadius: "20px" }} as="textarea" rows={3} />
-                      </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
-                      Cancel
+            {bevList.map((val) => {
+              return (
+                <tr key={val.id}>
+                  <td>{val.name}</td>
+                  <td>{val.price}</td>
+                  <td>{val.ings}</td>
+                  <td>
+                    <td>
+                      {val.img1 && <img src={`/bev-img/${val.img1}`} alt="Food1" style={{ width: "50px" }} />}
+                      {val.img2 && <img src={`/bev-img/${val.img2}`} alt="Food2" style={{ width: "50px" }} />}
+                      {val.img3 && <img src={`/bev-img/${val.img3}`} alt="Food3" style={{ width: "50px" }} />}
+                    </td>
+                  </td>
+                  <td>{val.highlight}</td>
+                  <td>{val.brew}</td>
+                  <td>{val.desc}</td>
+                  <td>{val.type}</td>
+                  <td>{formatDate(val.updatedAt)}</td>
+                  <td className="d-flex justify-content-center">
+                    {/* Edit data */}
+                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id)}>
+                      <i class="bi bi-pen text-light fs-5"></i>
                     </Button>
-                    <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}>
-                      Edit
+                    <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Edit Tea Menu</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Form>
+                          <Row>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Name</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter name"
+                                value={editData.name}
+                                onChange={(e) => {
+                                  setEditData({ ...editData, name: e.target.value });
+                                }}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Price</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Price"
+                                value={editData.price}
+                                onChange={(e) => {
+                                  setEditData({ ...editData, price: e.target.value });
+                                }}
+                              />
+                            </Form.Group>
+                          </Row>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label>Ingredients</Form.Label>
+                            <Form.Control
+                              className="form-data"
+                              type="text"
+                              placeholder="Ingredients"
+                              value={editData.ings}
+                              onChange={(e) => {
+                                setEditData({ ...editData, ings: e.target.value });
+                              }}
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label>Image1</Form.Label>
+                            <Form.Control
+                              className="form-data"
+                              type="file"
+                              placeholder="Choose Image"
+                              onChange={(e) => {
+                                setImg1(e.target.files[0]);
+                              }}
+                            />
+                          </Form.Group>
+                          <Row>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Image2</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="file"
+                                placeholder="Choose Image"
+                                onChange={(e) => {
+                                  setImg2(e.target.files[0]);
+                                }}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Image3</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="file"
+                                placeholder="Choose Image"
+                                onChange={(e) => {
+                                  setImg3(e.target.files[0]);
+                                }}
+                              />
+                            </Form.Group>
+                          </Row>
+                          <Row>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Highlight</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter highlight"
+                                value={editData.highlight}
+                                onChange={(e) => {
+                                  setEditData({ ...editData, highlight: e.target.value });
+                                }}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Brew</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter brew"
+                                value={editData.brew}
+                                onChange={(e) => {
+                                  setEditData({ ...editData, brew: e.target.value });
+                                }}
+                              />
+                            </Form.Group>
+                          </Row>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label>Descryption</Form.Label>
+                            <Form.Control
+                              style={{ borderRadius: "20px" }}
+                              as="textarea"
+                              rows={3}
+                              value={editData.desc}
+                              onChange={(e) => {
+                                setEditData({ ...editData, desc: e.target.value });
+                              }}
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label>Type</Form.Label>
+                            <Form.Control
+                              className="form-data"
+                              type="text"
+                              placeholder="Enter type"
+                              value={editData.type}
+                              onChange={(e) => {
+                                setEditData({ ...editData, type: e.target.value });
+                              }}
+                            />
+                          </Form.Group>
+                        </Form>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
+                          Cancel
+                        </Button>
+                        <Button
+                          className="btn-warning text-light"
+                          style={{ borderRadius: "100px" }}
+                          onClick={() => {
+                            handleEdit(val.id);
+                            handleCloseEdit();
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                    {/* Delete */}
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
+                      <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
-                  </Modal.Footer>
-                </Modal>
-                {/* Delete */}
-                <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
-                  <i class="bi bi-trash3 text-light fs-5"></i>
-                </Button>
-                <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Delete tea menu</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <p>Are you sure, want to delete item 1?</p>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button className="btn-danger text-light" style={{ borderRadius: "100px" }}>
-                      Delete
-                    </Button>
-                    <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
-                      Cancel
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              </td>
-            </tr>
-            );
-          })}
+                    <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Delete tea menu</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <p>
+                          Are you sure, want to delete <span className="fw-bold">{deleteName}</span>?
+                        </p>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button className="btn-danger text-light" style={{ borderRadius: "100px" }}>
+                          Delete
+                        </Button>
+                        <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
+                          Cancel
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Row>
