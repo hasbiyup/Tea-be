@@ -54,7 +54,8 @@ const Dashboard = () => {
       });
   }, []);
 
-  const totalBevsData = foodpairing.length;
+  const totalBevsData = bevs.length;
+
   // Mengambil data FP dari backend
   useEffect(() => {
     Axios.get("http://localhost:5000/foodpairings")
