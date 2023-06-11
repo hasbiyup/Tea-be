@@ -9,6 +9,7 @@ import FoodPairing from "../components/dashboard/FoodPairing.svg";
 import Staff from "../components/dashboard/Staff.svg";
 import Tea from "../components/dashboard/Tea.svg";
 
+
 const Dashboard = () => {
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("name");
@@ -72,10 +73,10 @@ const Dashboard = () => {
   return (
     <Sidebar>
       <Row className="d-flex justify-content-between align-items-center" style={{ marginTop: "24px" }}>
-        <Col md={9}>
+        <Col md={7} sm={12}>
           <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Dashboard Teanology</h3>
         </Col>
-        <Col md={3}>
+        <Col md={5} sm={12}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
             <i class="bi bi-person-circle me-2"></i>
             {userRole}-{userName}

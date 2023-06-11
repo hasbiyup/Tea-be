@@ -368,7 +368,7 @@ const TeaMenuAdmin = () => {
                   <td>{val.price}</td>
                   <td>{val.ings}</td>
                   <td>
-                    <td className="d-flex justify-content-center">
+                    <td className="d-flex justify-content-start">
                       {val.img1 && <img src={`/bev-img/${val.img1}`} alt="Food1" style={{ width: "42px" }} />}
                       {val.img2 && <img src={`/bev-img/${val.img2}`} alt="Food2" className="ms-1" style={{ width: "42px" }} />}
                       {val.img3 && <img src={`/bev-img/${val.img3}`} alt="Food3" className="ms-1" style={{ width: "42px" }} />}
