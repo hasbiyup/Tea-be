@@ -343,7 +343,7 @@ app.delete('/foods/:id', async (req, res) => {
 app.get('/bevs', async (req, res) => {
   try {
     const response = await Bevs.findAll({
-      attributes: ['uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type'],
+      attributes: ['uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type', 'createdAt', 'updatedAt'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -362,7 +362,7 @@ app.get('/bevs/:id', async (req, res) => {
       where: {
         uuid: req.params.id
       },
-      attributes: ['uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type'],
+      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -395,18 +395,22 @@ const BevStorage = multer.diskStorage({
 const uploadBev = multer({ storage: BevStorage });
 
 // Create Bev
-app.post('/bevs', uploadBev.array('img', 3), async (req, res) => {
+app.post('/bevs', uploadBev.fields([
+  { name: 'img1', maxCount: 1 },
+  { name: 'img2', maxCount: 1 },
+  { name: 'img3', maxCount: 1 }
+]), async (req, res) => {
   const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
   const images = req.files;
 
   try {
-    if (images.length !== 3) {
+    if (!images.img1 || !images.img2 || !images.img3) {
       throw new Error('Please upload 3 images');
     }
 
-    const img1 = images[0].filename;
-    const img2 = images[1].filename;
-    const img3 = images[2].filename;
+    const img1 = images.img1[0].filename;
+    const img2 = images.img2[0].filename;
+    const img3 = images.img3[0].filename;
     await Bevs.create({
       name: name,
       price: price,
@@ -425,12 +429,15 @@ app.post('/bevs', uploadBev.array('img', 3), async (req, res) => {
   } catch (error) {
     res.status(500).json({ msg: error.message });
     console.log(error.message);
-    console.log(error.response)
   }
 });
 
 // Update bev
-app.put('/bevs/:id', upload.array('img', 3), async (req, res) => {
+app.put('/bevs/:id', uploadBev.fields([
+  { name: 'img1', maxCount: 1 },
+  { name: 'img2', maxCount: 1 },
+  { name: 'img3', maxCount: 1 }
+]), async (req, res) => {
   try {
     const bev = await Bevs.findOne({
       where: {
@@ -445,16 +452,34 @@ app.put('/bevs/:id', upload.array('img', 3), async (req, res) => {
     const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
     const images = req.files;
 
-    if (images.length !== 3) {
-      throw new Error('Please upload 3 images');
+    if (images.img1) {
+      // Menghapus gambar lama
+      if (bev.img1) {
+        const oldImagePath = path.join('../client/public/bev-img/', bev.img1);
+        fs.unlinkSync(oldImagePath);
+      }
+      bev.img1 = images.img1[0].filename;
+    }
+    if (images.img2) {
+      // Menghapus gambar lama
+      if (bev.img2) {
+        const oldImagePath = path.join('../client/public/bev-img/', bev.img2);
+        fs.unlinkSync(oldImagePath);
+      }
+      bev.img2 = images.img2[0].filename;
+    }
+    if (images.img3) {
+      // Menghapus gambar lama
+      if (bev.img3) {
+        const oldImagePath = path.join('../client/public/bev-img/', bev.img3);
+        fs.unlinkSync(oldImagePath);
+      }
+      bev.img3 = images.img3[0].filename;
     }
 
-    const img1 = images[0].filename;
-    const img2 = images[1].filename;
-    const img3 = images[2].filename;
-
+    // Lakukan pembaruan data makanan
     await Bevs.update(
-      { name, price, ings, img1, img2, img3, highlight, brew, desc, type, userId },
+      { name, price, ings, img1: bev.img1, img2: bev.img2, img3: bev.img3, highlight, brew, desc, type, userId },
       {
         where: {
           id: req.params.id
@@ -481,9 +506,24 @@ app.delete('/bevs/:id', async (req, res) => {
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
 
+    // Menghapus gambar jika ada
+    if (bev.img1) {
+      const imagePath = path.join('../client/public/bev-img/', bev.img1);
+      fs.unlinkSync(imagePath);
+    }
+    if (bev.img2) {
+      const imagePath = path.join('../client/public/bev-img/', bev.img2);
+      fs.unlinkSync(imagePath);
+    }
+    if (bev.img3) {
+      const imagePath = path.join('../client/public/bev-img/', bev.img3);
+      fs.unlinkSync(imagePath);
+    }
+
+    // Menghapus data makanan
     await Bevs.destroy({
       where: {
-        id: bev.id
+        id: req.params.id
       }
     });
 
