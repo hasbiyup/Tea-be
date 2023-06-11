@@ -533,6 +533,49 @@ app.delete('/bevs/:id', async (req, res) => {
   }
 });
 
+// app.get('/foodpairings', async (req, res) => {
+//   try {
+//     const response = await Bevs.findAll({
+//       attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type', 'createdAt', 'updatedAt'],
+//       include: [
+//         {
+//           model: User,
+//           attributes: ['name'],
+//           as: 'user',
+//         },
+//         {
+//           model: Foods,
+//           attributes: ['name'],
+//           as: 'food',
+//         },
+//         {
+//           model: Bevs,
+//           attributes: ['name'],
+//           as: 'bev',
+//         },
+//       ],
+//     });
+//     res.status(200).json(response);
+//   } catch (error) {
+//     res.status(500).json({ msg: error.message });
+//   }
+// });
+
+//create foodpairings
+app.post("/foodpairings", async (req, res) => {
+  try {
+    const { bevId, foodId, userId } = req.body;
+    await FoodPairings.create({
+      bevId: bevId,
+      foodId: foodId,
+      userId: userId,
+    });
+  res.status(200).json({ message: "Food pairing saved successfully!" });
+  } catch (error) {
+    
+  }
+});
+
 app.listen(5000, () => {
   console.log("running server");
 });

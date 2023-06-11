@@ -1,6 +1,7 @@
 import "../components/dashboard/dashboard.css";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -11,6 +12,13 @@ import Table from "react-bootstrap/Table";
 import Sidebar from "../components/dashboard/Sidebar.js";
 
 const TeaMenuAdmin = () => {
+  // const [foodPairingList, setFoodPairingList] = useState([]);
+  const [bevOptions, setBevOptions] = useState([]);
+  const [foodOptions, setFoodOptions] = useState([]);
+  const [formData, setFormData] = useState({
+    bev: "",
+    food: ""
+  });
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -21,6 +29,53 @@ const TeaMenuAdmin = () => {
   const handleShowEdit = () => setShowEdit(true);
   const handleCloseDelete = () => setShowDelete(false);
   const handleShowDelete = () => setShowDelete(true);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    // memperbarui nilai state sesuai dengan perubahan pada elemen input
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const userId = localStorage.getItem("id");
+  const userRole = localStorage.getItem("role");
+  const userName = localStorage.getItem("name");
+
+  useEffect(() => {
+    Axios.get("http://localhost:5000/bevs").then((response) => {
+      setBevOptions(response.data);
+    });
+
+    Axios.get("http://localhost:5000/foods").then((response) => {
+      setFoodOptions(response.data);
+    });
+
+    // Axios.get("http://localhost:5000/foodpairings").then((response) => {
+    //   setFoodPairingList(response.data);
+    // });
+  }, []);
+
+  const submitFoodPairingData = () => {
+    const selectedBev = bevOptions.find((option) => option.name === formData.bev);
+    const selectedFood = foodOptions.find((option) => option.name === formData.food);
+    if (selectedBev && selectedFood) {
+      const bevId = selectedBev.id;
+      const foodId = selectedFood.id;
+
+      // Mengirim permintaan POST ke endpoint yang ditentukan
+      Axios.post("http://localhost:5000/foodpairings", { bevId, foodId, userId })
+        .then((response) => {
+          console.log("Food pairing saved successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving food pairing:", error);
+        });
+      handleCloseAdd();
+    } else {
+      console.error("Invalid beverage or food option selected.");
+    }
+  };
 
   return (
     <Sidebar>
@@ -32,7 +87,8 @@ const TeaMenuAdmin = () => {
         </Col>
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
-            <i class="bi bi-person-circle me-2"></i>Admin
+            <i class="bi bi-person-circle me-2"></i>
+            {userRole}-{userName}
           </p>
         </Col>
         <p className="text-muted teanology-menu-update">
@@ -54,29 +110,42 @@ const TeaMenuAdmin = () => {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control className="form-data" type="text" placeholder="Enter email" />
+                  <Form.Label>Bev</Form.Label>
+                  <Form.Select
+                    className="form-data"
+                    name="bev"
+                    value={formData.bev}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select name</option>
+                    {bevOptions.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
+
                 <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Status</Form.Label>
-                  <Form.Control className="form-data" type="text" placeholder="Status" />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Ingredients</Form.Label>
-                  <Form.Control className="form-data" type="text" placeholder="Ingredients" />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Image</Form.Label>
-                  <Form.Control className="form-data" type="file" placeholder="Choose Image" />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Descryption</Form.Label>
-                  <Form.Control style={{ borderRadius: "20px" }} as="textarea" rows={3} />
+                  <Form.Label>Food</Form.Label>
+                  <Form.Select
+                    className="form-data"
+                    name="food"
+                    value={formData.food}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select name</option>
+                    {foodOptions.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="pagination-button btn-light text-light">Save</Button>
+              <Button className="pagination-button btn-light text-light" onClick={submitFoodPairingData} >Save</Button>
               <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseAdd}>
                 Cancel
               </Button>
@@ -100,23 +169,11 @@ const TeaMenuAdmin = () => {
         <Table responsive>
           <thead>
             <tr>
-              <th scope="col" width="5%">
-                #
-              </th>
               <th scope="col" width="15%">
-                Name
+                Name Bev
               </th>
               <th scope="col" width="10%">
-                Status
-              </th>
-              <th scope="col" width="20%">
-                Ingredients
-              </th>
-              <th scope="col" width="10%">
-                Image
-              </th>
-              <th scope="col" width="20%">
-                Descryption
+                Name Food
               </th>
               <th scope="col" width="10%">
                 Date
@@ -127,58 +184,56 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Nama Minuman</td>
-              <td>Best Seller</td>
-              <td>Air, teh</td>
-              <td>Image</td>
-              <td>lorem ipsum</td>
-              <td>2023/05/11</td>
-              <td className="d-flex justify-content-center">
-                {/* Edit data */}
-                <Button className="bg-warning btn-light rounded-2" size="sm" onClick={handleShowEdit}>
-                  <i class="bi bi-pen text-light fs-5"></i>
-                </Button>
-                <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Edit Food Pairing</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control className="form-data" type="text" placeholder="Enter email" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Status</Form.Label>
-                        <Form.Control className="form-data" type="text" placeholder="Status" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Ingredients</Form.Label>
-                        <Form.Control className="form-data" type="text" placeholder="Ingredients" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Image</Form.Label>
-                        <Form.Control className="form-data" type="file" placeholder="Choose Image" />
-                      </Form.Group>
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label>Descryption</Form.Label>
-                        <Form.Control style={{ borderRadius: "20px" }} as="textarea" rows={3} />
-                      </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}>Edit</Button>
-                    <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
-                      Cancel
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-                {/* Delete */}
-                <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
-                  <i class="bi bi-trash3 text-light fs-5"></i>
-                </Button>
+            {/* {foodPairingList.map((val) => {
+              return ( */}
+              <tr>
+                <td>minum</td>
+                <td>makan</td>
+                <td>2023/05/11</td>
+                <td className="d-flex justify-content-center">
+                  {/* Edit data */}
+                  <Button className="bg-warning btn-light rounded-2" size="sm" onClick={handleShowEdit}>
+                    <i class="bi bi-pen text-light fs-5"></i>
+                  </Button>
+                  <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Edit Food Pairing</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form>
+                        <Form.Group className="mb-2" controlId="formBasicEmail">
+                          <Form.Label>Name</Form.Label>
+                          <Form.Control className="form-data" type="text" placeholder="Enter email" />
+                        </Form.Group>
+                        <Form.Group className="mb-2" controlId="formBasicEmail">
+                          <Form.Label>Status</Form.Label>
+                          <Form.Control className="form-data" type="text" placeholder="Status" />
+                        </Form.Group>
+                        <Form.Group className="mb-2" controlId="formBasicEmail">
+                          <Form.Label>Ingredients</Form.Label>
+                          <Form.Control className="form-data" type="text" placeholder="Ingredients" />
+                        </Form.Group>
+                        <Form.Group className="mb-2" controlId="formBasicEmail">
+                          <Form.Label>Image</Form.Label>
+                          <Form.Control className="form-data" type="file" placeholder="Choose Image" />
+                        </Form.Group>
+                        <Form.Group className="mb-2" controlId="formBasicEmail">
+                          <Form.Label>Descryption</Form.Label>
+                          <Form.Control style={{ borderRadius: "20px" }} as="textarea" rows={3} />
+                        </Form.Group>
+                      </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}>Edit</Button>
+                      <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
+                        Cancel
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                  {/* Delete */}
+                  <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
+                    <i class="bi bi-trash3 text-light fs-5"></i>
+                  </Button>
                   <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
                     <Modal.Header closeButton>
                       <Modal.Title>Delete Food Pairing</Modal.Title>
@@ -195,8 +250,10 @@ const TeaMenuAdmin = () => {
                       </Button>
                     </Modal.Footer>
                   </Modal>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            {/* );
+            })} */}
           </tbody>
         </Table>
       </Row>
