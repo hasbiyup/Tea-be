@@ -343,7 +343,7 @@ app.delete('/foods/:id', async (req, res) => {
 app.get('/bevs', async (req, res) => {
   try {
     const response = await Bevs.findAll({
-      attributes: ['uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type', 'createdAt', 'updatedAt'],
       include: [{
         model: User,
         attributes: ['name', 'email']

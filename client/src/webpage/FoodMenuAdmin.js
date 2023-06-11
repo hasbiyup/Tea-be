@@ -322,7 +322,7 @@ const TeaMenuAdmin = () => {
                     </Button>
                     <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Edit Food Menu Menu</Modal.Title>
+                        <Modal.Title>Edit food menu</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Form>
@@ -382,7 +382,7 @@ const TeaMenuAdmin = () => {
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Delete Food menu</Modal.Title>
+                        <Modal.Title>Delete food menu</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <p>

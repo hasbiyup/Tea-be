@@ -153,7 +153,7 @@ const TeaMenuAdmin = () => {
     <Sidebar>
       <Row className="d-flex justify-content-between align-items-center" style={{ marginTop: "24px" }}>
         <Col md={9}>
-          <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Teanology Tea Menu</h3>
+          <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Teanology Beverage Menu</h3>
         </Col>
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
@@ -161,19 +161,19 @@ const TeaMenuAdmin = () => {
             {userRole}-{userName}
           </p>
         </Col>
-        <p className="text-muted teanology-menu-update">Manage your tea menu data on this page</p>
+        <p className="text-muted teanology-menu-update">Manage your beverage menu data on this page</p>
       </Row>
 
       <Row>
         <Col md={8}>
           <Button className="add-button btn-light fw-bold text-light text-center margin-add-button" onClick={handleShowAdd}>
             <i class="bi bi-plus me-2 fs-6 fw-bold"></i>
-            Add Tea Data
+            Add Beverage
           </Button>
 
           <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-              <Modal.Title>Add tea menu</Modal.Title>
+              <Modal.Title>Add beverage menu</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>
@@ -386,7 +386,7 @@ const TeaMenuAdmin = () => {
                     </Button>
                     <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Edit Tea Menu</Modal.Title>
+                        <Modal.Title>Edit beverage menu</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Form>
@@ -518,7 +518,7 @@ const TeaMenuAdmin = () => {
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Delete tea menu</Modal.Title>
+                        <Modal.Title>Delete beverage menu</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <p>
