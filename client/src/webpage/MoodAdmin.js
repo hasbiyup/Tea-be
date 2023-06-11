@@ -37,10 +37,10 @@ const TeaMenuAdmin = () => {
     setShowEdit(true);
   };
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = (id, nameBev, nameFood) => {
+  const handleShowDelete = (id, name) => {
+    console.log("ID:", id);
     setDeleteId(id);
-    setDeleteNameBev(nameBev);
-    setDeleteNameFood(nameFood);
+    setDeleteNameBev(name);
     setShowDelete(true);
   };
 
@@ -88,11 +88,11 @@ const TeaMenuAdmin = () => {
   const submitMoodBevData = () => {
     const selectedBev = bevOptions.find((option) => option.name === formData.bev);
     const selectedMoods = moodOptions.filter((option) => formData.mood.includes(option.type));
-  
+
     if (selectedBev && selectedMoods.length > 0) {
       const bevId = selectedBev.id;
       const moodIds = selectedMoods.map((mood) => mood.id);
-  
+
       // Send POST request to the specified endpoint
       Axios.post("http://localhost:5000/moodbevs", { bevId, moodIds })
         .then((response) => {
@@ -145,6 +145,15 @@ const TeaMenuAdmin = () => {
   //   }
   // };
 
+  const handleDelete = async (id) => {
+    try {
+      await Axios.delete(`http://localhost:5000/moodbevs/${deleteId}`);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // const formatDate = (dateString) => {
   //   const updatedAt = new Date(dateString);
   //   const options = { year: "numeric", month: "long", day: "numeric" };
@@ -174,7 +183,7 @@ const TeaMenuAdmin = () => {
         <Col md={8}>
           <Button className="add-button btn-light fw-bold text-light text-center margin-add-button" onClick={handleShowAdd}>
             <i class="bi bi-plus me-2 fs-6 fw-bold"></i>
-            Add Pairing
+            Add Mood
           </Button>
 
           <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
@@ -254,15 +263,26 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {moodBevList.map((val) => {
-              return (
-                <tr key={val.id}>
-                  <td>{val.bevName}</td>
-                  <td>{val.moodType}</td>
-                  {/* <td>{formatDate(val.updatedAt)}</td> */}
+            {moodBevList.reduce((acc, val) => {
+              const existingIndex = acc.findIndex((item) => item.bevId === val.bevId);
+              if (existingIndex !== -1) {
+                acc[existingIndex].moodTypes.push(val.moodType);
+              } else {
+                acc.push({
+                  bevId: val.bevId,
+                  bevName: val.bevName,
+                  moodTypes: [val.moodType],
+                });
+              }
+              return acc;
+            }, []).map((val) => (
+              <tr key={val.bevId}>
+                <td>{val.bevName}</td>
+                <td>{val.moodTypes.join(", ")}</td>
+                <td>
                   <td className="d-flex justify-content-center">
                     {/* Edit data */}
-                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id, val.bevName, val.foodName)}>
+                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.bevId, val.bevName)}>
                       <i class="bi bi-pen text-light fs-5"></i>
                     </Button>
                     <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
@@ -317,7 +337,7 @@ const TeaMenuAdmin = () => {
                       </Modal.Footer>
                     </Modal>
                     {/* Delete */}
-                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.bevId, val.bevName)}>
                       <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
@@ -325,14 +345,14 @@ const TeaMenuAdmin = () => {
                         <Modal.Title>Delete Food Pairing</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <p>Are you sure, want to delete <span className="fw-bold">{deleteNameBev} & {deleteNameFood}</span> ?</p>
+                        <p>Are you sure, want to delete moods <span className="fw-bold">{deleteNameBev}</span> ?</p>
                       </Modal.Body>
                       <Modal.Footer>
                         <Button
                           className="btn-danger text-light"
                           style={{ borderRadius: "100px" }}
                           onClick={() => {
-                            // handleDelete(val.id);
+                            handleDelete(val.bevId);
                             handleCloseDelete();
                           }}
                         >
@@ -344,9 +364,9 @@ const TeaMenuAdmin = () => {
                       </Modal.Footer>
                     </Modal>
                   </td>
-                </tr>
-              );
-            })}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Row>

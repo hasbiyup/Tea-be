@@ -669,7 +669,7 @@ app.get('/moodbevs', async (req, res) => {
         },
         {
           model: Bevs,
-          attributes: ['name'],
+          attributes: ['id', 'name'],
           as: 'bev',
         },
       ],
@@ -679,6 +679,7 @@ app.get('/moodbevs', async (req, res) => {
       return {
         id: item.id,
         moodType: item.mood.type,
+        bevId: item.bev.id,
         bevName: item.bev.name,
         updatedAt: item.updatedAt
       };
@@ -716,6 +717,35 @@ app.post("/moodbevs", async (req, res) => {
     // Handle the error if needed
   }
 });
+
+//Delete moodbevs
+app.delete('/moodbevs/:bevId', async (req, res) => {
+  try {
+    const bevId = req.params.bevId;
+
+    const moodBevs = await MoodBevs.findAll({
+      where: {
+        bevId: bevId,
+      },
+    });
+
+    if (moodBevs.length === 0) {
+      return res.status(404).json({ message: 'MoodBevs not found' });
+    }
+
+    await MoodBevs.destroy({
+      where: {
+        bevId: bevId,
+      },
+    });
+
+    res.status(200).json({ message: 'MoodBevs deleted successfully!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 
 app.listen(5000, () => {
