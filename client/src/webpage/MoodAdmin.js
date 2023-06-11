@@ -12,7 +12,7 @@ import Table from "react-bootstrap/Table";
 import Sidebar from "../components/dashboard/Sidebar.js";
 
 const TeaMenuAdmin = () => {
-  const [foodPairingList, setFoodPairingList] = useState([]);
+  const [moodBevList, setMoodBevList] = useState([]);
   const [bevOptions, setBevOptions] = useState([]);
   const [moodOptions, setMoodOptions] = useState([]);
   const [formData, setFormData] = useState({
@@ -80,8 +80,8 @@ const TeaMenuAdmin = () => {
       setMoodOptions(response.data);
     });
 
-    Axios.get("http://localhost:5000/foodpairings").then((response) => {
-      setFoodPairingList(response.data);
+    Axios.get("http://localhost:5000/moodbevs").then((response) => {
+      setMoodBevList(response.data);
     });
   }, []);
 
@@ -243,10 +243,7 @@ const TeaMenuAdmin = () => {
                 Name Bev
               </th>
               <th scope="col" width="10%">
-                Name Food
-              </th>
-              <th scope="col" width="10%">
-                Nama User
+                Mood Type
               </th>
               {/* <th scope="col" width="10%">
                 Last Updated
@@ -257,12 +254,11 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {foodPairingList.map((val) => {
+            {moodBevList.map((val) => {
               return (
                 <tr key={val.id}>
                   <td>{val.bevName}</td>
-                  <td>{val.foodName}</td>
-                  <td>{val.userName}</td>
+                  <td>{val.moodType}</td>
                   {/* <td>{formatDate(val.updatedAt)}</td> */}
                   <td className="d-flex justify-content-center">
                     {/* Edit data */}

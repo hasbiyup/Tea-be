@@ -534,6 +534,7 @@ app.delete('/bevs/:id', async (req, res) => {
   }
 });
 
+//Get all foodpairing
 app.get('/foodpairings', async (req, res) => {
   try {
     const response = await FoodPairings.findAll({
@@ -655,6 +656,40 @@ app.get('/moods', async (req, res) => {
     res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
   }
 });
+
+// Get All moodbev
+app.get('/moodbevs', async (req, res) => {
+  try {
+    const response = await MoodBevs.findAll({
+      include: [
+        {
+          model: Moods,
+          attributes: ['type'],
+          as: 'mood',
+        },
+        {
+          model: Bevs,
+          attributes: ['name'],
+          as: 'bev',
+        },
+      ],
+    });
+
+    const result = response.map(item => {
+      return {
+        id: item.id,
+        moodType: item.mood.type,
+        bevName: item.bev.name,
+        updatedAt: item.updatedAt
+      };
+    });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
 
 // Create moodbevs
 app.post("/moodbevs", async (req, res) => {
