@@ -309,13 +309,16 @@ const TeaMenuAdmin = () => {
                   <td>{val.price}</td>
                   <td>{val.ings}</td>
                   <td>
-                    {val.img1 && <img src={`/img/${val.img1}`} alt="Food1" style={{ width: "50px" }} />}
-                    {val.img2 && <img src={`/img/${val.img2}`} alt="Food2" className="ms-1" style={{ width: "50px" }} />}
-                    {val.img3 && <img src={`/img/${val.img3}`} alt="Food3" className="ms-1" style={{ width: "50px" }} />}
+                    <td className="d-flex justify-content-center">
+                      {val.img1 && <img src={`/img/${val.img1}`} alt="Food1" style={{ width: "42px" }} />}
+                      {val.img2 && <img src={`/img/${val.img2}`} alt="Food2" className="ms-1" style={{ width: "42px" }} />}
+                      {val.img3 && <img src={`/img/${val.img3}`} alt="Food3" className="ms-1" style={{ width: "42px" }} />}
+                    </td>
                   </td>
                   <td>{val.desc}</td>
                   <td>{formatDate(val.updatedAt)}</td>
-                  <td className="d-flex justify-content-center" style={{ height: '100%' }}>
+                  <td>
+                    <td className="d-flex justify-content-center">
                     {/* Edit data */}
                     <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id)}>
                       <i class="bi bi-pen text-light fs-5"></i>
@@ -405,6 +408,7 @@ const TeaMenuAdmin = () => {
                         </Button>
                       </Modal.Footer>
                     </Modal>
+                    </td>
                   </td>
                 </tr>
               );
