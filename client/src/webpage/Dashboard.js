@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [foods, setTotalFoods] = useState([]);
   const [staff, setTotalStaff] = useState([]);
   const [bevs, setTotalBevs] = useState([]);
-  // const [foodpairing, setTotalFP] = useState([]);
+  const [foodpairing, setTotalFP] = useState([]);
 
   // Mengambil data makanan dari backend
   useEffect(() => {
@@ -43,9 +43,9 @@ const Dashboard = () => {
 
   const totalStaffData = staff.length;
 
-  // Mengambil data bevs dari backend
+  // Mengambil data FP dari backend
   useEffect(() => {
-    Axios.get("http://localhost:5000/users")
+    Axios.get("http://localhost:5000/bevs")
       .then(response => {
         setTotalBevs(response.data);
       })
@@ -54,7 +54,19 @@ const Dashboard = () => {
       });
   }, []);
 
-  const totalBevsData = bevs.length;
+  const totalBevsData = foodpairing.length;
+  // Mengambil data FP dari backend
+  useEffect(() => {
+    Axios.get("http://localhost:5000/foodpairings")
+      .then(response => {
+        setTotalFP(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
+
+  const totalFPData = foodpairing.length;
 
   return (
     <Sidebar>
@@ -186,7 +198,7 @@ const Dashboard = () => {
               </Col>
               <Col xs={8}>
                 <h4 className="text-total">Total Food Pairing</h4>
-                <h3 className="total">10</h3>
+                <h3 className="total">{totalFPData}</h3>
               </Col>
             </Row>
           </Card.Body>
