@@ -12,7 +12,7 @@ import Table from "react-bootstrap/Table";
 import Sidebar from "../components/dashboard/Sidebar.js";
 
 const TeaMenuAdmin = () => {
-  // const [foodPairingList, setFoodPairingList] = useState([]);
+  const [foodPairingList, setFoodPairingList] = useState([]);
   const [bevOptions, setBevOptions] = useState([]);
   const [foodOptions, setFoodOptions] = useState([]);
   const [formData, setFormData] = useState({
@@ -51,9 +51,9 @@ const TeaMenuAdmin = () => {
       setFoodOptions(response.data);
     });
 
-    // Axios.get("http://localhost:5000/foodpairings").then((response) => {
-    //   setFoodPairingList(response.data);
-    // });
+    Axios.get("http://localhost:5000/foodpairings").then((response) => {
+      setFoodPairingList(response.data);
+    });
   }, []);
 
   const submitFoodPairingData = () => {
@@ -75,6 +75,12 @@ const TeaMenuAdmin = () => {
     } else {
       console.error("Invalid beverage or food option selected.");
     }
+  };
+
+  const formatDate = (dateString) => {
+    const updatedAt = new Date(dateString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return updatedAt.toLocaleDateString("id-ID", options);
   };
 
   return (
@@ -176,7 +182,10 @@ const TeaMenuAdmin = () => {
                 Name Food
               </th>
               <th scope="col" width="10%">
-                Date
+                Nama User
+              </th>
+              <th scope="col" width="10%">
+                Last Updated
               </th>
               <th scope="col" width="10%" className="text-center">
                 Action
@@ -184,12 +193,13 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {foodPairingList.map((val) => {
-              return ( */}
-              <tr>
-                <td>minum</td>
-                <td>makan</td>
-                <td>2023/05/11</td>
+            {foodPairingList.map((val) => {
+              return (
+              <tr key={val.id}>
+                <td>{val.bevName}</td>
+                <td>{val.foodName}</td>
+                <td>{val.userName}</td>
+                <td>{formatDate(val.updatedAt)}</td>
                 <td className="d-flex justify-content-center">
                   {/* Edit data */}
                   <Button className="bg-warning btn-light rounded-2" size="sm" onClick={handleShowEdit}>
@@ -252,8 +262,8 @@ const TeaMenuAdmin = () => {
                   </Modal>
                 </td>
               </tr>
-            {/* );
-            })} */}
+            );
+            })}
           </tbody>
         </Table>
       </Row>
