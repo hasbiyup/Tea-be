@@ -55,6 +55,12 @@ const Sidebar = ({ children }) => {
       name: "Food Pairing",
       icon: <IoFastFood />,
     }: null,
+    userRole === "Admin" || userRole === "Staff" || userRole === "BevStaff" || userRole === "FoodStaff"?
+    {
+      path: "/mood-admin",
+      name: "Moods",
+      icon: <IoFastFood />,
+    }: null,
     userRole === "Admin" && {
       path: "/staff",
       name: "Staff",

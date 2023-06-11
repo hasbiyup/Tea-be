@@ -31,6 +31,7 @@ import Dashboard from './webpage/Dashboard';
 import TeaMenuAdmin from './webpage/TeaMenuAdmin';
 import FoodMenuAdmin from './webpage/FoodMenuAdmin';
 import FoodPairingAdmin from './webpage/FoodPairingAdmin';
+import MoodAdmin from './webpage/MoodAdmin';
 import Staff from './webpage/StaffPage';
 
 import FoodPairingAngry from './webpage/FoodPairingAngry';
@@ -125,6 +126,7 @@ ReactDOM.createRoot(rootElement).render(
         <Route path='/food-menu-admin' element={<FoodMenuAdmin />} Route/>
         <Route path='/food-pairing-admin' element={<FoodPairingAdmin />} Route/>
         <Route path='/staff' element={<Staff />} Route/>
+        <Route path='/mood-admin' element={<MoodAdmin />} Route/>
 
         {/* Food Pairing */}
         <Route path='/food-pairing-angry' element={<FoodPairingAngry />} Route/>
