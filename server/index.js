@@ -3,6 +3,7 @@ import cors from "cors";
 import multer from "multer";
 import db from "./config/Database.js";
 import Bevs from "./models/BevModel.js";
+import MoodBevs from "./models/MoodBevModel.js";
 import Foods from "./models/FoodModel.js";
 import FoodPairings from "./models/FoodPairingModel.js";
 import Moods from "./models/MoodModel.js";
@@ -576,15 +577,28 @@ app.get('/foodpairings', async (req, res) => {
 app.post("/foodpairings", async (req, res) => {
   try {
     const { bevId, foodId, userId } = req.body;
+
+    // Periksa apakah sudah ada entri FoodPairings dengan bevId dan foodId yang sama
+    const existingPairing = await FoodPairings.findOne({
+      where: { bevId, foodId },
+    });
+
+    if (existingPairing) {
+      return res.status(400).json({ message: "Food pairing already exists!" });
+    }
+
     await FoodPairings.create({
       bevId: bevId,
       foodId: foodId,
       userId: userId,
     });
-  res.status(200).json({ message: "Food pairing saved successfully!" });
+
+    res.status(200).json({ message: "Food pairing saved successfully!" });
   } catch (error) {
+    // Tangani error jika diperlukan
   }
 });
+
 
 // Edit food pairing
 app.put('/foodpairings/:id', async (req, res) => {
@@ -628,6 +642,43 @@ app.delete('/foodpairings/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Get All moods
+app.get('/moods', async (req, res) => {
+  try {
+    const moods = await Moods.findAll();
+    res.status(200).json(moods);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
+  }
+});
+
+// Create moodbevs
+app.post("/moodbevs", async (req, res) => {
+  try {
+    const { bevId, moodIds } = req.body;
+
+    // Retrieve existing MoodBev entries for the given bevId
+    const existingMoodBevs = await MoodBevs.findAll({ where: { bevId } });
+    const existingMoodIds = existingMoodBevs.map((moodBev) => moodBev.moodId);
+
+    // Filter out duplicate moodIds
+    const uniqueMoodIds = moodIds.filter((moodId) => !existingMoodIds.includes(moodId));
+
+    // Create new MoodBev entries for the unique moodIds
+    for (const moodId of uniqueMoodIds) {
+      await MoodBevs.create({
+        bevId: bevId,
+        moodId: moodId,
+      });
+    }
+
+    res.status(200).json({ message: "moodbev saved successfully!" });
+  } catch (error) {
+    // Handle the error if needed
   }
 });
 

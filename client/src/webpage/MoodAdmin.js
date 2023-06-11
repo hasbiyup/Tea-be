@@ -11,102 +11,153 @@ import Table from "react-bootstrap/Table";
 
 import Sidebar from "../components/dashboard/Sidebar.js";
 
-const MoodAdmin = () => {
-  const [staffList, setStaffList] = useState([]);
+const TeaMenuAdmin = () => {
+  const [foodPairingList, setFoodPairingList] = useState([]);
+  const [bevOptions, setBevOptions] = useState([]);
+  const [moodOptions, setMoodOptions] = useState([]);
+  const [formData, setFormData] = useState({
+    bev: "",
+    mood: ""
+  });
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [deleteNameBev, setDeleteNameBev] = useState("");
+  const [deleteNameFood, setDeleteNameFood] = useState("");
 
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = (id) => {
-    const staff = staffList.find((val) => val.id === id);
+  const handleShowEdit = (id, bevName, moodType) => {
     setEditId(id);
-    setEditData(staff);
+    setFormData({
+      bev: bevName,
+      mood: moodType
+    });
     setShowEdit(true);
   };
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = (id, name) => {
+  const handleShowDelete = (id, nameBev, nameFood) => {
     setDeleteId(id);
-    setDeleteName(name);
+    setDeleteNameBev(nameBev);
+    setDeleteNameFood(nameFood);
     setShowDelete(true);
   };
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-  const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-  const [deleteName, setDeleteName] = useState("");
-  const [editData, setEditData] = useState({
-    name: "",
-    email: "",
-    role: "",
-  });
+  const [editId, setEditId] = useState(null);
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    // memperbarui nilai state sesuai dengan perubahan pada elemen input
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { name, value, checked } = event.target;
+    // Mengupdate nilai state berdasarkan perubahan pada cekbox
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: checked
+        ? [...prevState[name], value] // Menambahkan nilai ke array jika cekbox tercentang
+        : prevState[name].filter((item) => item !== value), // Menghapus nilai dari array jika cekbox tidak tercentang
+    }));
+  };
+
+  const userId = localStorage.getItem("id");
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("name");
 
   useEffect(() => {
-    Axios.get("http://localhost:5000/users").then((response) => {
-      //console.log(response.data);
-      setStaffList(response.data);
+    Axios.get("http://localhost:5000/bevs").then((response) => {
+      setBevOptions(response.data);
+    });
+
+    Axios.get("http://localhost:5000/moods").then((response) => {
+      setMoodOptions(response.data);
+    });
+
+    Axios.get("http://localhost:5000/foodpairings").then((response) => {
+      setFoodPairingList(response.data);
     });
   }, []);
 
-  const submitStaffData = async () => {
-    try {
-      const response = await Axios.post("http://localhost:5000/users", {
-        name: name,
-        email: email,
-        password: password,
-        role: role,
-      });
-      // alert("Berhasil Insert");
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
+  const submitMoodBevData = () => {
+    const selectedBev = bevOptions.find((option) => option.name === formData.bev);
+    const selectedMoods = moodOptions.filter((option) => formData.mood.includes(option.type));
+  
+    if (selectedBev && selectedMoods.length > 0) {
+      const bevId = selectedBev.id;
+      const moodIds = selectedMoods.map((mood) => mood.id);
+  
+      // Send POST request to the specified endpoint
+      Axios.post("http://localhost:5000/moodbevs", { bevId, moodIds })
+        .then((response) => {
+          console.log("Mood and beverage pairing saved successfully!");
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error saving mood and beverage pairing:", error);
+        });
+      handleCloseAdd();
+    } else {
+      console.error("Invalid beverage or mood option selected.");
     }
   };
 
-  const handleEdit = async (id) => {
-    try {
-      await Axios.put(`http://localhost:5000/users/${editId}`, {
-        name: editData.name,
-        email: editData.email,
-        password: password,
-        role: editData.role,
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      console.log(error.response);
-      console.log(error.message);
-    }
-  };
+  // const handleEdit = async (id) => {
+  //   console.log("editId:", editId);
+  //   try {
+  //     const selectedBev = bevOptions.find((option) => option.name === formData.bev);
+  //     const selectedFood = foodOptions.find((option) => option.name === formData.food);
+  //     if (selectedBev && selectedFood) {
+  //       const bevId = selectedBev.id;
+  //       const foodId = selectedFood.id;
 
-  const handleDelete = async (id) => {
-    try {
-      await Axios.delete(`http://localhost:5000/users/${deleteId}`);
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //       await Axios.put(`http://localhost:5000/foodpairings/${editId}`, {
+  //         bevId: bevId,
+  //         foodId: foodId,
+  //         userId: userId,
+  //       });
 
-  const formatDate = (dateString) => {
-    const updatedAt = new Date(dateString);
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return updatedAt.toLocaleDateString("id-ID", options);
-  };
+  //       console.log("Food pairing updated successfully!");
+  //       handleCloseEdit();
+  //       window.location.reload();
+  //     } else {
+  //       console.error("Invalid beverage or food option selected.");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     console.log(error.response);
+  //     console.log(error.message);
+  //   }
+  // };
+
+  // const handleDelete = async (id) => {
+  //   try {
+  //     await Axios.delete(`http://localhost:5000/foodpairings/${deleteId}`);
+  //     window.location.reload();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const formatDate = (dateString) => {
+  //   const updatedAt = new Date(dateString);
+  //   const options = { year: "numeric", month: "long", day: "numeric" };
+  //   return updatedAt.toLocaleDateString("id-ID", options);
+  // };
 
   return (
     <Sidebar>
       <Row className="d-flex justify-content-between align-items-center" style={{ marginTop: "24px" }}>
         <Col md={9}>
-          <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Teanology Staff Data</h3>
+          <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">
+            Teanology Moods
+          </h3>
         </Col>
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
@@ -114,75 +165,64 @@ const MoodAdmin = () => {
             {userRole}-{userName}
           </p>
         </Col>
-        <p className="text-muted teanology-menu-update">Manage your staff data on this page</p>
+        <p className="text-muted teanology-menu-update">
+          Manage your moods data on this page
+        </p>
       </Row>
 
       <Row>
         <Col md={8}>
           <Button className="add-button btn-light fw-bold text-light text-center margin-add-button" onClick={handleShowAdd}>
             <i class="bi bi-plus me-2 fs-6 fw-bold"></i>
-            Add Staff Data
+            Add Pairing
           </Button>
 
           <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-              <Modal.Title>Add Staff</Modal.Title>
+              <Modal.Title>Add Food Pairing Data</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    className="form-data"
-                    type="email"
-                    placeholder="example@mail.com"
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Role</Form.Label>
+                  <Form.Label>Bev</Form.Label>
                   <Form.Select
-                    aria-label="Default select example"
-                    value={editData.role}
-                    onChange={(e) => {
-                      setEditData({ ...editData, role: e.target.value });
-                    }}
-                  >
-                    <option disabled selected hidden>
-                      Select Role
-                    </option>
-                    <option value="Admin">Admin</option>
-                    <option value="Staff">Staff</option>
-                    <option value="BevStaff">BevStaff</option>
-                    <option value="FoodStaff">FoodStaff</option>
+                    className="form-data"
+                    name="bev"
+                    value={formData.bev}
+                    onChange={handleInputChange}>
+                    <option value="">Select name</option>
+                    {bevOptions.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Name : </Form.Label>
-                  <Form.Check inline label="1" name="group1" />
-                  <Form.Check inline label="1" name="group1" />
+                  <Form.Label>Mood</Form.Label>
+                  {moodOptions.map((option) => (
+                    <Form.Check
+                      key={option.id}
+                      type="checkbox"
+                      id={option.id}
+                      label={option.type}
+                      name="mood"
+                      value={option.type}
+                      checked={formData.mood.includes(option.type)}
+                      onChange={handleCheckboxChange}
+                    />
+                  ))}
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button
-                className="pagination-button btn-light text-light"
-                onClick={() => {
-                  submitStaffData();
-                  handleCloseAdd();
-                }}
-              >
-                Save
-              </Button>
+              <Button className="pagination-button btn-light text-light" onClick={submitMoodBevData}>Save</Button>
               <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseAdd}>
                 Cancel
               </Button>
             </Modal.Footer>
           </Modal>
         </Col>
-
         <Col md={4}>
           <Form className="d-flex margin-search" style={{ marginRight: "18%" }}>
             <InputGroup className="mb-3">
@@ -200,135 +240,103 @@ const MoodAdmin = () => {
           <thead>
             <tr>
               <th scope="col" width="15%">
-                Name
-              </th>
-              <th scope="col" width="20%">
-                Email
-              </th>
-              <th scope="col" width="20%">
-                Role
+                Name Bev
               </th>
               <th scope="col" width="10%">
-                Created At
+                Name Food
               </th>
               <th scope="col" width="10%">
+                Nama User
+              </th>
+              {/* <th scope="col" width="10%">
                 Last Updated
-              </th>
+              </th> */}
               <th scope="col" width="10%" className="text-center">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {staffList.map((val) => {
+            {foodPairingList.map((val) => {
               return (
                 <tr key={val.id}>
-                  <td>{val.name}</td>
-                  <td>{val.email}</td>
-                  <td>{val.role}</td>
-                  <td>{formatDate(val.updatedAt)}</td>
-                  <td>{formatDate(val.createdAt)}</td>
+                  <td>{val.bevName}</td>
+                  <td>{val.foodName}</td>
+                  <td>{val.userName}</td>
+                  {/* <td>{formatDate(val.updatedAt)}</td> */}
                   <td className="d-flex justify-content-center">
                     {/* Edit data */}
-                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id)}>
+                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id, val.bevName, val.foodName)}>
                       <i class="bi bi-pen text-light fs-5"></i>
                     </Button>
                     <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Edit Staff Data</Modal.Title>
+                        <Modal.Title>Edit Food Pairing</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Form>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control
-                              className="form-data"
-                              type="text"
-                              placeholder="Staff name"
-                              value={editData.name}
-                              onChange={(e) => {
-                                setEditData({ ...editData, name: e.target.value });
-                              }}
-                            />
-                          </Form.Group>
-                          <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                              className="form-data"
-                              type="email"
-                              placeholder="example@mail.com"
-                              value={editData.email}
-                              onChange={(e) => {
-                                setEditData({ ...editData, email: e.target.value });
-                              }}
-                            />
-                          </Form.Group>
-                          <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                              className="form-data"
-                              type="password"
-                              placeholder="Enter password"
-                              onChange={(e) => {
-                                setPassword(e.target.value);
-                              }}
-                            />
-                          </Form.Group>
-                          <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label>Role</Form.Label>
+                            <Form.Label></Form.Label>
                             <Form.Select
-                              aria-label="Default select example"
-                              value={editData.role}
-                              onChange={(e) => {
-                                setEditData({ ...editData, role: e.target.value });
-                              }}
-                            >
-                              <option disabled selected hidden>
-                                Select Role
-                              </option>
-                              <option value="Admin">Admin</option>
-                              <option value="Staff">Staff</option>
-                              <option value="BevStaff">BevStaff</option>
-                              <option value="FoodStaff">FoodStaff</option>
+                              className="form-data"
+                              name="bev"
+                              value={formData.bev}
+                              onChange={handleInputChange}>
+                              <option value="">Select name</option>
+                              {bevOptions.map((option) => (
+                                <option key={option.id} value={option.name}>
+                                  {option.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </Form.Group>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label>Food</Form.Label>
+                            <Form.Select
+                              className="form-data"
+                              name="food"
+                              value={formData.food}
+                              onChange={handleInputChange}>
+                              <option value="">Select name</option>
+                              {moodOptions.map((option) => (
+                                <option key={option.id} value={option.name}>
+                                  {option.type}
+                                </option>
+                              ))}
                             </Form.Select>
                           </Form.Group>
                         </Form>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button
-                          className="btn-warning text-light"
-                          style={{ borderRadius: "100px" }}
+                        <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}
                           onClick={() => {
-                            handleEdit(val.id);
+                            // handleEdit(val.id);
                             handleCloseEdit();
                           }}
                         >
-                          Edit
-                        </Button>
+                          Edit</Button>
                         <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
                           Cancel
                         </Button>
                       </Modal.Footer>
                     </Modal>
                     {/* Delete */}
-                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.name)}>
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
                       <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Delete Staff</Modal.Title>
+                        <Modal.Title>Delete Food Pairing</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <p>
-                          Are you sure, want to delete staff <span className="fw-bold">{deleteName}</span>?
-                        </p>
+                        <p>Are you sure, want to delete <span className="fw-bold">{deleteNameBev} & {deleteNameFood}</span> ?</p>
                       </Modal.Body>
                       <Modal.Footer>
                         <Button
                           className="btn-danger text-light"
                           style={{ borderRadius: "100px" }}
                           onClick={() => {
-                            handleDelete(val.id);
+                            // handleDelete(val.id);
                             handleCloseDelete();
                           }}
                         >
@@ -363,4 +371,4 @@ const MoodAdmin = () => {
   );
 };
 
-export default MoodAdmin;
+export default TeaMenuAdmin;
