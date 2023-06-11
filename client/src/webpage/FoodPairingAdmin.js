@@ -22,25 +22,30 @@ const TeaMenuAdmin = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
   const [deleteNameBev, setDeleteNameBev] = useState("");
   const [deleteNameFood, setDeleteNameFood] = useState("");
 
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (id, bevName, foodName) => {
+    setEditId(id);
+    setFormData({
+      bev: bevName,
+      food: foodName
+    });
+    setShowEdit(true);
+  };
   const handleCloseDelete = () => setShowDelete(false);
   const handleShowDelete = (id, nameBev, nameFood) => {
-    console.log("ID:", id);
-    console.log("bev:", nameBev);
-    console.log("food:",nameFood );
     setDeleteId(id);
     setDeleteNameBev(nameBev);
     setDeleteNameFood(nameFood);
     setShowDelete(true);
   };
 
+  const [deleteId, setDeleteId] = useState(null);
+  const [editId, setEditId] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -88,6 +93,34 @@ const TeaMenuAdmin = () => {
       handleCloseAdd();
     } else {
       console.error("Invalid beverage or food option selected.");
+    }
+  };
+
+  const handleEdit = async (id) => {
+    console.log("editId:", editId);
+    try {
+      const selectedBev = bevOptions.find((option) => option.name === formData.bev);
+      const selectedFood = foodOptions.find((option) => option.name === formData.food);
+      if (selectedBev && selectedFood) {
+        const bevId = selectedBev.id;
+        const foodId = selectedFood.id;
+
+        await Axios.put(`http://localhost:5000/foodpairings/${editId}`, {
+          bevId: bevId,
+          foodId: foodId,
+          userId: userId,
+        });
+
+        console.log("Food pairing updated successfully!");
+        handleCloseEdit();
+        window.location.reload();
+      } else {
+        console.error("Invalid beverage or food option selected.");
+      }
+    } catch (error) {
+      console.error(error);
+      console.log(error.response);
+      console.log(error.message);
     }
   };
 
@@ -144,8 +177,7 @@ const TeaMenuAdmin = () => {
                     className="form-data"
                     name="bev"
                     value={formData.bev}
-                    onChange={handleInputChange}
-                  >
+                    onChange={handleInputChange}>
                     <option value="">Select name</option>
                     {bevOptions.map((option) => (
                       <option key={option.id} value={option.name}>
@@ -154,15 +186,13 @@ const TeaMenuAdmin = () => {
                     ))}
                   </Form.Select>
                 </Form.Group>
-
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                   <Form.Label>Food</Form.Label>
                   <Form.Select
                     className="form-data"
                     name="food"
                     value={formData.food}
-                    onChange={handleInputChange}
-                  >
+                    onChange={handleInputChange}>
                     <option value="">Select name</option>
                     {foodOptions.map((option) => (
                       <option key={option.id} value={option.name}>
@@ -181,7 +211,6 @@ const TeaMenuAdmin = () => {
             </Modal.Footer>
           </Modal>
         </Col>
-
         <Col md={4}>
           <Form className="d-flex margin-search" style={{ marginRight: "18%" }}>
             <InputGroup className="mb-3">
@@ -218,64 +247,80 @@ const TeaMenuAdmin = () => {
           <tbody>
             {foodPairingList.map((val) => {
               return (
-              <tr key={val.id}>
-                <td>{val.bevName}</td>
-                <td>{val.foodName}</td>
-                <td>{val.userName}</td>
-                <td>{formatDate(val.updatedAt)}</td>
-                <td className="d-flex justify-content-center">
-                  {/* Edit data */}
-                  <Button className="bg-warning btn-light rounded-2" size="sm" onClick={handleShowEdit}>
-                    <i class="bi bi-pen text-light fs-5"></i>
-                  </Button>
-                  <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Edit Food Pairing</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <Form>
-                        <Form.Group className="mb-2" controlId="formBasicEmail">
-                          <Form.Label>Name</Form.Label>
-                          <Form.Control className="form-data" type="text" placeholder="Enter email" />
-                        </Form.Group>
-                        <Form.Group className="mb-2" controlId="formBasicEmail">
-                          <Form.Label>Status</Form.Label>
-                          <Form.Control className="form-data" type="text" placeholder="Status" />
-                        </Form.Group>
-                        <Form.Group className="mb-2" controlId="formBasicEmail">
-                          <Form.Label>Ingredients</Form.Label>
-                          <Form.Control className="form-data" type="text" placeholder="Ingredients" />
-                        </Form.Group>
-                        <Form.Group className="mb-2" controlId="formBasicEmail">
-                          <Form.Label>Image</Form.Label>
-                          <Form.Control className="form-data" type="file" placeholder="Choose Image" />
-                        </Form.Group>
-                        <Form.Group className="mb-2" controlId="formBasicEmail">
-                          <Form.Label>Descryption</Form.Label>
-                          <Form.Control style={{ borderRadius: "20px" }} as="textarea" rows={3} />
-                        </Form.Group>
-                      </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}>Edit</Button>
-                      <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
-                        Cancel
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                  {/* Delete */}
-                  <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
-                    <i class="bi bi-trash3 text-light fs-5"></i>
-                  </Button>
-                  <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Delete Food Pairing</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <p>Are you sure, want to delete <span className="fw-bold">{deleteNameBev} & {deleteNameFood}</span> ?</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <Button
+                <tr key={val.id}>
+                  <td>{val.bevName}</td>
+                  <td>{val.foodName}</td>
+                  <td>{val.userName}</td>
+                  <td>{formatDate(val.updatedAt)}</td>
+                  <td className="d-flex justify-content-center">
+                    {/* Edit data */}
+                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.id, val.bevName, val.foodName)}>
+                      <i class="bi bi-pen text-light fs-5"></i>
+                    </Button>
+                    <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Edit Food Pairing</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Form>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label></Form.Label>
+                            <Form.Select
+                              className="form-data"
+                              name="bev"
+                              value={formData.bev}
+                              onChange={handleInputChange}>
+                              <option value="">Select name</option>
+                              {bevOptions.map((option) => (
+                                <option key={option.id} value={option.name}>
+                                  {option.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </Form.Group>
+                          <Form.Group className="mb-2" controlId="formBasicEmail">
+                            <Form.Label>Food</Form.Label>
+                            <Form.Select
+                              className="form-data"
+                              name="food"
+                              value={formData.food}
+                              onChange={handleInputChange}>
+                              <option value="">Select name</option>
+                              {foodOptions.map((option) => (
+                                <option key={option.id} value={option.name}>
+                                  {option.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </Form.Group>
+                        </Form>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}
+                          onClick={() => {
+                            handleEdit(val.id);
+                            handleCloseEdit();
+                          }}
+                        >
+                          Edit</Button>
+                        <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
+                          Cancel
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                    {/* Delete */}
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
+                      <i class="bi bi-trash3 text-light fs-5"></i>
+                    </Button>
+                    <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Delete Food Pairing</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <p>Are you sure, want to delete <span className="fw-bold">{deleteNameBev} & {deleteNameFood}</span> ?</p>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button
                           className="btn-danger text-light"
                           style={{ borderRadius: "100px" }}
                           onClick={() => {
@@ -285,14 +330,14 @@ const TeaMenuAdmin = () => {
                         >
                           Delete
                         </Button>
-                      <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
-                        Cancel
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                </td>
-              </tr>
-            );
+                        <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
+                          Cancel
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </td>
+                </tr>
+              );
             })}
           </tbody>
         </Table>
