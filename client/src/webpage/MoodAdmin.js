@@ -20,32 +20,21 @@ const TeaMenuAdmin = () => {
     mood: ""
   });
   const [showAdd, setShowAdd] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [deleteNameBev, setDeleteNameBev] = useState("");
   const [deleteNameFood, setDeleteNameFood] = useState("");
 
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
-  const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = (id, bevName, moodType) => {
-    setEditId(id);
-    setFormData({
-      bev: bevName,
-      mood: moodType
-    });
-    setShowEdit(true);
-  };
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = (id, name) => {
-    console.log("ID:", id);
+  const handleShowDelete = (id, nameBev, nameFood) => {
     setDeleteId(id);
-    setDeleteNameBev(name);
+    setDeleteNameBev(nameBev);
+    setDeleteNameFood(nameFood);
     setShowDelete(true);
   };
 
   const [deleteId, setDeleteId] = useState(null);
-  const [editId, setEditId] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -108,43 +97,6 @@ const TeaMenuAdmin = () => {
     }
   };
 
-  // const handleEdit = async (id) => {
-  //   console.log("editId:", editId);
-  //   try {
-  //     const selectedBev = bevOptions.find((option) => option.name === formData.bev);
-  //     const selectedFood = foodOptions.find((option) => option.name === formData.food);
-  //     if (selectedBev && selectedFood) {
-  //       const bevId = selectedBev.id;
-  //       const foodId = selectedFood.id;
-
-  //       await Axios.put(`http://localhost:5000/foodpairings/${editId}`, {
-  //         bevId: bevId,
-  //         foodId: foodId,
-  //         userId: userId,
-  //       });
-
-  //       console.log("Food pairing updated successfully!");
-  //       handleCloseEdit();
-  //       window.location.reload();
-  //     } else {
-  //       console.error("Invalid beverage or food option selected.");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     console.log(error.response);
-  //     console.log(error.message);
-  //   }
-  // };
-
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await Axios.delete(`http://localhost:5000/foodpairings/${deleteId}`);
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const handleDelete = async (id) => {
     try {
       await Axios.delete(`http://localhost:5000/moodbevs/${deleteId}`);
@@ -153,12 +105,6 @@ const TeaMenuAdmin = () => {
       console.error(error);
     }
   };
-
-  // const formatDate = (dateString) => {
-  //   const updatedAt = new Date(dateString);
-  //   const options = { year: "numeric", month: "long", day: "numeric" };
-  //   return updatedAt.toLocaleDateString("id-ID", options);
-  // };
 
   return (
     <Sidebar>
@@ -183,7 +129,7 @@ const TeaMenuAdmin = () => {
         <Col md={8}>
           <Button className="add-button btn-light fw-bold text-light text-center margin-add-button" onClick={handleShowAdd}>
             <i class="bi bi-plus me-2 fs-6 fw-bold"></i>
-            Add Mood
+            Add Mood Data
           </Button>
 
           <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
@@ -263,81 +209,22 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {moodBevList.reduce((acc, val) => {
-              const existingIndex = acc.findIndex((item) => item.bevId === val.bevId);
-              if (existingIndex !== -1) {
-                acc[existingIndex].moodTypes.push(val.moodType);
-              } else {
-                acc.push({
-                  bevId: val.bevId,
-                  bevName: val.bevName,
-                  moodTypes: [val.moodType],
-                });
-              }
-              return acc;
-            }, []).map((val) => (
-              <tr key={val.bevId}>
-                <td>{val.bevName}</td>
-                <td>{val.moodTypes.join(", ")}</td>
-                <td>
+            {moodBevList.map((val, index) => {
+              // Mengecek apakah item sebelumnya memiliki bebida dengan nama yang sama
+              const isFirstItemWithSameBev = index === 0 || moodBevList[index - 1].bevName !== val.bevName;
+              return (
+                <tr key={val.id}>
+                  {/* Menampilkan nama bev hanya pada baris pertama dengan nama bev yang sama */}
+                  {isFirstItemWithSameBev && (
+                    <td rowSpan={moodBevList.filter(item => item.bevName === val.bevName).length}>
+                      {val.bevName}
+                    </td>
+                  )}
+                  <td>{val.moodType}</td>
+                  {/* <td>{formatDate(val.updatedAt)}</td> */}
                   <td className="d-flex justify-content-center">
-                    {/* Edit data */}
-                    <Button className="bg-warning btn-light rounded-2" size="sm" onClick={() => handleShowEdit(val.bevId, val.bevName)}>
-                      <i class="bi bi-pen text-light fs-5"></i>
-                    </Button>
-                    <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>Edit Food Pairing</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <Form>
-                          <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label></Form.Label>
-                            <Form.Select
-                              className="form-data"
-                              name="bev"
-                              value={formData.bev}
-                              onChange={handleInputChange}>
-                              <option value="">Select name</option>
-                              {bevOptions.map((option) => (
-                                <option key={option.id} value={option.name}>
-                                  {option.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </Form.Group>
-                          <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label>Food</Form.Label>
-                            <Form.Select
-                              className="form-data"
-                              name="food"
-                              value={formData.food}
-                              onChange={handleInputChange}>
-                              <option value="">Select name</option>
-                              {moodOptions.map((option) => (
-                                <option key={option.id} value={option.name}>
-                                  {option.type}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </Form.Group>
-                        </Form>
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button className="btn-warning text-light" style={{ borderRadius: "100px" }}
-                          onClick={() => {
-                            // handleEdit(val.id);
-                            handleCloseEdit();
-                          }}
-                        >
-                          Edit</Button>
-                        <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseEdit}>
-                          Cancel
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
                     {/* Delete */}
-                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.bevId, val.bevName)}>
+                    <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
                       <i class="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
@@ -345,14 +232,14 @@ const TeaMenuAdmin = () => {
                         <Modal.Title>Delete Food Pairing</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <p>Are you sure, want to delete moods <span className="fw-bold">{deleteNameBev}</span> ?</p>
+                        <p>Are you sure, want to delete mood <span className="fw-bold">{deleteNameBev}</span> ?</p>
                       </Modal.Body>
                       <Modal.Footer>
                         <Button
                           className="btn-danger text-light"
                           style={{ borderRadius: "100px" }}
                           onClick={() => {
-                            handleDelete(val.bevId);
+                            handleDelete(val.id);
                             handleCloseDelete();
                           }}
                         >
@@ -364,9 +251,9 @@ const TeaMenuAdmin = () => {
                       </Modal.Footer>
                     </Modal>
                   </td>
-                </td>
-              </tr>
-            ))}
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Row>

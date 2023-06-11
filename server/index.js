@@ -718,34 +718,25 @@ app.post("/moodbevs", async (req, res) => {
   }
 });
 
-//Delete moodbevs
-app.delete('/moodbevs/:bevId', async (req, res) => {
+// Delete food pairing
+app.delete('/moodbevs/:id', async (req, res) => {
   try {
-    const bevId = req.params.bevId;
+    const moodBevId = req.params.id;
 
-    const moodBevs = await MoodBevs.findAll({
-      where: {
-        bevId: bevId,
-      },
-    });
+    const moodBev = await MoodBevs.findByPk(moodBevId);
 
-    if (moodBevs.length === 0) {
-      return res.status(404).json({ message: 'MoodBevs not found' });
+    if (!moodBev) {
+      return res.status(404).json({ message: 'Food pairing not found' });
     }
 
-    await MoodBevs.destroy({
-      where: {
-        bevId: bevId,
-      },
-    });
+    await moodBev.destroy();
 
-    res.status(200).json({ message: 'MoodBevs deleted successfully!' });
+    res.status(200).json({ message: 'Food pairing deleted successfully!' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-
 
 
 app.listen(5000, () => {
