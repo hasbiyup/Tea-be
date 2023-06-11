@@ -557,6 +557,7 @@ app.get('/foodpairings', async (req, res) => {
 
     const result = response.map(item => {
       return {
+        id: item.id,
         foodName: item.food.name,
         bevName: item.bev.name,
         userName: item.user.name,
@@ -582,9 +583,54 @@ app.post("/foodpairings", async (req, res) => {
     });
   res.status(200).json({ message: "Food pairing saved successfully!" });
   } catch (error) {
-    
   }
 });
+
+// Edit food pairing
+app.put('/foodpairings/:id', async (req, res) => {
+  try {
+    const { bevId, foodId, userId } = req.body;
+    const foodPairingId = req.params.id;
+
+    const foodPairing = await FoodPairings.findByPk(foodPairingId);
+
+    if (!foodPairing) {
+      return res.status(404).json({ message: 'Food pairing not found' });
+    }
+
+    await foodPairing.update({
+      bevId: bevId,
+      foodId: foodId,
+      userId: userId,
+    });
+
+    res.status(200).json({ message: 'Food pairing updated successfully!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Delete food pairing
+app.delete('/foodpairings/:id', async (req, res) => {
+  try {
+    const foodPairingId = req.params.id;
+
+    const foodPairing = await FoodPairings.findByPk(foodPairingId);
+
+    if (!foodPairing) {
+      return res.status(404).json({ message: 'Food pairing not found' });
+    }
+
+    await foodPairing.destroy();
+
+    res.status(200).json({ message: 'Food pairing deleted successfully!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(5000, () => {
   console.log("running server");

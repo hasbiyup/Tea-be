@@ -22,13 +22,26 @@ const TeaMenuAdmin = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleteNameBev, setDeleteNameBev] = useState("");
+  const [deleteNameFood, setDeleteNameFood] = useState("");
 
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = () => setShowDelete(true);
+  const handleShowDelete = (id, nameBev, nameFood) => {
+    console.log("ID:", id);
+    console.log("bev:", nameBev);
+    console.log("food:",nameFood );
+    setDeleteId(id);
+    setDeleteNameBev(nameBev);
+    setDeleteNameFood(nameFood);
+    setShowDelete(true);
+  };
+
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     // memperbarui nilai state sesuai dengan perubahan pada elemen input
@@ -67,6 +80,7 @@ const TeaMenuAdmin = () => {
       Axios.post("http://localhost:5000/foodpairings", { bevId, foodId, userId })
         .then((response) => {
           console.log("Food pairing saved successfully!");
+          window.location.reload();
         })
         .catch((error) => {
           console.error("Error saving food pairing:", error);
@@ -74,6 +88,15 @@ const TeaMenuAdmin = () => {
       handleCloseAdd();
     } else {
       console.error("Invalid beverage or food option selected.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await Axios.delete(`http://localhost:5000/foodpairings/${deleteId}`);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -241,7 +264,7 @@ const TeaMenuAdmin = () => {
                     </Modal.Footer>
                   </Modal>
                   {/* Delete */}
-                  <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={handleShowDelete}>
+                  <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
                     <i class="bi bi-trash3 text-light fs-5"></i>
                   </Button>
                   <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
@@ -249,12 +272,19 @@ const TeaMenuAdmin = () => {
                       <Modal.Title>Delete Food Pairing</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <p>Are you sure, want to delete item 1?</p>
+                      <p>Are you sure, want to delete <span className="fw-bold">{deleteNameBev} & {deleteNameFood}</span> ?</p>
                     </Modal.Body>
                     <Modal.Footer>
-                      <Button className="btn-danger text-light" style={{ borderRadius: "100px" }}>
-                        Delete
-                      </Button>
+                    <Button
+                          className="btn-danger text-light"
+                          style={{ borderRadius: "100px" }}
+                          onClick={() => {
+                            handleDelete(val.id);
+                            handleCloseDelete();
+                          }}
+                        >
+                          Delete
+                        </Button>
                       <Button variant="outline-secondary" style={{ borderRadius: "100px" }} onClick={handleCloseDelete}>
                         Cancel
                       </Button>
