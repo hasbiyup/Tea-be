@@ -5,6 +5,7 @@ import { FaTh, FaBars, FaUserAlt, FaRegChartBar, FaCommentAlt, FaShoppingBag, Fa
 import { BsCupHotFill } from "react-icons/bs";
 import { GiBowlOfRice } from "react-icons/gi";
 import { IoFastFood } from "react-icons/io5";
+import { FaSmileWink } from "react-icons/fa";
 import { IoMdPerson } from "react-icons/io";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -59,7 +60,7 @@ const Sidebar = ({ children }) => {
     {
       path: "/mood-admin",
       name: "Moods",
-      icon: <IoFastFood />,
+      icon: <FaSmileWink />,
     }: null,
     userRole === "Admin" && {
       path: "/staff",
