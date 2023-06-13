@@ -6,11 +6,13 @@
 /client/.pnp.js
 /client/package-lock.jason
 /client/public/img/*
+/client/build
 
 /server/node_modules
 /server/.pnp
 /server/.pnp.js
 /server/package-lock.jason
+
 
 # testing
 /coverage
