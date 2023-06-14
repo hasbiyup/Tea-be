@@ -43,7 +43,7 @@ const TeaMenuAdmin = () => {
   const [editData, setEditData] = useState({
     name: "",
     email: "",
-    role: ""
+    role: "",
   });
 
   const userRole = localStorage.getItem("role");
@@ -77,7 +77,7 @@ const TeaMenuAdmin = () => {
         name: editData.name,
         email: editData.email,
         password: password,
-        role: editData.role
+        role: editData.role,
       });
       window.location.reload();
     } catch (error) {
@@ -95,6 +95,22 @@ const TeaMenuAdmin = () => {
       console.error(error);
     }
   };
+
+  // const searchHandle = async (event) => {
+  //   const key = event.target.value;
+  //   if (key) {
+  //     const result = await Axios.get(`http://localhost:5000/search/${key}`);
+  //     result = await result.json();
+  //     if (result) {
+  //       setStaffList(result);
+  //     }
+  //   }else{
+  //     Axios.get("http://localhost:5000/users").then((response) => {
+  //     //console.log(response.data);
+  //     setStaffList(response.data);
+  //   });
+  //   }
+  // };
 
   const formatDate = (dateString) => {
     const updatedAt = new Date(dateString);
@@ -299,7 +315,9 @@ const TeaMenuAdmin = () => {
                                 setEditData({ ...editData, role: e.target.value });
                               }}
                             >
-                              <option disabled selected hidden>Select Role</option>
+                              <option disabled selected hidden>
+                                Select Role
+                              </option>
                               <option value="Admin">Admin</option>
                               <option value="Staff">Staff</option>
                               <option value="BevStaff">BevStaff</option>
