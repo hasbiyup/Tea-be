@@ -66,10 +66,10 @@ ReactDOM.createRoot(rootElement).render(
         </Route>
 
         {/* Mood Angry */}
-        <Route path='angry' element={<Angry />} Route/>
-        <Route path="product-details-angry" element={<DetailProductAngry />} >
+        <Route path='/angry' element={<Angry />} />
+        <Route path="/product-details-angry" element={<DetailProductAngry />} >
             {/* Memanggil product angry base id */}
-            <Route path=":angryId" element={<DetailProductAngry />} /> 
+            <Route path=":id" element={<DetailProductAngry />} /> 
         </Route>
 
         {/* Mood Disgust */}
