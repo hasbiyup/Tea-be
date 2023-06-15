@@ -361,9 +361,9 @@ app.get('/bevs/:id', async (req, res) => {
   try {
     const bev = await Bevs.findOne({
       where: {
-        uuid: req.params.id
+        id: req.params.id
       },
-      attributes: ['uuid', 'name', 'price', 'ings', 'img', 'highlight', 'brew', 'desc', 'type'],
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type'],
       include: [{
         model: User,
         attributes: ['name', 'email']

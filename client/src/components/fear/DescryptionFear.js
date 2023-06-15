@@ -1,35 +1,43 @@
+import './Fear.css';
+
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import './Fear.css';
-
 import { useParams } from "react-router-dom";
-import { getProducts } from "./dataFear";
 
 function BodyOnlyExample() {
-  let params = useParams();
-  let products = getProducts(parseInt(params.fearId, 10));
+  const { id } = useParams();
+  const [val, setVal] = useState({id});
+  
+  useEffect(() => {
+    Axios.get(`http://localhost:5000/bevs/${val.id}`).then((response) => {
+      //console.log(response.data);
+      setVal(response.data);
+    });
+  }, [id]);
   return (
     <div className='desc-box'>
     <Card className='shadow-none desc-body'>
       <Card.Body>
         <div className='mx-1'>
           <Badge className='badge-custom-fear fw-normal ms-2'>
-            {products.type}
+            {val.type}
           </Badge>
           <Badge className='badge-custom-fear fw-normal ms-2'>
-            {products.ings[0]}
+            {val.ings}
           </Badge>
           <Badge className='badge-custom-fear fw-normal ms-2'>
             Fear
           </Badge>
         </div>
 
-        <h2 className='ms-2 mt-2 fw-bold'>{products.name}</h2>
+        <h2 className='ms-2 mt-2 fw-bold'>{val.name}</h2>
         
         <div className="ms-2">
-          <span className="type">{products.highlight}</span>
+          <span className="type">{val.highlight}</span>
         </div>
 
         <Container fluid>
@@ -37,26 +45,26 @@ function BodyOnlyExample() {
           <ul className=' d-flex justify-content-between'>
             <li>
               <i className="bi bi-database me-2"></i>
-              {products.brew[0]}
+              {val.brew}
             </li>
             <li>
               <i className="bi bi-cup-straw me-2"></i>
-              {products.brew[1]}
+              {val.brew}
             </li>
             <li>
               <i className="bi bi-thermometer-half me-2"></i>
-              {products.brew[2]}
+              {val.brew}
             </li>
             <li>
               <i className="bi bi-hourglass-bottom me-2"></i>
-              {products.brew[3]}
+              {val.brew}
             </li>
           </ul>
         </Row>
         </Container>
         <hr></hr>
-        <p className='ms-2'>{products.highlight}</p>
-        <p className='ms-2'>{products.desc}</p>
+        <p className='ms-2'>{val.highlight}</p>
+        <p className='ms-2'>{val.desc}</p>
         <a href="/food-pairing-fear">
           <button className="btn btn-pairing-fear">Get Some Food</button>
           </a>

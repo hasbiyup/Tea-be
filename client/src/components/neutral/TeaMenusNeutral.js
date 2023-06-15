@@ -25,7 +25,7 @@ const TeaMenuNeutral = () => {
             <Container fluid className="menu__box-neutral" key={currentType}>
               <h3 className="type-menu-neutral">{val.type}</h3>
               <h4 className="dash-neutral"></h4>
-              <Link to={`/val-details-neutral/${val.id}`} key={val.id}>
+              <Link to={`/product-details-neutral/${val.id}`} key={val.id}>
                 <Row className="list-menu-neutral">
                   <Col md={10} xs={8}>
                     <a href="detail-val-neutral">
@@ -52,7 +52,7 @@ const TeaMenuNeutral = () => {
           return (
             <Container fluid className="menu__box-neutral" style={{ boxShadow: '0 !important', marginTop: '-11px', zIndex: '10' }}>
               {index !== 0 && <h4 className="dash-neutral"></h4>}
-              <Link to={`/val-details-neutral/${val.id}`} key={val.id}>
+              <Link to={`/product-details-neutral/${val.id}`} key={val.id}>
                 <Row className="list-menu-neutral" key={val.id}>
                   <Col md={10} xs={8}>
                     <a href="detail-val-neutral">

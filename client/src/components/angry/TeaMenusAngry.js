@@ -26,8 +26,8 @@ const TeaMenuAngry = () => {
             <Container fluid className="menu__box-angry" key={currentType}>
               <h3 className="type-menu-angry">{val.type}</h3>
               <h4 className="dash-angry"></h4>
-              <Link to={`/product-details-angry/${val.id}`} key={val.id}>
-                <Row className="list-menu-angry">
+              <Link to={`/product-details-angry/${val.id}`}>
+                <Row className="list-menu-angry" key={val.id}>
                   <Col md={10} xs={8}>
                     <h5 className="code-name-angry">{val.name}</h5>
                     <small className="status">

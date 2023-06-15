@@ -25,7 +25,7 @@ const TeaMenuHappy = () => {
             <Container fluid className="menu__box-happy" key={currentType}>
               <h3 className="type-menu-happy">{val.type}</h3>
               <h4 className="dash-happy"></h4>
-              <Link to={`/val-details-happy/${val.id}`} key={val.id}>
+              <Link to={`/product-details-happy/${val.id}`} key={val.id}>
                 <Row className="list-menu-happy">
                   <Col md={10} xs={8}>
                     <a href="detail-val-happy">
@@ -52,7 +52,7 @@ const TeaMenuHappy = () => {
           return (
             <Container fluid className="menu__box-happy" style={{ boxShadow: '0 !important', marginTop: '-11px', zIndex: '10' }}>
               {index !== 0 && <h4 className="dash-happy"></h4>}
-              <Link to={`/val-details-happy/${val.id}`} key={val.id}>
+              <Link to={`/product-details-happy/${val.id}`} key={val.id}>
                 <Row className="list-menu-happy" key={val.id}>
                   <Col md={10} xs={8}>
                     <a href="detail-val-happy">

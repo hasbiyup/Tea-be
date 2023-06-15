@@ -10,10 +10,10 @@ import { useParams } from "react-router-dom";
 
 function BodyOnlyExample() {
   const { id } = useParams();
-  const [val, setVal] = useState(null);
+  const [val, setVal] = useState({id});
   
   useEffect(() => {
-    Axios.get(`http://localhost:5000/bevs/${id}`).then((response) => {
+    Axios.get(`http://localhost:5000/bevs/${val.id}`).then((response) => {
       //console.log(response.data);
       setVal(response.data);
     });
@@ -25,12 +25,11 @@ function BodyOnlyExample() {
         <Card.Body>
           <div className="mx-1">
             <Badge className="badge-custom-angry fw-normal ms-2">{val.type}</Badge>
-            <Badge className="badge-custom-angry fw-normal ms-2">{val.ings}</Badge>
+            <Badge className="badge-custom-angry fw-normal ms-2">{val.highlight}</Badge>
             <Badge className="badge-custom-angry fw-normal ms-2">Angry</Badge>
           </div>
 
           <h2 className="ms-2 mt-2 fw-bold">{val.name}</h2>
-
           <div className="ms-2">
             <span className="type">{val.highlight}</span>
           </div>

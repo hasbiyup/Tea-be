@@ -55,11 +55,11 @@ const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(
   <BrowserRouter>
     <Routes>
-        <Route path="/" element={<Home />} Route/>
-        <Route path="home" element={<Home />} Route/>
-        <Route path="camera" element={<Camera />} Route/>
+        <Route path="/" element={<Home />} />
+        <Route path="home" element={<Home />} />
+        <Route path="camera" element={<Camera />} />
 
-        <Route path="catalogue" element={<Catalogue />} Route/>
+        <Route path="catalogue" element={<Catalogue />} />
         <Route path="product-details-catalogue" element={<DetailProductCatalogue />} >
             {/* Memanggil product angry base id */}
             <Route path=":allId" element={<DetailProductCatalogue />} /> 
@@ -73,69 +73,69 @@ ReactDOM.createRoot(rootElement).render(
         </Route>
 
         {/* Mood Disgust */}
-        <Route path='disgust' element={<Disgust />} Route/>
-        <Route path="product-details-disgust" element={<DetailProductDisgust />} >
+        <Route path='/disgust' element={<Disgust />} />
+        <Route path="/product-details-disgust" element={<DetailProductDisgust />} >
             {/* Memanggil product disgust base id */}
-            <Route path=":disgustId" element={<DetailProductDisgust />} /> 
+            <Route path=":id" element={<DetailProductDisgust />} /> 
         </Route>
 
         {/* Mood Fear */}
-        <Route path='fear' element={<Fear />} Route/>
-        <Route path="product-details-fear" element={<DetailProductFear />} >
+        <Route path='/fear' element={<Fear />} />
+        <Route path="/product-details-fear" element={<DetailProductFear />} >
             {/* Memanggil product fear base id */}
-            <Route path=":fearId" element={<DetailProductFear />} /> 
+            <Route path=":id" element={<DetailProductFear />} /> 
         </Route>
 
         {/* Mood Happy */}
-        <Route path='happy' element={<Happy />} Route/>
-        <Route path="product-details-happy" element={<DetailProductHappy />} >
+        <Route path='/happy' element={<Happy />} />
+        <Route path="/product-details-happy" element={<DetailProductHappy />} >
             {/* Memanggil product happy base id */}
-            <Route path=":happyId" element={<DetailProductHappy />} /> 
+            <Route path=":id" element={<DetailProductHappy />} /> 
         </Route>
 
         {/* Mood Neutral */}
-        <Route path='neutral' element={<Neutral />} Route/>
-        <Route path="product-details-neutral" element={<DetailProductNeutral />} >
+        <Route path='/neutral' element={<Neutral />} />
+        <Route path="/product-details-neutral" element={<DetailProductNeutral />} >
             {/* Memanggil product neutral base id */}
-            <Route path=":neutralId" element={<DetailProductNeutral />} /> 
+            <Route path=":id" element={<DetailProductNeutral />} /> 
         </Route>
 
         {/* Mood Sad */}
-        <Route path='sad' element={<Sad />} Route/>
-        <Route path="product-details-sad" element={<DetailProductSad />} >
+        <Route path='/sad' element={<Sad />} />
+        <Route path="/product-details-sad" element={<DetailProductSad />} >
             {/* Memanggil product sad base id */}
-            <Route path=":sadId" element={<DetailProductSad />} /> 
+            <Route path=":id" element={<DetailProductSad />} /> 
         </Route>
 
         {/* Mood Surprise */}
-        <Route path='surprise' element={<Surprise />} Route/>
-        <Route path="product-details-surprise" element={<DetailProductSurprise />} >
+        <Route path='/surprise' element={<Surprise />} />
+        <Route path="/product-details-surprise" element={<DetailProductSurprise />} >
             {/* Memanggil product surprise base id */}
-            <Route path=":surpriseId" element={<DetailProductSurprise />} /> 
+            <Route path=":id" element={<DetailProductSurprise />} /> 
         </Route>
 
         {/* Login Page */}
-        <Route path='login-page' element={<LoginPage />} Route/>
+        <Route path='login-page' element={<LoginPage />} />
 
         {/* Admin Page */}
-        <Route path='admin' element={<Admin />} Route/>
+        <Route path='admin' element={<Admin />} />
 
         {/* Admin Site */}
-        <Route path='/dashboard' element={<Dashboard />} Route/>
-        <Route path='/tea-menu-admin' element={<TeaMenuAdmin />} Route/>
-        <Route path='/food-menu-admin' element={<FoodMenuAdmin />} Route/>
-        <Route path='/food-pairing-admin' element={<FoodPairingAdmin />} Route/>
-        <Route path='/staff' element={<Staff />} Route/>
-        <Route path='/mood-admin' element={<MoodAdmin />} Route/>
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/tea-menu-admin' element={<TeaMenuAdmin />} />
+        <Route path='/food-menu-admin' element={<FoodMenuAdmin />} />
+        <Route path='/food-pairing-admin' element={<FoodPairingAdmin />} />
+        <Route path='/staff' element={<Staff />} />
+        <Route path='/mood-admin' element={<MoodAdmin />} />
 
         {/* Food Pairing */}
-        <Route path='/food-pairing-angry' element={<FoodPairingAngry />} Route/>
-        <Route path='/food-pairing-disgust' element={<FoodPairingDisgust />} Route/>
-        <Route path='/food-pairing-happy' element={<FoodPairingHappy />} Route/>
-        <Route path='/food-pairing-fear' element={<FoodPairingFear />} Route/>
-        <Route path='/food-pairing-sad' element={<FoodPairingSad />} Route/>
-        <Route path='/food-pairing-neutral' element={<FoodPairingNeutral />} Route/>
-        <Route path='/food-pairing-surprise' element={<FoodPairingSurprise />} Route/>
+        <Route path='/food-pairing-angry' element={<FoodPairingAngry />} />
+        <Route path='/food-pairing-disgust' element={<FoodPairingDisgust />} />
+        <Route path='/food-pairing-happy' element={<FoodPairingHappy />} />
+        <Route path='/food-pairing-fear' element={<FoodPairingFear />} />
+        <Route path='/food-pairing-sad' element={<FoodPairingSad />} />
+        <Route path='/food-pairing-neutral' element={<FoodPairingNeutral />} />
+        <Route path='/food-pairing-surprise' element={<FoodPairingSurprise />} />
 
         {/* Food Details */}
         <Route path='/food-details-angry' element={<DetailFoodAngry />}>
