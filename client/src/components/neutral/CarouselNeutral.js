@@ -20,24 +20,24 @@ const Carousel2 = () => {
     <Carousel className='carousel'>
       <Carousel.Item>
         <img
-          className="w-100"
-          style={{ height: '350px' }}
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
           src={`/bev-img/${val.img1}`}
           alt="First slide"
         />
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="w-100"
-          style={{ height: '350px' }}
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
           src={`/bev-img/${val.img2}`}
           alt="Second slide"
         />
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="w-100"
-          style={{ height: '350px' }}
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
           src={`/bev-img/${val.img3}`}
           alt="Third slide"
         />
