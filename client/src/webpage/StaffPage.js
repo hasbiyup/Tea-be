@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Table from "react-bootstrap/Table";
-
+import Pagination from 'react-bootstrap/Pagination';
 import Sidebar from "../components/dashboard/Sidebar.js";
 
 const TeaMenuAdmin = () => {
@@ -16,6 +16,9 @@ const TeaMenuAdmin = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
 
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
@@ -96,21 +99,18 @@ const TeaMenuAdmin = () => {
     }
   };
 
-  // const searchHandle = async (event) => {
-  //   const key = event.target.value;
-  //   if (key) {
-  //     const result = await Axios.get(`http://localhost:5000/search/${key}`);
-  //     result = await result.json();
-  //     if (result) {
-  //       setStaffList(result);
-  //     }
-  //   }else{
-  //     Axios.get("http://localhost:5000/users").then((response) => {
-  //     //console.log(response.data);
-  //     setStaffList(response.data);
-  //   });
-  //   }
-  // };
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = staffList.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(staffList.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   const formatDate = (dateString) => {
     const updatedAt = new Date(dateString);
@@ -127,7 +127,7 @@ const TeaMenuAdmin = () => {
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
             <i class="bi bi-person-circle me-2"></i>
-            {userRole}-{userName}
+            {userRole} | {userName}
           </p>
         </Col>
         <p className="text-muted teanology-menu-update">Manage your staff data on this page</p>
@@ -237,13 +237,13 @@ const TeaMenuAdmin = () => {
               <th scope="col" width="20%">
                 Email
               </th>
-              <th scope="col" width="20%">
+              <th scope="col" width="10%">
                 Role
               </th>
-              <th scope="col" width="10%">
+              <th scope="col" width="15%">
                 Created At
               </th>
-              <th scope="col" width="10%">
+              <th scope="col" width="15%">
                 Last Updated
               </th>
               <th scope="col" width="10%" className="text-center">
@@ -252,7 +252,7 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {staffList.map((val) => {
+            {currentItems.map((val) => {
               return (
                 <tr key={val.id}>
                   <td>{val.name}</td>
@@ -380,15 +380,46 @@ const TeaMenuAdmin = () => {
       </Row>
 
       <Row className="margin-table d-flex">
-        <Col md={6} className="page-total">
-          <p>Page 1 from 3 pages</p>
+        <Col md={4} xs={12} className="page-total">
+          <p>Page {currentPage} from {pageNumbers.length} pages</p>
           <p style={{ marginTop: "-16px" }}>
-            Total data : <span className="fw-bold">10</span>
+            Total data : <span className="fw-bold">{currentItems.length}</span>
           </p>
         </Col>
-        <Col md={6}>
-          <Button className="pagination-button text-light btn-light float-end ms-2">Next</Button>
-          <Button className="pagination-button text-light btn-light float-end">Previous</Button>
+        <Col md={8} xs={12}>
+          <Pagination className="mt-3 pagination-sm">
+            <Pagination.Prev
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              disabled={currentPage === 1}
+              className="page-prev"
+              >
+            Previous
+            </Pagination.Prev>
+            {pageNumbers.map((number) => (
+              <Pagination.Item
+                key={number}
+                active={number === currentPage}
+                onClick={() => paginate(number)}
+              >
+                {number}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() => {
+                if (currentPage < pageNumbers.length) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+              disabled={currentPage === pageNumbers.length}
+              className="page-next"
+              >
+            Next
+            </Pagination.Next>
+          </Pagination>
         </Col>
       </Row>
     </Sidebar>

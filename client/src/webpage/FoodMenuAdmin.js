@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Table from "react-bootstrap/Table";
-
+import Pagination from 'react-bootstrap/Pagination';
 import Sidebar from "../components/dashboard/Sidebar.js";
 
 const TeaMenuAdmin = () => {
@@ -44,6 +44,8 @@ const TeaMenuAdmin = () => {
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [editData, setEditData] = useState({
     name: "",
     price: 0,
@@ -129,6 +131,20 @@ const TeaMenuAdmin = () => {
       console.error(error);
     }
   };
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = foodList.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(foodList.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   const formatDate = (dateString) => {
     const updatedAt = new Date(dateString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -302,7 +318,7 @@ const TeaMenuAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {foodList.map((val) => {
+            {currentItems.map((val) => {
               return (
                 <tr key={val.id}>
                   <td>{val.name}</td>
@@ -418,15 +434,46 @@ const TeaMenuAdmin = () => {
       </Row>
 
       <Row className="margin-table d-flex">
-        <Col md={6} className="page-total">
-          <p>Page 1 from 3 pages</p>
+        <Col md={4} xs={12} className="page-total">
+          <p>Page {currentPage} from {pageNumbers.length} pages</p>
           <p style={{ marginTop: "-16px" }}>
-            Total data : <span className="fw-bold">10</span>
+            Total data : <span className="fw-bold">{currentItems.length}</span>
           </p>
         </Col>
-        <Col md={6}>
-          <Button className="pagination-button text-light btn-light float-end ms-2">Next</Button>
-          <Button className="pagination-button text-light btn-light float-end">Previous</Button>
+        <Col md={8} xs={12}>
+          <Pagination className="mt-3 pagination-sm">
+            <Pagination.Prev
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              disabled={currentPage === 1}
+              className="page-prev"
+              >
+            Previous
+            </Pagination.Prev>
+            {pageNumbers.map((number) => (
+              <Pagination.Item
+                key={number}
+                active={number === currentPage}
+                onClick={() => paginate(number)}
+              >
+                {number}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() => {
+                if (currentPage < pageNumbers.length) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+              disabled={currentPage === pageNumbers.length}
+              className="page-next"
+              >
+            Next
+            </Pagination.Next>
+          </Pagination>
         </Col>
       </Row>
     </Sidebar>

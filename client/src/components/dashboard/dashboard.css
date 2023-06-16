@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600;700;800&display=swap");
 
 /* Sidebar */
 .admin-container {
@@ -232,7 +232,7 @@ thead {
   border-radius: 100px;
 }
 
-.form-select{
+.form-select {
   border-radius: 100px;
 }
 
@@ -241,9 +241,41 @@ thead {
   margin-right: 5%;
 }
 
+.page-link {
+  color: #539e6d;
+}
+
+.page-link:hover {
+  color: #539e6d;
+}
+
+.page-link:focus {
+  box-shadow: none;
+}
+
+.active > .page-link {
+  background-color: #539e6d !important;
+  border-color: #539e6d !important;
+}
+
+.pagination .page-prev .page-link {
+  border-radius: 40px 0 0 40px;
+}
+
+.pagination .page-next .page-link {
+  border-radius: 0 40px 40px 0;
+}
+
+.pagination{
+  justify-content: end;
+}
 
 /* Media queries */
 @media (max-width: 767px) {
+  .pagination{
+    justify-content: center;
+  }
+
   .admin-container {
     display: flex;
     flex-direction: column-reverse;
@@ -338,7 +370,7 @@ thead {
     width: 40%;
     scale: 0.7;
   }
-  
+
   .margin-table {
     margin-left: 15%;
     margin-right: 5%;
@@ -347,10 +379,8 @@ thead {
 
   .page-total {
     margin-top: 20%;
-    font-size: 12px;
-  }
-
-  .pagination-button{
-    font-size: 12px;
+    font-size: 14px;
+    justify-content: center;
+    text-align: center;
   }
 }
