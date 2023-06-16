@@ -10,13 +10,22 @@ const CarouselFoodAngry = () => {
     <>
       <Carousel className="carousel">
         <Carousel.Item>
-          <img className="w-100" src={gbr1} alt="First slide" />
+          <img 
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
+          src={gbr1} alt="First slide" />
         </Carousel.Item>
         <Carousel.Item>
-          <img className="w-100" src={gbr2} alt="Second slide" />
+          <img 
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
+          src={gbr2} alt="Second slide" />
         </Carousel.Item>
         <Carousel.Item>
-          <img className="w-100" src={gbr3} alt="Third slide" />
+          <img 
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
+          src={gbr3} alt="Third slide" />
         </Carousel.Item>
       </Carousel>
       <div className="half-circle"></div>

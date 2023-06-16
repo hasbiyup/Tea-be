@@ -94,6 +94,12 @@
   visibility: hidden;
 }
 
+.cropped-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 /* Descryption */
 .desc-box {
   margin-top: -40px;
