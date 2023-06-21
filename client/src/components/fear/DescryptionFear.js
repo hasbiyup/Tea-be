@@ -45,19 +45,19 @@ function BodyOnlyExample() {
           <ul className=' d-flex justify-content-between'>
             <li>
               <i className="bi bi-database me-2"></i>
-              {val.brew}
+              {val.tsp} Teaspoon ({val.tspg}g)
             </li>
             <li>
               <i className="bi bi-cup-straw me-2"></i>
-              {val.brew}
+              {val.water} Ml
             </li>
             <li>
               <i className="bi bi-thermometer-half me-2"></i>
-              {val.brew}
+              {val.temp} °C
             </li>
             <li>
               <i className="bi bi-hourglass-bottom me-2"></i>
-              {val.brew}
+              {val.time} Mins
             </li>
           </ul>
         </Row>
