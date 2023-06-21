@@ -139,31 +139,31 @@ ReactDOM.createRoot(rootElement).render(
 
         {/* Food Details */}
         <Route path='/food-details-angry' element={<DetailFoodAngry />}>
-            <Route path=":angryId" element={<DetailFoodAngry />} />
+            <Route path=":id" element={<DetailFoodAngry />} />
         </Route>
 
         <Route path='/food-details-disgust' element={<DetailFoodDisgust />}>
-            <Route path=":disgustId" element={<DetailFoodDisgust />} />
+            <Route path=":id" element={<DetailFoodDisgust />} />
         </Route>
 
         <Route path='/food-details-fear' element={<DetailFoodFear />}>
-            <Route path=":fearId" element={<DetailFoodFear />} />
+            <Route path=":id" element={<DetailFoodFear />} />
         </Route>
 
         <Route path='/food-details-happy' element={<DetailFoodHappy />}>
-            <Route path=":happyId" element={<DetailFoodHappy />} />
+            <Route path=":id" element={<DetailFoodHappy />} />
         </Route>
 
         <Route path='/food-details-sad' element={<DetailFoodSad />}>
-            <Route path=":sadId" element={<DetailFoodSad />} />
+            <Route path=":id" element={<DetailFoodSad />} />
         </Route>
 
         <Route path='/food-details-neutral' element={<DetailFoodNeutral />}>
-            <Route path=":neutralId" element={<DetailFoodNeutral />} />
+            <Route path=":id" element={<DetailFoodNeutral />} />
         </Route>
 
         <Route path='/food-details-surprise' element={<DetailFoodSurprise />}>
-            <Route path=":surpriseId" element={<DetailFoodSurprise />} />
+            <Route path=":id" element={<DetailFoodSurprise />} />
         </Route>
     </Routes>
   </BrowserRouter>

@@ -167,13 +167,9 @@ app.get('/foods/:id', async (req, res) => {
   try {
     const food = await Foods.findOne({
       where: {
-        uuid: req.params.id
+        id: req.params.id
       },
-      attributes: [,'uuid', 'name', 'price', 'ings', 'img', 'desc'],
-      include: [{
-        model: User,
-        attributes: ['name', 'email']
-      }]
+      attributes: ['id' ,'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'desc'],
     });
 
     if (!food) {
@@ -650,7 +646,7 @@ app.delete('/bevs/:id', async (req, res) => {
   }
 });
 
-//Get all foodpairing
+//Get all foodpairings
 app.get('/foodpairings', async (req, res) => {
   try {
     const response = await FoodPairings.findAll({

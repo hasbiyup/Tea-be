@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 function BodyOnlyExample() {
   const { id } = useParams();
   const [val, setVal] = useState({id});
+  console.log(id);
   
   useEffect(() => {
     Axios.get(`http://localhost:5000/bevs/${val.id}`).then((response) => {

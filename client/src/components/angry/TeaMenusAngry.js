@@ -71,7 +71,7 @@ const TeaMenuAngry = () => {
 
                   <Col md={2} xs={4} className="mt-3">
                     <div className="position-relative" style={{ height: "88px" }}>
-                      <img alt={val.name} src={val.img1} width={"88px"} height={"88px"} className="float-end" style={{ borderRadius: "20px" }}></img>
+                      <img alt={val.name} src={`/bev-img/${val.img1}`} width={"88px"} height={"88px"} className="float-end" style={{ borderRadius: "20px" }}></img>
                     </div>
                   </Col>
                 </Row>
