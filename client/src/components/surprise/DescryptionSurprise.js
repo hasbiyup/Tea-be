@@ -6,18 +6,24 @@ import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function BodyOnlyExample() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [val, setVal] = useState({id});
   
   useEffect(() => {
     Axios.get(`http://localhost:5000/bevs/${val.id}`).then((response) => {
-      //console.log(response.data);
       setVal(response.data);
     });
-  }, [id]);
+  }, [id, val.id]);
+
+  const handleGetFoodClick = () => {
+    localStorage.setItem("fp", val.id);
+    navigate("/food-pairing-surprise");
+  };
+
   return (
     <div className='desc-box'>
     <Card className='shadow-none desc-body'>
@@ -65,9 +71,7 @@ function BodyOnlyExample() {
         <hr></hr>
         <p className='ms-2'>{val.highlight}</p>
         <p className='ms-2'>{val.desc}</p>
-          <a href="/food-pairing-surprise">
-          <button className="btn btn-pairing-surprise">Get Some Food</button>
-          </a>
+        <button className="btn btn-pairing-surprise" onClick={() => handleGetFoodClick()}>Get Some Food</button>
       </Card.Body>
     </Card>
     <div className="half-circle"></div>

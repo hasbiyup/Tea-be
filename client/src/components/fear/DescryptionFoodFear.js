@@ -19,7 +19,7 @@ const DescryptionFoodFear = () => {
       console.log(error.response);
       console.log(error.message);
     });
-  }, [id]);
+  }, [id, product.id]);
 
   return (
     <div className="desc-box">
