@@ -162,6 +162,36 @@ app.get('/foods', async (req, res) => {
   }
 });
 
+app.get('/foodss', async (req, res) => {
+  try {
+    const response = await FoodPairings.findAll({
+      // attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'desc', 'createdAt', 'updatedAt'],
+      include: [{
+        model: Foods,
+        as: 'food',
+      }]
+    });
+
+    const result = response.map(item => {
+      return {
+        id: item.food.id,
+        bevId: item.bevId,
+        name: item.food.name,
+        price: item.food.price,
+        ings: item.food.ings,
+        img1: item.food.img1,
+        img2: item.food.img2,
+        img3: item.food.img3,
+        desc: item.food.desc
+      };
+    });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
 // Get food by ID
 app.get('/foods/:id', async (req, res) => {
   try {

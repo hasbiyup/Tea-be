@@ -2,7 +2,7 @@ import "./Angry.css";
 import '../BottomNavbar.css';
 
 import { Container, Row, Col } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useParams } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const FoodMenusAngry = () => {
   const [foodList, setFoodList] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:5000/foods").then((response) => {
+    Axios.get("http://localhost:5000/foodss").then((response) => {
       //console.log(response.data);
       setFoodList(response.data);
     })
@@ -18,13 +18,16 @@ const FoodMenusAngry = () => {
       console.error(error);
       console.log(error.response);
       console.log(error.message);
+      console.log(error.result);
     });
   }, []);
-
+  
   return (
     <>
     <h2 className="header-angry container-fluid mt-4 fw-bold">Recomended Foods</h2>
       {foodList.map((product) => {
+         console.log(product);
+        if (product.bevId == localStorage.getItem("fp")) {
           return (
             <Container fluid className="menu__box-angry">
               <h4 className="dash-angry"></h4>
@@ -50,6 +53,7 @@ const FoodMenusAngry = () => {
               <div className="half-circle"></div>
             </Container>
           );
+        }
       })}
     </>
   );

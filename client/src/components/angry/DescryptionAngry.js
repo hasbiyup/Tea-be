@@ -6,10 +6,10 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function BodyOnlyExample() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [val, setVal] = useState({id});
   console.log(id);
@@ -20,6 +20,11 @@ function BodyOnlyExample() {
       setVal(response.data);
     });
   }, [id]);
+
+  const handleGetFoodClick = () => {
+    localStorage.setItem("fp", val.id);
+    navigate("/food-pairing-angry");
+  };
 
   return (
     <div className="desc-box">
@@ -61,9 +66,7 @@ function BodyOnlyExample() {
           <hr></hr>
           <p className="ms-2">{val.highlight}</p>
           <p className="ms-2">{val.desc}</p><br></br><br></br>
-          <Link to={`/food-pairing-angry`}>
-          <button className="btn btn-pairing-angry">Get Some Food</button>
-          </Link>
+          <button className="btn btn-pairing-angry" onClick={() => handleGetFoodClick()}>Get Some Food</button>
         </Card.Body>
       </Card>
       <div className="half-circle"></div>

@@ -10,7 +10,6 @@ import { useParams } from "react-router-dom";
 const DescryptionFoodAngry = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({id});
-  console.log(id);
 
   useEffect(() => {
     Axios.get(`http://localhost:5000/foods/${product.id}`).then((response) => {
