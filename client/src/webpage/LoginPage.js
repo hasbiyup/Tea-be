@@ -19,6 +19,13 @@ function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
+    const id = localStorage.getItem("id");
+    if (id) {
+      navigate("/dashboard");
+    }
+  }, []);
+
+  useEffect(() => {
     const storedEmail = localStorage.getItem("rememberedEmail");
     const storedPassword = localStorage.getItem("rememberedPassword");
     const storedRememberMe = localStorage.getItem("rememberMe");
