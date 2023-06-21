@@ -19,10 +19,10 @@ const FoodMenusAngry = () => {
     <>
       <h2 className="header-angry container-fluid mt-4 fw-bold">Recomended Foods</h2>
       {foodList.map((product) => {
-        if (product.bevId == localStorage.getItem("fp")) {
+        if (product.bevId === localStorage.getItem("fp")) {
           return (
             <Container fluid className="menu__box-angry">
-              <h4 className="dash-angry"></h4>
+              <h4 className="dash-angry" aria-hidden="true"></h4>
               <Link to={`/food-details-angry/${product.id}`}>
                 <Row className="list-menu-angry" key={product.id}>
                   <Col md={10} xs={8}>
@@ -45,7 +45,7 @@ const FoodMenusAngry = () => {
               <div className="half-circle"></div>
             </Container>
           );
-        }
+        }return null;
       })}
     </>
   );

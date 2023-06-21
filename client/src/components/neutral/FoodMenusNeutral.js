@@ -19,10 +19,10 @@ const FoodMenusNeutral = () => {
     <>
       <h2 className="header-neutral container-fluid mt-4 fw-bold">Recomended Foods</h2>
       {foodList.map((product) => {
-        if (product.bevId == localStorage.getItem("fp")) {
+        if (product.bevId === +localStorage.getItem("fp")) {
           return (
             <Container fluid className="menu__box-neutral">
-              <h4 className="dash-neutral"></h4>
+              <h4 className="dash-neutral" aria-hidden="true"></h4>
               <Link to={`/food-details-neutral/${product.id}`}>
                 <Row className="list-menu-neutral" key={product.id}>
                   <Col md={10} xs={8}>
@@ -45,7 +45,7 @@ const FoodMenusNeutral = () => {
               <div className="half-circle"></div>
             </Container>
           );
-        }
+        }return null;
       })}
     </>
   );

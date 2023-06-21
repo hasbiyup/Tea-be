@@ -19,10 +19,10 @@ const FoodMenusFear = () => {
     <>
     <h2 className="header-fear container-fluid mt-4 fw-bold">Recomended Foods</h2>
       {foodList.map((product) => {
-        if (product.bevId == localStorage.getItem("fp")) {
+        if (product.bevId === +localStorage.getItem("fp")) {
           return (
             <Container fluid className="menu__box-fear">
-              <h4 className="dash-fear"></h4>
+              <h4 className="dash-fear" aria-hidden="true"></h4>
               <Link to={`/food-details-fear/${product.id}`}>
                 <Row className="list-menu-fear" key={product.id}>
                   <Col md={10} xs={8}>
@@ -45,7 +45,7 @@ const FoodMenusFear = () => {
               <div className="half-circle"></div>
             </Container>
           );
-        }
+        }return null;
       })}
     </>
   );
