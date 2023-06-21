@@ -13,7 +13,7 @@ const CarouselFoodAngry = () => {
     Axios.get(`http://localhost:5000/foods/${product.id}`).then((response) => {
       setProduct(response.data);
     });
-  }, [id]);
+  }, [id, product.id]);
   return (
     <>
       <Carousel className="carousel">

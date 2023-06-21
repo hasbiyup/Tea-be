@@ -14,7 +14,7 @@ const CarouselFoodNeutral = () => {
       //console.log(response.data);
       setProduct(response.data);
     });
-  }, [id]);
+  }, [id, product.id]);
   return (
     <>
       <Carousel className="carousel">
