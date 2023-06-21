@@ -1,28 +1,30 @@
-import { Container, Row, Col } from "react-bootstrap";
 import "./Surprise.css";
-
-import { Link } from "react-router-dom";
-import { getProduct } from "./dataSurprise";
 import '../BottomNavbar.css';
 
-import foto from "../teh.jpg";
+import { Container, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
+import { Link } from "react-router-dom";
 
 const FoodMenusSurprise = () => {
-  let product = getProduct();
-  let currentType = "";
+  const [foodList, setFoodList] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:5000/foodss").then((response) => {
+      setFoodList(response.data);
+    });
+  }, []);
 
   return (
     <>
-    <h2 className="header-surprise container-fluid mt-4 fw-bold">Recomended Foods</h2>
-      {product.map((product, index) => {
-        if (product.type !== currentType) {
-          currentType = product.type;
+      <h2 className="header-surprise container-fluid mt-4 fw-bold">Recomended Foods</h2>
+      {foodList.map((product) => {
+        if (product.bevId == localStorage.getItem("fp")) {
           return (
-            <Container fluid className="menu__box-surprise" key={currentType}>
-              <h3 className="type-menu-surprise">{product.type}</h3>
+            <Container fluid className="menu__box-surprise">
               <h4 className="dash-surprise"></h4>
-              <Link to={`/food-details-surprise/${product.number}`} key={product.number}>
-                <Row className="list-menu-surprise">
+              <Link to={`/food-details-surprise/${product.id}`}>
+                <Row className="list-menu-surprise" key={product.id}>
                   <Col md={10} xs={8}>
                     <h5 className="code-name-surprise">{product.name}</h5>
                     <small className="status">
@@ -30,38 +32,12 @@ const FoodMenusSurprise = () => {
                       {product.highlight}
                     </small>
                     <p>{product.ings}</p>
-                    <p className="fw-bold">Rp28.000</p>
+                    <p className="fw-bold">Rp{product.price}</p>
                   </Col>
 
                   <Col md={2} xs={4} className="mt-3">
                     <div className="position-relative" style={{ height: "88px" }}>
-                      <img src={foto} width={"88px"} height={"88px"} className="float-end" style={{ borderRadius: "20px" }}></img>
-                    </div>
-                  </Col>
-                </Row>
-              </Link>
-              <div className="half-circle"></div>
-            </Container>
-          );
-        } else {
-          return (
-            <Container fluid className="menu__box-surprise" style={{ boxShadow: "0 !important", marginTop: "-11px", zIndex: "10" }}>
-              {index !== 0 && <h4 className="dash-surprise"></h4>}
-              <Link to={`/food-details-surprise/${product.number}`} key={product.number}>
-                <Row className="list-menu-surprise" key={product.number}>
-                  <Col md={10} xs={8}>
-                    <h5 className="code-name-surprise">{product.name}</h5>
-                    <small className="status">
-                      <i className="bi bi-hand-thumbs-up me-2"></i>
-                      {product.highlight}
-                    </small>
-                    <p>{product.ings}</p>
-                    <p className="fw-bold">Rp28.000</p>
-                  </Col>
-
-                  <Col md={2} xs={4} className="mt-3">
-                    <div className="position-relative" style={{ height: "88px" }}>
-                      <img src={foto} width={"88px"} height={"88px"} className="float-end" style={{ borderRadius: "20px" }}></img>
+                      <img alt={product.name} src={`/img/${product.img1}`} width={"88px"} height={"88px"} className="float-end" style={{ borderRadius: "20px" }}></img>
                     </div>
                   </Col>
                 </Row>

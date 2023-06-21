@@ -6,14 +6,12 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import { useParams } from "react-router-dom";
 
-
 const DescryptionFoodAngry = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({id});
 
   useEffect(() => {
     Axios.get(`http://localhost:5000/foods/${product.id}`).then((response) => {
-      //console.log(response.data);
       setProduct(response.data);
     }).catch((error) => {
       console.error(error);
@@ -27,7 +25,6 @@ const DescryptionFoodAngry = () => {
       <Card className="shadow-none desc-body">
         <Card.Body>
           <div className="mx-1">
-            <Badge className="badge-custom-angry fw-normal ms-2">{product.type}</Badge>
             <Badge className="badge-custom-angry fw-normal ms-2">{product.ings}</Badge>
             <Badge className="badge-custom-angry fw-normal ms-2">Angry</Badge>
           </div>

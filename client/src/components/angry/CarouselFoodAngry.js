@@ -11,7 +11,6 @@ const CarouselFoodAngry = () => {
   
   useEffect(() => {
     Axios.get(`http://localhost:5000/foods/${product.id}`).then((response) => {
-      //console.log(response.data);
       setProduct(response.data);
     });
   }, [id]);
