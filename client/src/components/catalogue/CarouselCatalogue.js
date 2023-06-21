@@ -1,33 +1,47 @@
-import Carousel from 'react-bootstrap/Carousel';
 import './Catalogue.css';
 
-import gbr1 from './img/1.jpg';
-import gbr2 from './img/2.jpg';
-import gbr3 from './img/3.jpg';
+import Carousel from 'react-bootstrap/Carousel';
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
+import { useParams } from "react-router-dom";
 
 const Carousel2 = () => {
+
+  const { id } = useParams();
+  const [val, setVal] = useState({id});
+  
+  useEffect(() => {
+    Axios.get(`http://localhost:5000/bevs/${val.id}`).then((response) => {
+      //console.log(response.data);
+      setVal(response.data);
+    });
+  }, [id]);
+
   return (
     <>
     <Carousel className='carousel'>
       <Carousel.Item>
         <img
-          className="w-100"
-          src={gbr1}
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
+          src={`/bev-img/${val.img1}`}
           alt="First slide"
         />
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="w-100"
-          src={gbr2}
-          alt="Second slide"
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
+          src={`/bev-img/${val.img1}`}
+          alt="First slide"
         />
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="w-100"
-          src={gbr3}
-          alt="Third slide"
+          className="w-100 cropped-image"
+          style={{ height: '480px' }}
+          src={`/bev-img/${val.img1}`}
+          alt="First slide"
         />
       </Carousel.Item>
     </Carousel>

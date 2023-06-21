@@ -59,10 +59,10 @@ ReactDOM.createRoot(rootElement).render(
         <Route path="home" element={<Home />} />
         <Route path="camera" element={<Camera />} />
 
-        <Route path="catalogue" element={<Catalogue />} />
-        <Route path="product-details-catalogue" element={<DetailProductCatalogue />} >
+        <Route path="/catalogue" element={<Catalogue />} />
+        <Route path="/product-details-catalogue" element={<DetailProductCatalogue />} >
             {/* Memanggil product angry base id */}
-            <Route path=":allId" element={<DetailProductCatalogue />} /> 
+            <Route path=":id" element={<DetailProductCatalogue />} /> 
         </Route>
 
         {/* Mood Angry */}
