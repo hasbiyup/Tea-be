@@ -62,7 +62,35 @@ const Bevs = db.define('bev',{
             notEmpty: true
         }
     },
-    brew:{
+    tsp:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    tspg:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    water:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    temp:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    time:{
         type: DataTypes.STRING,
         allowNull: false,
         validate:{

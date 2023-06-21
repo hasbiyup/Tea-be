@@ -42,7 +42,11 @@ const TeaMenuAdmin = () => {
   const [img2, setImg2] = useState("");
   const [img3, setImg3] = useState("");
   const [highlight, setHighlight] = useState("");
-  const [brew, setBrew] = useState("");
+  const [tsp, setTsp] = useState("");
+  const [tspg, setTspg] = useState("");
+  const [water, setWater] = useState("");
+  const [temp, setTemp] = useState("");
+  const [time, setTime] = useState("");
   const [desc, setDesc] = useState("");
   const [type, setType] = useState("");
   const [idUser, setIdUser] = useState("");
@@ -57,7 +61,11 @@ const TeaMenuAdmin = () => {
     img2: "",
     img3: "",
     highlight: "",
-    brew: "",
+    tsp: "",
+    tspg: "",
+    water: "",
+    temp: "",
+    time: "",
     desc: "",
     type: "",
     userId: "",
@@ -84,7 +92,11 @@ const TeaMenuAdmin = () => {
       formData.append("img2", img2);
       formData.append("img3", img3);
       formData.append("highlight", highlight);
-      formData.append("brew", brew);
+      formData.append("tsp", tsp);
+      formData.append("tspg", tspg);
+      formData.append("water", water);
+      formData.append("temp", temp);
+      formData.append("time", time);
       formData.append("desc", desc);
       formData.append("type", type);
       formData.append("userId", userId);
@@ -108,7 +120,11 @@ const TeaMenuAdmin = () => {
       formData.append("price", editData.price);
       formData.append("ings", editData.ings);
       formData.append("highlight", editData.highlight);
-      formData.append("brew", editData.brew);
+      formData.append("tsp", editData.tsp);
+      formData.append("tspg", editData.tspg);
+      formData.append("water", editData.water);
+      formData.append("temp", editData.temp);
+      formData.append("time", editData.time);
       formData.append("desc", editData.desc);
       formData.append("type", editData.type);
 
@@ -275,13 +291,57 @@ const TeaMenuAdmin = () => {
                     />
                   </Form.Group>
                   <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
-                    <Form.Label>Brew</Form.Label>
+                    <Form.Label>Teaspoon</Form.Label>
                     <Form.Control
                       className="form-data"
                       type="text"
-                      placeholder="Enter brew"
+                      placeholder="Enter teaspoon"
                       onChange={(e) => {
-                        setBrew(e.target.value);
+                        setTsp(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Gram</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter teaspoon(gram)"
+                      onChange={(e) => {
+                        setTspg(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Water</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter water"
+                      onChange={(e) => {
+                        setWater(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Temp</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter temp"
+                      onChange={(e) => {
+                        setTemp(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                    <Form.Label>Time</Form.Label>
+                    <Form.Control
+                      className="form-data"
+                      type="text"
+                      placeholder="Enter time"
+                      onChange={(e) => {
+                        setTime(e.target.value);
                       }}
                     />
                   </Form.Group>
@@ -359,7 +419,16 @@ const TeaMenuAdmin = () => {
                 Highlight
               </th>
               <th scope="col" width="10%">
-                Brew
+                Teaspoon
+              </th>
+              <th scope="col" width="10%">
+                Water
+              </th>
+              <th scope="col" width="10%">
+                Temp
+              </th>
+              <th scope="col" width="10%">
+                Time
               </th>
               <th scope="col" width="12%">
                 Descryption
@@ -390,7 +459,10 @@ const TeaMenuAdmin = () => {
                     </td>
                   </td>
                   <td>{val.highlight}</td>
-                  <td>{val.brew}</td>
+                  <td>{val.tsp} Teaspoon ({val.tspg}g)</td>
+                  <td>{val.water} Ml</td>
+                  <td>{val.temp} °C</td>
+                  <td>{val.time} Mins</td>
                   <td>{val.desc}</td>
                   <td>{val.type}</td>
                   <td>{formatDate(val.updatedAt)}</td>
@@ -479,13 +551,63 @@ const TeaMenuAdmin = () => {
                               />
                             </Form.Group>
                             <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
-                              <Form.Label>Brew</Form.Label>
+                              <Form.Label>Teaspoon</Form.Label>
                               <Form.Control
                                 className="form-data"
                                 type="text"
-                                placeholder="Enter brew"
-                                value={editData.brew}
-                                onChange={(e) => setEditData({ ...editData, brew: e.target.value })}
+                                placeholder="Enter teaspoon"
+                                value={editData.tsp}
+                                onChange={(e) => setEditData({ ...editData, tsp: e.target.value })}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Gram</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter teaspoon(gram)"
+                                value={editData.tspg}
+                                onChange={(e) => setEditData({ ...editData, tspg: e.target.value })}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Water</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter water"
+                                value={editData.water}
+                                onChange={(e) => setEditData({ ...editData, water: e.target.value })}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Temp</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter temp"
+                                value={editData.temp}
+                                onChange={(e) => setEditData({ ...editData, temp: e.target.value })}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Temp</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter temp"
+                                value={editData.temp}
+                                onChange={(e) => setEditData({ ...editData, temp: e.target.value })}
+                              />
+                            </Form.Group>
+                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                              <Form.Label>Time</Form.Label>
+                              <Form.Control
+                                className="form-data"
+                                type="text"
+                                placeholder="Enter time"
+                                value={editData.time}
+                                onChange={(e) => setEditData({ ...editData, time: e.target.value })}
                               />
                             </Form.Group>
                           </Row>

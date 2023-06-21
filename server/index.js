@@ -344,7 +344,7 @@ app.delete('/foods/:id', async (req, res) => {
 app.get('/bevs', async (req, res) => {
   try {
     const response = await Bevs.findAll({
-      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -363,7 +363,7 @@ app.get('/bevs/:id', async (req, res) => {
       where: {
         id: req.params.id
       },
-      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'brew', 'desc', 'type'],
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type'],
       include: [{
         model: User,
         attributes: ['name', 'email']
@@ -401,7 +401,7 @@ app.post('/bevs', uploadBev.fields([
   { name: 'img2', maxCount: 1 },
   { name: 'img3', maxCount: 1 }
 ]), async (req, res) => {
-  const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
+  const { name, price, ings, highlight, tsp, tspg, water, temp, time, desc, type, userId } = req.body;
   const images = req.files;
 
   try {
@@ -420,7 +420,11 @@ app.post('/bevs', uploadBev.fields([
       img2: img2,
       img3: img3,
       highlight: highlight,
-      brew: brew,
+      tsp: tsp,
+      tspg: tspg,
+      water: water,
+      temp: temp,
+      time: time,
       desc: desc,
       type: type,
       userId: userId,
@@ -450,7 +454,7 @@ app.put('/bevs/:id', uploadBev.fields([
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
 
-    const { name, price, ings, highlight, brew, desc, type, userId } = req.body;
+    const { name, price, ings, highlight, tsp, tspg, water, temp, time, desc, type, userId } = req.body;
     const images = req.files;
 
     if (images.img1) {
@@ -480,7 +484,7 @@ app.put('/bevs/:id', uploadBev.fields([
 
     // Lakukan pembaruan data makanan
     await Bevs.update(
-      { name, price, ings, img1: bev.img1, img2: bev.img2, img3: bev.img3, highlight, brew, desc, type, userId },
+      { name, price, ings, img1: bev.img1, img2: bev.img2, img3: bev.img3, highlight, tsp, tspg, water, temp, time, desc, type, userId },
       {
         where: {
           id: req.params.id
