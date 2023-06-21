@@ -61,7 +61,7 @@ function BodyOnlyExample() {
           <hr></hr>
           <p className="ms-2">{val.highlight}</p>
           <p className="ms-2">{val.desc}</p><br></br><br></br>
-          <Link to={`/food-pairing-angry/${val.id}`}>
+          <Link to={`/food-pairing-angry`}>
           <button className="btn btn-pairing-angry">Get Some Food</button>
           </Link>
         </Card.Body>
