@@ -19,7 +19,7 @@ function BodyOnlyExample() {
       //console.log(response.data);
       setVal(response.data);
     });
-  }, [id]);
+  }, [id, val.id]);
 
   return (
     <div className='desc-box'>

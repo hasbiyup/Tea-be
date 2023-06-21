@@ -32,7 +32,7 @@ const CatalogueList = () => {
           return (
             <Container fluid className="menu__box-green" key={currentType}>
               <h3 className="type-menu-green">{val.type}</h3>
-              <h4 className="dash-green"></h4>
+              <h4 className="dash-green" aria-hidden="true"></h4>
               <Link to={`/product-details-catalogue/${val.id}`} key={val.id}>
                 <Row className="list-menu-green">
                   <Col md={10} xs={8}>
@@ -57,7 +57,7 @@ const CatalogueList = () => {
         } else {
           return (
             <Container fluid className="menu__box-green" style={{ boxShadow: "0 !important", marginTop: "-11px", zIndex: "10" }}>
-              {index !== 0 && <h4 className="dash-green"></h4>}
+              {index !== 0 && <h4 className="dash-green" aria-hidden="true"></h4>}
               <Link to={`/product-details-catalogue/${val.id}`} key={val.id}>
                 <Row className="list-menu-green" key={val.id}>
                   <Col md={10} xs={8}>

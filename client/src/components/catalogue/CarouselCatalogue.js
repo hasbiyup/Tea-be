@@ -15,7 +15,7 @@ const Carousel2 = () => {
       //console.log(response.data);
       setVal(response.data);
     });
-  }, [id]);
+  }, [id, val.id]);
 
   return (
     <>
