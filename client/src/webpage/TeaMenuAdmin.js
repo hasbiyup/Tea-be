@@ -279,7 +279,7 @@ const TeaMenuAdmin = () => {
                   </Form.Group>
                 </Row>
                 <Row>
-                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                  <Form.Group className="col-5 mb-2" controlId="formBasicEmail">
                     <Form.Label>Highlight</Form.Label>
                     <Form.Control
                       className="form-data"
@@ -290,7 +290,7 @@ const TeaMenuAdmin = () => {
                       }}
                     />
                   </Form.Group>
-                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                  <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                     <Form.Label>Teaspoon</Form.Label>
                     <Form.Control
                       className="form-data"
@@ -301,18 +301,20 @@ const TeaMenuAdmin = () => {
                       }}
                     />
                   </Form.Group>
-                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                  <Form.Group className="col-3 mb-2" controlId="formBasicEmail">
                     <Form.Label>Gram</Form.Label>
                     <Form.Control
                       className="form-data"
                       type="text"
-                      placeholder="Enter teaspoon(gram)"
+                      placeholder="2 gram"
                       onChange={(e) => {
                         setTspg(e.target.value);
                       }}
                     />
                   </Form.Group>
-                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                  </Row>
+                  <Row>
+                  <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                     <Form.Label>Water</Form.Label>
                     <Form.Control
                       className="form-data"
@@ -323,7 +325,7 @@ const TeaMenuAdmin = () => {
                       }}
                     />
                   </Form.Group>
-                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                  <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                     <Form.Label>Temp</Form.Label>
                     <Form.Control
                       className="form-data"
@@ -334,7 +336,7 @@ const TeaMenuAdmin = () => {
                       }}
                     />
                   </Form.Group>
-                  <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                  <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                     <Form.Label>Time</Form.Label>
                     <Form.Control
                       className="form-data"
