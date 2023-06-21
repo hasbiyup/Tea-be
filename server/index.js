@@ -380,6 +380,118 @@ app.get('/bevs/:id', async (req, res) => {
   }
 });
 
+app.get('/moodbevs/angry', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 1 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get('/moodbevs/disgust', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 2 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get('/moodbevs/fear', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 3 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get('/moodbevs/happy', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 4 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get('/moodbevs/neutral', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 5 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get('/moodbevs/sad', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 6 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get('/moodbevs/surprise', async (req, res) => {
+  try {
+    const response = await Bevs.findAll({
+      attributes: ['id', 'uuid', 'name', 'price', 'ings', 'img1', 'img2', 'img3', 'highlight', 'tsp', 'tspg', 'water', 'temp', 'time', 'desc', 'type', 'createdAt', 'updatedAt'],
+      include: [{
+        model: MoodBevs,
+        where: { moodId: 7 }, // Filter MoodBevs based on moodId
+        attributes: []
+      }]
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
 // Multer storage configuration
 const BevStorage = multer.diskStorage({
   destination: function (req, file, cb) {

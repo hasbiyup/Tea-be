@@ -9,7 +9,7 @@ const TeaMenuNeutral = () => {
   const [bevList, setBevList] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:5000/bevs").then((response) => {
+    Axios.get("http://localhost:5000/moodbevs/neutral").then((response) => {
       //console.log(response.data);
       setBevList(response.data);
     });

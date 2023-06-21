@@ -10,9 +10,14 @@ const TeaMenuAngry = () => {
   const [bevList, setBevList] = useState([]);
   
   useEffect(() => {
-    Axios.get("http://localhost:5000/bevs").then((response) => {
+    Axios.get("http://localhost:5000/moodbevs/angry").then((response) => {
       //console.log(response.data);
       setBevList(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+      console.log(error.response);
+      console.log(error.message);
     });
   }, []);
   let currentType = "";
