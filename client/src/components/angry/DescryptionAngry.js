@@ -7,6 +7,7 @@ import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function BodyOnlyExample() {
   const { id } = useParams();
@@ -60,9 +61,9 @@ function BodyOnlyExample() {
           <hr></hr>
           <p className="ms-2">{val.highlight}</p>
           <p className="ms-2">{val.desc}</p><br></br><br></br>
-          <a href="/food-pairing-angry">
+          <Link to={`/food-pairing-angry/${val.id}`}>
           <button className="btn btn-pairing-angry">Get Some Food</button>
-          </a>
+          </Link>
         </Card.Body>
       </Card>
       <div className="half-circle"></div>
