@@ -92,7 +92,7 @@ function LoginPage() {
 
             <Form.Label>Email</Form.Label>
               <InputGroup className="mb-3">
-                <InputGroup.Text className="form-icon" id="basic-addon1"><i class="bi bi-person fs-5 text-muted"></i></InputGroup.Text>
+                <InputGroup.Text className="form-icon" id="basic-addon1"><i className="bi bi-person fs-5 text-muted"></i></InputGroup.Text>
                 <Form.Control className="login-form"
                 placeholder="Enter your email" 
                 aria-label="Email" 
@@ -105,7 +105,7 @@ function LoginPage() {
 
               <Form.Label>Password</Form.Label>
               <InputGroup className="mb-3">
-                <InputGroup.Text className="form-icon" id="basic-addon1"><i class="bi bi-lock fs-5 text-muted"></i></InputGroup.Text>
+                <InputGroup.Text className="form-icon" id="basic-addon1"><i className="bi bi-lock fs-5 text-muted"></i></InputGroup.Text>
                 <Form.Control className="login-form"
                 placeholder="Enter your password"
                 aria-label="Password"

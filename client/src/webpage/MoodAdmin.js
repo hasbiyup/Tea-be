@@ -131,7 +131,7 @@ const TeaMenuAdmin = () => {
         </Col>
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
-            <i class="bi bi-person-circle me-2"></i>
+            <i className="bi bi-person-circle me-2"></i>
             {userRole}-{userName}
           </p>
         </Col>
@@ -143,7 +143,7 @@ const TeaMenuAdmin = () => {
       <Row>
         <Col md={8}>
           <Button className="add-button btn-light fw-bold text-light text-center margin-add-button" onClick={handleShowAdd}>
-            <i class="bi bi-plus me-2 fs-6 fw-bold"></i>
+            <i className="bi bi-plus me-2 fs-6 fw-bold"></i>
             Add Mood Data
           </Button>
 
@@ -197,7 +197,7 @@ const TeaMenuAdmin = () => {
           <Form className="d-flex margin-search" style={{ marginRight: "18%" }}>
             <InputGroup className="mb-3">
               <InputGroup.Text className="search-icon" id="basic-addon1">
-                <i class="bi bi-search fs-6 text-muted"></i>
+                <i className="bi bi-search fs-6 text-muted"></i>
               </InputGroup.Text>
               <Form.Control className="search-data" type="search" placeholder="Search data" aria-label="Search" />
             </InputGroup>
@@ -240,7 +240,7 @@ const TeaMenuAdmin = () => {
                   <td className="d-flex justify-content-center">
                     {/* Delete */}
                     <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
-                      <i class="bi bi-trash3 text-light fs-5"></i>
+                      <i className="bi bi-trash3 text-light fs-5"></i>
                     </Button>
                     <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
                       <Modal.Header closeButton>

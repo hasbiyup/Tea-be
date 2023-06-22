@@ -78,7 +78,7 @@ const Dashboard = () => {
         </Col>
         <Col md={5} sm={12}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
-            <i class="bi bi-person-circle me-2"></i>
+            <i className="bi bi-person-circle me-2"></i>
             {userRole}-{userName}
           </p>
         </Col>

@@ -33,7 +33,7 @@ const BottomNavbarAngry = () => {
                 <span className="nav__text">Inbox</span>
             </a>
         </nav>
-        <div classNameName="half-circle"></div>
+        <div className="half-circle"></div>
         </Container>
     );
 }
