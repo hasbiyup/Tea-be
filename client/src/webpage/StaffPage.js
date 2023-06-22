@@ -141,7 +141,7 @@ const TeaMenuAdmin = () => {
         <Col md={3}>
           <p className="topbar-dashboard float-end margin-admin-topbar">
             <i className="bi bi-person-circle me-2"></i>
-            {userRole} | {userName}
+            {userRole}-{userName}
           </p>
         </Col>
         <p className="text-muted teanology-menu-update">Manage your staff data on this page</p>

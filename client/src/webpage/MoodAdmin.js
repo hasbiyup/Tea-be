@@ -24,7 +24,7 @@ const TeaMenuAdmin = () => {
   const [deleteNameBev, setDeleteNameBev] = useState("");
   const [deleteNameFood, setDeleteNameFood] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
@@ -225,20 +225,13 @@ const TeaMenuAdmin = () => {
           </thead>
           <tbody>
             {currentItems.map((val, index) => {
-              // Mengecek apakah item sebelumnya memiliki bebida dengan nama yang sama
-              const isFirstItemWithSameBev = index === 0 || moodBevList[index - 1].bevName !== val.bevName;
               return (
                 <tr key={val.id}>
-                  {/* Menampilkan nama bev hanya pada baris pertama dengan nama bev yang sama */}
-                  {isFirstItemWithSameBev && (
-                    <td rowSpan={moodBevList.filter(item => item.bevName === val.bevName).length}>
+                    <td >
                       {val.bevName}
                     </td>
-                  )}
                   <td>{val.moodType}</td>
-                  {/* <td>{formatDate(val.updatedAt)}</td> */}
                   <td className="d-flex justify-content-center">
-                    {/* Delete */}
                     <Button className="bg-danger ms-2 btn-light rounded-2" size="sm" onClick={() => handleShowDelete(val.id, val.bevName, val.foodName)}>
                       <i className="bi bi-trash3 text-light fs-5"></i>
                     </Button>
