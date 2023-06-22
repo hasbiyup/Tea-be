@@ -452,7 +452,7 @@ const TeaMenuAdmin = () => {
                 <tr key={val.id}>
                   <td>{val.name}</td>
                   <td>{val.price}</td>
-                  <td>{val.ings}</td>
+                  <td>{val.ings.split(' ').slice(0, 4).join(' ')}...</td>
                   <td>
                     <td className="d-flex justify-content-start">
                       {val.img1 && <img src={`/bev-img/${val.img1}`} alt="Food1" style={{ width: "42px" }} />}
@@ -461,11 +461,11 @@ const TeaMenuAdmin = () => {
                     </td>
                   </td>
                   <td>{val.highlight}</td>
-                  <td>{val.tsp} Teaspoon ({val.tspg}g)</td>
+                  <td>{val.tsp} ({val.tspg}g)</td>
                   <td>{val.water} Ml</td>
                   <td>{val.temp} °C</td>
                   <td>{val.time} Mins</td>
-                  <td>{val.desc}</td>
+                  <td>{val.desc.split(' ').slice(0, 4).join(' ')}...</td>
                   <td>{val.type}</td>
                   <td>{formatDate(val.updatedAt)}</td>
                   <td>
@@ -542,7 +542,7 @@ const TeaMenuAdmin = () => {
                             </Form.Group>
                           </Row>
                           <Row>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                            <Form.Group className="col-5 mb-2" controlId="formBasicEmail">
                               <Form.Label>Highlight</Form.Label>
                               <Form.Control
                                 className="form-data"
@@ -552,7 +552,7 @@ const TeaMenuAdmin = () => {
                                 onChange={(e) => setEditData({ ...editData, highlight: e.target.value })}
                               />
                             </Form.Group>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                            <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                               <Form.Label>Teaspoon</Form.Label>
                               <Form.Control
                                 className="form-data"
@@ -562,7 +562,7 @@ const TeaMenuAdmin = () => {
                                 onChange={(e) => setEditData({ ...editData, tsp: e.target.value })}
                               />
                             </Form.Group>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                            <Form.Group className="col-3 mb-2" controlId="formBasicEmail">
                               <Form.Label>Gram</Form.Label>
                               <Form.Control
                                 className="form-data"
@@ -572,7 +572,9 @@ const TeaMenuAdmin = () => {
                                 onChange={(e) => setEditData({ ...editData, tspg: e.target.value })}
                               />
                             </Form.Group>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                            </Row>
+                            <Row>
+                            <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                               <Form.Label>Water</Form.Label>
                               <Form.Control
                                 className="form-data"
@@ -582,7 +584,7 @@ const TeaMenuAdmin = () => {
                                 onChange={(e) => setEditData({ ...editData, water: e.target.value })}
                               />
                             </Form.Group>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                            <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                               <Form.Label>Temp</Form.Label>
                               <Form.Control
                                 className="form-data"
@@ -592,17 +594,7 @@ const TeaMenuAdmin = () => {
                                 onChange={(e) => setEditData({ ...editData, temp: e.target.value })}
                               />
                             </Form.Group>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
-                              <Form.Label>Temp</Form.Label>
-                              <Form.Control
-                                className="form-data"
-                                type="text"
-                                placeholder="Enter temp"
-                                value={editData.temp}
-                                onChange={(e) => setEditData({ ...editData, temp: e.target.value })}
-                              />
-                            </Form.Group>
-                            <Form.Group className="col-6 mb-2" controlId="formBasicEmail">
+                            <Form.Group className="col-4 mb-2" controlId="formBasicEmail">
                               <Form.Label>Time</Form.Label>
                               <Form.Control
                                 className="form-data"

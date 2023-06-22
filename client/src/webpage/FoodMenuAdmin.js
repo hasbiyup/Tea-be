@@ -323,7 +323,7 @@ const TeaMenuAdmin = () => {
                 <tr key={val.id}>
                   <td>{val.name}</td>
                   <td>{val.price}</td>
-                  <td>{val.ings}</td>
+                  <td>{val.ings.split(' ').slice(0, 4).join(' ')}...</td>
                   <td>
                     <td className="d-flex justify-content-start">
                       {val.img1 && <img src={`/img/${val.img1}`} alt="Food1" style={{ width: "42px" }} />}
@@ -331,7 +331,7 @@ const TeaMenuAdmin = () => {
                       {val.img3 && <img src={`/img/${val.img3}`} alt="Food3" className="ms-1" style={{ width: "42px" }} />}
                     </td>
                   </td>
-                  <td>{val.desc}</td>
+                  <td>{val.desc.split(' ').slice(0, 4).join(' ')}...</td>
                   <td>{formatDate(val.updatedAt)}</td>
                   <td>
                     <td className="d-flex justify-content-center">
