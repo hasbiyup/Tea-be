@@ -12,6 +12,11 @@ import Pagination from 'react-bootstrap/Pagination';
 import Sidebar from "../components/dashboard/Sidebar.js";
 
 const TeaMenuAdmin = () => {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const handleSearchChange = (e) => {
+    setSearchKeyword(e.target.value);
+  };
+
   const [foodPairingList, setFoodPairingList] = useState([]);
   const [bevOptions, setBevOptions] = useState([]);
   const [foodOptions, setFoodOptions] = useState([]);
@@ -141,7 +146,14 @@ const TeaMenuAdmin = () => {
   
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = foodPairingList.slice(indexOfFirstItem, indexOfLastItem);
+  const filteredItems = foodPairingList.filter((item) => {
+    return (
+      item.bevName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.foodName.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  });
+
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(foodPairingList.length / itemsPerPage); i++) {
@@ -187,13 +199,13 @@ const TeaMenuAdmin = () => {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Label>Bev</Form.Label>
+                  <Form.Label>Beverage</Form.Label>
                   <Form.Select
                     className="form-data"
                     name="bev"
                     value={formData.bev}
                     onChange={handleInputChange}>
-                    <option value="">Select name</option>
+                    <option value="" disabled selected hidden>Select name</option>
                     {bevOptions.map((option) => (
                       <option key={option.id} value={option.name}>
                         {option.name}
@@ -208,7 +220,7 @@ const TeaMenuAdmin = () => {
                     name="food"
                     value={formData.food}
                     onChange={handleInputChange}>
-                    <option value="">Select name</option>
+                    <option value="" disabled selected hidden>Select name</option>
                     {foodOptions.map((option) => (
                       <option key={option.id} value={option.name}>
                         {option.name}
@@ -232,7 +244,14 @@ const TeaMenuAdmin = () => {
               <InputGroup.Text className="search-icon" id="basic-addon1">
                 <i className="bi bi-search fs-6 text-muted"></i>
               </InputGroup.Text>
-              <Form.Control className="search-data" type="search" placeholder="Search data" aria-label="Search" />
+               <Form.Control 
+                className="search-data" 
+                type="search" 
+                placeholder="Search data" 
+                aria-label="Search" 
+                value={searchKeyword}
+                onChange={handleSearchChange}
+              />
             </InputGroup>
           </Form>
         </Col>
@@ -279,13 +298,13 @@ const TeaMenuAdmin = () => {
                       <Modal.Body>
                         <Form>
                           <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label></Form.Label>
+                            <Form.Label>Beverage</Form.Label>
                             <Form.Select
                               className="form-data"
                               name="bev"
                               value={formData.bev}
                               onChange={handleInputChange}>
-                              <option value="">Select name</option>
+                              <option value="" disabled selected hidden>Select name</option>
                               {bevOptions.map((option) => (
                                 <option key={option.id} value={option.name}>
                                   {option.name}
@@ -300,7 +319,7 @@ const TeaMenuAdmin = () => {
                               name="food"
                               value={formData.food}
                               onChange={handleInputChange}>
-                              <option value="">Select name</option>
+                              <option value="" disabled selected hidden>Select name</option>
                               {foodOptions.map((option) => (
                                 <option key={option.id} value={option.name}>
                                   {option.name}

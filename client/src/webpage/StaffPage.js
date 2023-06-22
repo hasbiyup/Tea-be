@@ -231,20 +231,20 @@ const TeaMenuAdmin = () => {
 
         <Col md={4}>
         <Form className="d-flex margin-search" style={{ marginRight: "18%" }}>
-  <InputGroup className="mb-3">
-    <InputGroup.Text className="search-icon" id="basic-addon1">
-      <i className="bi bi-search fs-6 text-muted"></i>
-    </InputGroup.Text>
-    <Form.Control
-      className="search-data"
-      type="search"
-      placeholder="Search data"
-      aria-label="Search"
-      value={searchKeyword}
-      onChange={handleSearchChange}
-    />
-  </InputGroup>
-</Form>
+          <InputGroup className="mb-3">
+            <InputGroup.Text className="search-icon" id="basic-addon1">
+              <i className="bi bi-search fs-6 text-muted"></i>
+            </InputGroup.Text>
+            <Form.Control
+              className="search-data"
+              type="search"
+              placeholder="Search data"
+              aria-label="Search"
+              value={searchKeyword}
+              onChange={handleSearchChange}
+            />
+          </InputGroup>
+        </Form>
         </Col>
       </Row>
 
