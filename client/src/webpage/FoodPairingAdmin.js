@@ -2,7 +2,7 @@ import "../components/dashboard/dashboard.css";
 
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -168,22 +168,25 @@ const TeaMenuAdmin = () => {
 
   return (
     <Sidebar>
-      <Row className="d-flex justify-content-between align-items-center" style={{ marginTop: "24px" }}>
-        <Col md={9}>
-          <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">
-            Teanology Food Pairing
-          </h3>
-        </Col>
-        <Col md={3}>
-          <p className="topbar-dashboard float-end margin-admin-topbar">
-            <i className="bi bi-person-circle me-2"></i>
-            {userRole}-{userName}
-          </p>
-        </Col>
-        <p className="text-muted teanology-menu-update">
-          Manage your food pairing data on this page
-        </p>
-      </Row>
+      <Container fluid>
+        <Row  style={{ marginTop: "24px" }}>
+          <Col md={7} xs={12}>
+            <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Dashboard Teanolgy</h3>
+            <p className="text-muted teanology-menu-update">
+              Teanology menu update.{" "}
+              <a href="/home" style={{ color: "#539e6d" }}>
+                Back to home page.
+              </a>
+            </p>
+          </Col>
+          <Col md={5} xs={12} className="user-admin d-flex justify-content-end align-items-center">
+            <p className="topbar-dashboard margin-admin-topbar">
+              <i className="bi bi-person-circle me-2"></i>
+              <span className="fw-bold">{userRole}</span> | {userName}
+            </p>
+          </Col>
+        </Row>
+      </Container>
 
       <Row>
         <Col md={8}>

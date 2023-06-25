@@ -2,7 +2,7 @@ import "../components/dashboard/dashboard.css";
 
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import Sidebar from "../components/dashboard/Sidebar.js";
 import Food from "../components/dashboard/Food.svg";
 import FoodPairing from "../components/dashboard/FoodPairing.svg";
@@ -72,91 +72,26 @@ const Dashboard = () => {
 
   return (
     <Sidebar>
-      <Row className="d-flex justify-content-between align-items-center" style={{ marginTop: "24px" }}>
-        <Col md={7} sm={12}>
-          <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Dashboard Teanology</h3>
-        </Col>
-        <Col md={5} sm={12}>
-          <p className="topbar-dashboard float-end margin-admin-topbar">
-            <i className="bi bi-person-circle me-2"></i>
-            {userRole}-{userName}
-          </p>
-        </Col>
-        <p className="text-muted teanology-menu-update">
-          Teanology menu update.{" "}
-          <a href="/home" style={{ color: "#539e6d" }}>
-            Back to home page.
-          </a>
-        </p>
-      </Row>
-      {/* <Container className="box-con">
-        <Card className="box-dashboard">
-          <Card.Body>
-            <Row>
-              <Col xs={4}>
-                <div className="oval-icon">
-                  <img className="icon" src={Tea} />
-                </div>
-              </Col>
-              <Col xs={8}>
-                <h4 className="text-total">Total Tea Menu</h4>
-                <h3 className="total">10</h3>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        <Card className="box-dashboard">
-          <Card.Body>
-            <Row>
-              <Col xs={4}>
-                <div className="oval-icon">
-                  <img className="icon" src={Food} />
-                </div>
-              </Col>
-              <Col xs={8}>
-                <h4 className="text-total">Total Food Menu</h4>
-                <h3 className="total">10</h3>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+      <Container fluid>
+        <Row  style={{ marginTop: "24px" }}>
+          <Col md={7} xs={12}>
+            <h3 className="topbar-dashboard fw-bold margin-topbar-dashboard">Dashboard Teanolgy</h3>
+            <p className="text-muted teanology-menu-update">
+              Teanology menu update.{" "}
+              <a href="/home" style={{ color: "#539e6d" }}>
+                Back to home page.
+              </a>
+            </p>
+          </Col>
+          <Col md={5} xs={12} className="user-admin d-flex justify-content-end align-items-center">
+            <p className="topbar-dashboard margin-admin-topbar" style={{ marginBottom: '10%' }}>
+              <i className="bi bi-person-circle me-2"></i>
+              <span className="fw-bold">{userRole}</span> | {userName}
+            </p>
+          </Col>
+        </Row>
       </Container>
-
-      <Container className="box-con">
-        <Card className="box-dashboard">
-          <Card.Body>
-            <Row>
-              <Col xs={4}>
-                <div className="oval-icon">
-                  <img className="icon" src={FoodPairing} />
-                </div>
-              </Col>
-              <Col xs={8}>
-                <h4 className="text-total">Total FoodPairing</h4>
-                <h3 className="total">10</h3>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        <Card className="box-dashboard">
-          <Card.Body>
-            <Row>
-              <Col xs={4}>
-                <div className="oval-icon">
-                  <img className="icon" src={Staff} />
-                </div>
-              </Col>
-              <Col xs={8}>
-                <h4 className="text-total">Total Staff</h4>
-                <h3 className="total">10</h3>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-      </Container> */}
-
+      
       <div className="flex-containerrr">
         <Card className="box-dashboard2">
           <Card.Body>

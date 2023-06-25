@@ -125,11 +125,11 @@ a.active {
 }
 
 .margin-admin-topbar {
-  margin-right: 24%;
+  margin-right: 14%;
 }
 
 .teanology-menu-update {
-  margin-left: 3.7%;
+  margin-left: 5%;
   margin-top: -10px;
 }
 
@@ -306,22 +306,23 @@ thead {
 
   .margin-topbar-dashboard {
     margin-left: 18%;
-    font-size: 21px;
+    font-size: 22px;
+  }
+
+  .user-admin{
+    display: flex !important;
+    justify-content: start !important;
   }
 
   .margin-admin-topbar {
-    position: relative;
-    margin-right: 5%;
-    font-size: 11px;
-    top: -30px;
-    /* left: 0; */
+    font-size: 12px;
+    margin-left: 18%;
   }
 
   .teanology-menu-update {
     position: relative;
     margin-left: 17.3%;
     font-size: 12px;
-    top: -30px;
   }
 
   .flex-containerrr {
